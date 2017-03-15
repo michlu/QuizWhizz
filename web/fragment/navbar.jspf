@@ -1,0 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<nav class = "navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <a href="${pageContext.request.contextPath}" class="navbar-brand">Quiz Whizz</a>
+
+        <div class="collapse navbar-collapse navCollapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Wyzwanie</a></li>
+                <li><a href="#">Kategorie</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Profil</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="logout">Wyloguj</a></li>
+                    </ul>
+            </ul>
+        </div>
+
+        <button class="navbar-toggle" data-toggle="collapse" data-target=".navCollapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+</nav>
