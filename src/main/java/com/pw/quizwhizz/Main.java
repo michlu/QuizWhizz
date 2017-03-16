@@ -1,7 +1,7 @@
 package com.pw.quizwhizz;
 
-import com.pw.quizwhizz.model.Role;
-import com.pw.quizwhizz.model.User;
+import com.pw.quizwhizz.dao.QuestionDao;
+import com.pw.quizwhizz.model.*;
 import com.pw.quizwhizz.utils.DBConfig;
 
 import javax.persistence.EntityManager;
@@ -55,6 +55,44 @@ public class Main {
         userAntoni.setRegDate(new Date());
         userAntoni.setRole(userAccess);
 
+        Subject subjectJava = new Subject();
+        subjectJava.setSubjectName("Java");
+        subjectJava.setDescription("Pytania z zakresu programowania w jezyku Java.");
+
+        Subject subjectGeography = new Subject();
+        subjectGeography.setSubjectName("Geografia");
+        subjectGeography.setDescription("Pytania z zakresu  nauk przyrodniczych (geografia fizyczna) oraz do nauk społeczno-ekonomicznych (geografia społeczno-ekonomiczna).");
+
+        // dodanie pytania do bazy
+        Subject subjectTest = new Subject();
+        subjectTest.setSubjectName("Wszystko i nic");
+        subjectTest.setDescription("Pytania z zakresu bez odpowiedzi.");
+        Question question = new Question();
+        question.setQuestion("Ktora odpowiedz jest poprawna?");
+        question.setSubject(subjectTest);
+        Answer answer1 = new Answer();
+        answer1.setAnswer("odpowiedz pierwsza");
+        Answer answer2 = new Answer();
+        answer2.setAnswer("odpowiedz druga");
+        answer2.setCorrect(true);
+        Answer answer3 = new Answer();
+        answer3.setAnswer("odpowiedz trzecia");
+        Answer answer4 = new Answer();
+        answer4.setAnswer("odpowiedz czwarta");
+        question.addAnswer(answer1);
+        question.addAnswer(answer2);
+        question.addAnswer(answer3);
+        question.addAnswer(answer4);
+        QuestionDao questionDao = new QuestionDao(Question.class);
+        questionDao.addQuestion(question, subjectTest, answer1, answer2, answer3, answer4);
+
+        // wyszukanie pytania
+        Question findQuestion = (Question) questionDao.find(1L);
+        System.out.println(findQuestion);
+        findQuestion.getAnswer().forEach(System.out::println);
+
+
+        // Comitowanie danych do bazy
         entityManager.getTransaction().begin();
 
         entityManager.persist(roleAdmin);
@@ -62,6 +100,9 @@ public class Main {
         entityManager.persist(adminNowin);
         entityManager.persist(userJacek);
         entityManager.persist(userAntoni);
+
+        entityManager.persist(subjectJava);
+        entityManager.persist(subjectGeography);
 
         entityManager.getTransaction().commit();
 

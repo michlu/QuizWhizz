@@ -23,6 +23,15 @@ public abstract class GenericDaoAbstract<T> implements GenericDao<T> {
         this.entityClass = type;
     }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public EntityTransaction getTransaction() {
+        if(transaction==null)
+            transaction = entityManager.getTransaction();
+        return transaction;
+    }
 
     @Override
     public Boolean saveOrUpdate(T entity) {

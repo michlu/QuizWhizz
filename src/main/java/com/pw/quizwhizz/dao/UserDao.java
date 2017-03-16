@@ -3,30 +3,36 @@ package com.pw.quizwhizz.dao;
 import com.pw.quizwhizz.model.Role;
 import com.pw.quizwhizz.model.User;
 import com.pw.quizwhizz.utils.DBConfig;
+import org.hibernate.HibernateException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by michlu on 14.03.17.
- */
+
 public class UserDao extends GenericDaoAbstract {
+    private EntityManager entityManager = super.getEntityManager();
+    private EntityTransaction transaction = super.getTransaction();
 
     public UserDao(Class type) {
         super(type);
     }
 
-    public void addUser(String userLogin ,String firstName, String password){
-        Role roleUser = Role.user();
-        List<Role> userAccess = new ArrayList<>();
-
-        User user = new User();
-        user.setUserLogin(userLogin);
-        user.setFirstName(firstName);
-        user.setPassword(password);
-        user.setRole(userAccess);
-        super.saveOrUpdate(user);
+    public Boolean addUser(User user, Role role) {
+        try {
+            transaction.begin();
+            entityManager.persist(role);
+            entityManager.persist(user);
+            transaction.commit();
+            return true;
+        } catch (HibernateException e) {
+            handleException(e);
+            return false;
+        } finally {
+            entityManager.close();
+        }
     }
 
     public User findUserByLogin(String login){

@@ -25,7 +25,8 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE) // konwertuje util.Date na sql.Date
     private java.util.Date regDate;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = { @JoinColumn(name = "user_login", referencedColumnName = "user_login") },

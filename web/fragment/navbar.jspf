@@ -9,9 +9,17 @@
                 <li><a href="#">Wyzwanie</a></li>
                 <li><a href="#">Kategorie</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-user"></span>
+                        User <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
+                        <li>
+                        <c:if test="${not empty pageContext.request.userPrincipal}">
+                            <c:if test="${pageContext.request.isUserInRole('asd')}">
+                                <a href="admin_add.jsp">Dodaj quiz</a>
+                            </c:if>
+                        </c:if>
+                        </li>
                         <li><a href="#">Profil</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="logout">Wyloguj</a></li>
