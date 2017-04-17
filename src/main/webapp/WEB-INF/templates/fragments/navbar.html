@@ -1,0 +1,73 @@
+<div th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#" th:href="@{/}">QuizWhizz</a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#" th:href="@{/register}">Twoje gry</a>
+            </li>
+
+            <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ROLE_ADMIN')}">
+
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-king"></span>
+                    Panel admina
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#" th:href="@{/admin/adminadd}">Dodaj kategorie/pytanie</a>
+                    </li>
+                    <li>
+                        <a href="#" th:href="@{/admin/listcategory}">Edytuj kategorie/pytania</a>
+                    </li>
+                    <li>
+                        <a href="#" th:href="@{/admin/listuser}">Użytkownicy</a>
+                    </li>
+                </ul>
+
+
+            </li>
+
+            <li  th:if="${#authorization.expression('!isAuthenticated()')}">
+                <a href="#" th:href="@{/register}"><span class="glyphicon glyphicon-registration-mark"></span> Rejestracja</a>
+            </li>
+
+
+            <li th:if="${#authorization.expression('!isAuthenticated()')}">
+                <a href="/loginform" th:href="@{/loginform}"><span class="glyphicon glyphicon-log-in"></span> Logowanie</a>
+            </li>
+
+
+            <li class="dropdown" th:if="${#authorization.expression('isAuthenticated()')}">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-user"></span>
+                    <span th:text="${#authentication.principal.username}"></span>
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="#">Wyniki</a>
+                    </li>
+                    <li>
+                        <a href="#">Profil</a>
+                    </li>
+                    <li>
+                        <form action="logout" th:action="@{/logout}" method="post" >
+                            <button type="submit" class="list-group-item list-group-item-action"><span class="glyphicon glyphicon-log-out"></span> Wyloguj</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+</div>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Quiz Whizz</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link href="/css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
+    <link href="/css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div  class="container">
+            <!-- import navbar -->
+            <div th:replace="fragments/navbar :: navbar"></div>
+        </div>
+
+    </nav>
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+
+        <!-- Panel -->
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Edytuj Użytkownika - [[${user.email}]]</h3>
+            </div>
+            <div class="panel-body">
+
+                <form action="#"  th:action="@{/admin/user/edit}" th:object="${user}" method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="userId">Id:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{id}" type="text" class="form-control" id="userId" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="firstName">Imię:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password">Hasło:</label>
+                        <div class="col-sm-10">
+                            <input th:name="password" class="form-control" id="password" type="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Email:</label>
+                        <div class="col-sm-10">
+                            <input th:field="*{email}"  type="text" class="form-control" id="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-danger">Zapisz</button>
+                        </div>
+                    </div>
+                </form>
+                <hr class="my-4">
+
+                <!-- Role edit -->
+                <form action="#"  th:action="@{'/admin/user/role/'+${user.id}}"  method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="roleUser">Role:</label>
+                        <div class="col-sm-10" id="roleUser">
+                            <p>Aktualne role użytkownika: <span th:each="role : ${user.roles}" th:text=" ${role.role.getRoleName()} "> </span> </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="role">Dostępne role:</label>
+                        <div class="form-check form-check-inline col-sm-10" id="role">
+                            <label th:each="role : ${roles}" class="form-check-label">
+                                <input th:text="${role.role.getRoleName()}" th:name="roles" th:value="${role.id}" class="form-check-input" type="checkbox">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button name="metod" value="addRole" type="submit" class="btn btn-success">Nadaj</button>
+                            <button name="metod" value="deleteRole" type="submit" class="btn btn-danger">Usuń</button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+            <div class="panel-footer"></div>
+        </div>
+
+        
+
+        <hr class="featurette-divider">
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-muted">QuizWhizz - developed by Michał Nowiński and Karolina Prusaczyk</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

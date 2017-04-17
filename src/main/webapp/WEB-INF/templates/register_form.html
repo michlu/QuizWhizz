@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Quiz Whizz</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
+    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <script src="js/checkPass.js" th:src="@{/resources/js/checkPass.js}"></script>
+
+
+</head>
+
+<body style="background-color: #333">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div  class="container">
+            <!-- import navbar -->
+            <div th:replace="fragments/navbar :: navbar"></div>
+        </div>
+    </nav>
+
+    <div class="container col-md-offset-4 col-md-4 col-md-offset-4"  style="background-color: #FFF">
+
+    <!-- Register -->
+            <div class="panel-heading">
+                <h1 class="text-center">Rejestracja</h1>
+                <hr class="my-4">
+            </div>
+
+            <div class="panel-body">
+
+                <form action="#" method="post" th:action="@{/register}" th:object="${user}">
+
+                    <div class="form-group">
+                        <label class="control-label" for="inputName">Imie</label>
+                        <input th:field="*{firstName}"  class="form-control" data-error="Please enter name field." id="inputName" placeholder="Podaj imie"  type="text"/>
+                        <div th:errors="*{firstName}" class="alert alert-danger"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEmail" class="control-label">Email</label>
+                        <input th:field="*{email}" type="email" class="form-control" id="inputEmail" placeholder="Podaj email">
+                        <div th:errors="*{email}" class="alert alert-danger"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword1" class="control-label">Hasło</label>
+                        <div class="form-group">
+                            <input type="password" data-minlength="5" class="form-control" id="inputPassword1" data-error="must enter minimum of 5 characters" placeholder="Podaj hasło, minium 5 znaków" required>
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword2" class="control-label">Podaj ponownie hasło</label>
+                        <div class="form-group">
+                            <input th:field="*{password}" onkeyup="checkPass(); return false;" type="password" data-minlength="5" class="form-control" id="inputPassword2" data-error="must enter minimum of 5 characters" placeholder="Podaj hasło, minium 5 znaków" required>
+                            <div class="help-block with-errors"><span id="confirmMessage" class="confirmMessage"></span></div>
+                            <div th:errors="*{password}" class="alert alert-danger"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit">
+                            Zarejestruj
+                        </button>
+                        <a href="#" th:href="@{/loginform}" class="btn btn-success" role="button">Przejdz do logowania</a>
+                    </div>
+                </form>
+
+            </div>
+
+        <hr class="featurette-divider">
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-muted">QuizWhizz - developed by Michał Nowiński and Karolina Prusaczyk</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
