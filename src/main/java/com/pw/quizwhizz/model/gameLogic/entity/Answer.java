@@ -1,11 +1,16 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.gameLogic.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+/**
+ * Created by Karolina on 25.03.2017.
+ */
 @Data
+@NoArgsConstructor
+@Entity
 @Table(name = "answer")
 public class Answer {
     @Id
@@ -14,12 +19,11 @@ public class Answer {
     private Long id;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
-
     @Column(columnDefinition = "TINYINT DEFAULT FALSE", nullable = false)
-    private Boolean isCorrect = false;
+    private boolean isCorrect;
 
-//    @ManyToOne
-//    @JoinColumn(name = "question")
-//    private Question question;
-
+    public Answer(String answer, boolean isCorrect) {
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+    }
 }

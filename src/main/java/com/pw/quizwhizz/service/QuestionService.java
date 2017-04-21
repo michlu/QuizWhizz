@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.service;
 
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.gameLogic.entity.Category;
+import com.pw.quizwhizz.model.gameLogic.entity.Question;
 
 import java.util.List;
 
