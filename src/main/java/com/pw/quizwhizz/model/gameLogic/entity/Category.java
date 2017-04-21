@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model.gameLogic.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import javax.persistence.*;
 /**
  * Created by Karolina on 26.03.2017.
  */
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "category")
@@ -23,9 +23,9 @@ public class Category {
     @Column(columnDefinition = "TEXT")
     private String description;
     @Column(nullable = false)
-    private String urlImage = "";
+    private String urlImage;
 
-    public Category(String namen) {
+    public Category(String name) {
         this.name = name;
     }
 }

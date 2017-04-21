@@ -18,6 +18,6 @@ function checkPass()
     }else{
         pass2.style.backgroundColor = badColor;
         message.style.color = badColor;
-        message.innerHTML = "Hasło nie poprwne!"
+        message.innerHTML = "Hasło niepoprawne!"
     }
 }

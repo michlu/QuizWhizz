@@ -42,7 +42,7 @@
 
     <div class="panel-body">
         <div th:if="${loginError}" class="alert alert-danger">
-            <strong>Błąd!</strong> Email lub hasło nie poprawne.
+            <strong>Błąd!</strong> Email lub hasło niepoprawne.
         </div>
 
         <form method="POST" action="processlogin" th:action="@{/processlogin}">
