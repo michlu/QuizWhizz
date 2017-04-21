@@ -25,7 +25,7 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div  class="container">
+        <div class="container">
             <!-- import navbar -->
             <div th:replace="fragments/navbar :: navbar"></div>
         </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="panel-body">
 
-                <form action="#"  th:action="@{/admin/addcategory}" th:object="${category}" method="POST" class="form-horizontal">
+                <form action="#" th:action="@{/admin/addcategory}" th:object="${category}" method="POST" class="form-horizontal">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="category">Nazwa kategorii:</label>
                         <div class="col-sm-10">
@@ -80,7 +80,7 @@
                 <h3 class="panel-title">Dodaj PYTANIE</h3>
             </div>
             <div class="panel-body">
-                <form th:action="@{/admin/addquestion}"  class="form-horizontal" method="post">
+                <form th:action="@{/admin/addquestion}" class="form-horizontal" method="post">
 
                     <div class="form-group">
                         <label class="col-sm-2" for="question_category">Wybierz temat pytania: </label>
@@ -140,7 +140,7 @@
             </div>
             <div class="panel-footer"></div>
         </div>
-        
+
 
         <hr class="featurette-divider">
 

@@ -24,3 +24,11 @@
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
 }
+
+table {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
