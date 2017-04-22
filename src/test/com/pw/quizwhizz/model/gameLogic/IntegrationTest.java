@@ -1,8 +1,8 @@
 package com.pw.quizwhizz.model.gameLogic;
 
-import com.pw.quizwhizz.model.gameLogic.Exceptions.IllegalNumberOfQuestionsException;
-import com.pw.quizwhizz.model.gameLogic.Exceptions.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.gameLogic.Exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.gameLogic.entity.Answer;
 import com.pw.quizwhizz.model.gameLogic.entity.Category;
 import org.junit.Test;

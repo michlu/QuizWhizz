@@ -1,13 +1,14 @@
 package com.pw.quizwhizz.model.gameLogic;
 
-import com.pw.quizwhizz.model.gameLogic.Exceptions.IllegalNumberOfQuestionsException;
-import com.pw.quizwhizz.model.gameLogic.Exceptions.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.gameLogic.Exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.gameLogic.entity.Answer;
 import com.pw.quizwhizz.model.gameLogic.entity.Category;
 import com.pw.quizwhizz.model.gameLogic.entity.Question;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-
+import javax.persistence.*;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Karolina on 24.03.2017.
  */
+
 public class Game {
     static final int appropriateNumberOfQuestions = 10;
     @Getter

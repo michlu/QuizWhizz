@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.model.gameLogic;
 
-import com.pw.quizwhizz.model.gameLogic.Exceptions.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.gameLogic.entity.Answer;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model.gameLogic.Exceptions;
+package com.pw.quizwhizz.model.gameLogic.exceptions;
 
 /**
  * Created by Karolina on 14.04.2017.

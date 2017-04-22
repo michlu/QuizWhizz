@@ -1,5 +1,7 @@
 package com.pw.quizwhizz.model.gameLogic.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "answer")
+@JsonIgnoreProperties
 public class Answer {
     @Id
     @Column(name = "id_answer")
@@ -20,6 +23,7 @@ public class Answer {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
     @Column(columnDefinition = "TINYINT DEFAULT FALSE", nullable = false)
+    @JsonProperty
     private boolean isCorrect;
 
     public Answer(String answer, boolean isCorrect) {

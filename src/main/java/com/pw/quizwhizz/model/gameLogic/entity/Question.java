@@ -1,9 +1,6 @@
 package com.pw.quizwhizz.model.gameLogic.entity;
 
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
 

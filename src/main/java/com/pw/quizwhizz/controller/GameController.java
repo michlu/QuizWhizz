@@ -1,7 +1,8 @@
 package com.pw.quizwhizz.controller;
 
-/**
- * Created by karol on 21.04.2017.
- */
+import org.springframework.stereotype.Controller;
+
+@Controller
 public class GameController {
+
 }
