@@ -16,15 +16,13 @@ import java.util.List;
 /**
  * Created by Karolina on 24.03.2017.
  */
-
+@Getter
 public class Game {
+    private long id;
     static final int appropriateNumberOfQuestions = 10;
-    @Getter
     private final Category category;
-    @Getter
     private final List<Question> questions;
     private final GameStateMachine gameStateMachine;
-    @Getter
     private List<Player> players = new ArrayList<>();
     private List<Score> scores = new ArrayList<>();
 

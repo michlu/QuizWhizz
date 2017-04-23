@@ -3,6 +3,7 @@ package com.pw.quizwhizz.model;
 import com.pw.quizwhizz.model.entity.Answer;
 import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.service.QuestionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,11 @@ public class QuestionServiceHardcoded implements QuestionService {
 
     private Random random = new Random();
     private Category category = new Category("Category1");
+
+    @Override
+    public List<Question> getRandomQuestions(Category category, int number) {
+        return null;
+    }
 
     @Override
     public List<Question> get10RandomQuestions(Category category) {
@@ -36,6 +42,31 @@ public class QuestionServiceHardcoded implements QuestionService {
             }
         }
         return questions;
+    }
+
+    @Override
+    public List<Question> findAllByCategory(Category category) {
+        return null;
+    }
+
+    @Override
+    public Question findById(Long Id) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long Id) {
+
+    }
+
+    @Override
+    public void addQuestion(String categoryId, String inputQuestion, String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
+
+    }
+
+    @Override
+    public void updateQuestion(String inputId, String inputQuestion, String inputAnswer1, String answerId1, String inputAnswer2, String answerId2, String inputAnswer3, String answerId3, String inputAnswer4, String answerId4, String answerCorrect) {
+
     }
 
     private List<Question> createQuestions(Category category) {

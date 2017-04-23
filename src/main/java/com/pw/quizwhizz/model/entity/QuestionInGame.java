@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class QuestionInGame {
-// Game_id i question_id:
+//  Game_id i question_id:
     Question question;
     Game game;
     int sequence;
@@ -22,4 +22,3 @@ public class QuestionInGame {
         this.sequence = sequence;
     }
 }
-git add .

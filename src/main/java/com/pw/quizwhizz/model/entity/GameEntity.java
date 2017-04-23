@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class GameDAO {
+public class GameEntity {
     Long id;
     Category categoryId; // jakies powiazanie z kategoria
     GameState currentState;     // enum; w odopwiedniej metodzie z kontrolera uzyskamy go z GameStateMachine
