@@ -2,7 +2,7 @@ package com.pw.quizwhizz.model.account;
 
 import com.pw.quizwhizz.annotation.UniqueEmail;
 import com.pw.quizwhizz.annotation.ValidEmail;
-import com.pw.quizwhizz.model.gameLogic.Player;
+import com.pw.quizwhizz.model.Player;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 

@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
 import com.pw.quizwhizz.model.account.User;
 import lombok.EqualsAndHashCode;
@@ -9,6 +9,10 @@ import javax.persistence.*;
 /**
  * Created by Karolina on 20.03.2017.
  */
+// ZMIANA PODEJSCIA
+// Do zmapowania na Usera (zmniejszy liczbe kolejnych zawolan do bazy z kontrolera
+// Do tabeli Usera dojda tylko informacje o XP i gamesPlayed
+
 @Getter
 @EqualsAndHashCode
 @Entity

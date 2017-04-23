@@ -1,5 +1,7 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
+import com.pw.quizwhizz.model.GameState;
+import com.pw.quizwhizz.model.GameStateMachine;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;

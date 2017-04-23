@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.repository;
 
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
+import com.pw.quizwhizz.model.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

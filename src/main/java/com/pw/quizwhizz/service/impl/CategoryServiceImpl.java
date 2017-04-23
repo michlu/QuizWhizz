@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
+import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.repository.CategoryRepository;
 import com.pw.quizwhizz.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
+import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.entity.Answer;
 import lombok.Getter;
 
 import java.util.List;
@@ -10,10 +10,15 @@ import java.util.List;
  * Created by Karolina on 14.04.2017.
  */
 // Ultimately PlayerInGame will be created based on the Player and Game retrieved from the DB in a REST API call
+
+// Potrzebujemy jednak tabeli PlayerInGame z wartosciami game_id, user_id i boolem isOwner
+// Przy startcie gry w kontrolerze bedzie sprawdzana tozsamosc gracza - tylko owner moze zaczac
+// Jak rozwiazac kwestie dodania user_id, skoro PlayerInGame dziedziczy z Playera??
+
 @Getter
 public class PlayerInGame extends Player {
-    private final Game game;
-    private final boolean isOwner;
+    private Game game;
+    private boolean isOwner;
 
     public PlayerInGame(String name, Game game) {
         super(name);

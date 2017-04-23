@@ -1,14 +1,15 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalNumberOfQuestionsException;
-import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.gameLogic.exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
-import com.pw.quizwhizz.model.gameLogic.entity.Question;
+
+import com.pw.quizwhizz.model.entity.Answer;
+import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +43,8 @@ public class GameTest {
 
         Game game = new Game(category, questions);
 
-        assertThat(game.getCategory()).isEqualTo(category);
-        assertThat(game.getQuestions()).isEqualTo(questions);
+        Java6Assertions.assertThat(game.getCategory()).isEqualTo(category);
+        Java6Assertions.assertThat(game.getQuestions()).isEqualTo(questions);
     }
 
     @Test
@@ -76,8 +77,8 @@ public class GameTest {
 
         scores = game.getScores();
 
-        assertThat(game.getCategory()).isEqualTo(category);
-        assertThat(game.getQuestions()).isEqualTo(questions);
+        Java6Assertions.assertThat(game.getCategory()).isEqualTo(category);
+        Java6Assertions.assertThat(game.getQuestions()).isEqualTo(questions);
         verify(gameStateMachine, times(1)).determineCurrentState();
         Java6Assertions.assertThat(scores).isNotNull();
     }

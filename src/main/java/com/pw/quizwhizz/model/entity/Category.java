@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model.gameLogic.entity;
+package com.pw.quizwhizz.model.entity;
 
 import lombok.Data;
 import lombok.Getter;

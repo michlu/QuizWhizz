@@ -1,6 +1,6 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
+import com.pw.quizwhizz.model.entity.Answer;
 import lombok.Getter;
 
 import java.util.List;

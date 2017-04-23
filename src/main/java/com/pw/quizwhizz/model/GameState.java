@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
 /**
  * Created by Karolina on 14.04.2017.

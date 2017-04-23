@@ -1,8 +1,8 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
-import com.pw.quizwhizz.model.gameLogic.entity.Question;
+import com.pw.quizwhizz.model.entity.Answer;
+import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.entity.Question;
 
 import java.util.ArrayList;
 import java.util.List;

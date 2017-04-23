@@ -1,14 +1,13 @@
-package com.pw.quizwhizz.model.gameLogic;
+package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalNumberOfQuestionsException;
-import com.pw.quizwhizz.model.gameLogic.exceptions.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.gameLogic.exceptions.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.model.gameLogic.entity.Answer;
-import com.pw.quizwhizz.model.gameLogic.entity.Category;
-import com.pw.quizwhizz.model.gameLogic.entity.Question;
-import lombok.EqualsAndHashCode;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
+import com.pw.quizwhizz.model.entity.Answer;
+import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.entity.Question;
 import lombok.Getter;
-import javax.persistence.*;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
