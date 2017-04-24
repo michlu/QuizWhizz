@@ -71,13 +71,13 @@ public class GameServiceImpl implements GameService{
     }
 
 
-    public PlayerInGame addPlayerInGame(User user, Game game){
-        /*
-        POLACZYC PlayerInGame i PlayerInGameEntity
-        zapisac informacje do repozytorium
-         */
-        return new PlayerInGame(user.getPlayer(), gameRepository.read(game.getId()));
-    }
+//    public PlayerInGame addPlayerInGame(User user, Game game){
+//        /*
+//        POLACZYC PlayerInGame i PlayerInGameEntity
+//        zapisac informacje do repozytorium
+//         */
+//        return new PlayerInGame(user, gameRepository.read(game.getId()));
+//    }
 
     @Override
     public GameEntity findGameEntityByGameId(Long gameId) {

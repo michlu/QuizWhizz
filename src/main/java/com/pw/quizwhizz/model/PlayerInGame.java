@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model;
 
+import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.entity.Answer;
 import lombok.Getter;
