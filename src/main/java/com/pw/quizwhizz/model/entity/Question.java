@@ -13,14 +13,16 @@ import java.util.List;
 @Table(name = "question")
 public class Question {
     @Id
-    @Column(name = "id_question")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "category")
     private Category category;
+
     @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question")
     private List<Answer> answers;

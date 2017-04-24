@@ -1,18 +1,16 @@
 package com.pw.quizwhizz.model.entity;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 /**
  * Created by Karolina on 26.03.2017.
  */
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
 @Table(name = "category")
 public class Category {
     @Id
