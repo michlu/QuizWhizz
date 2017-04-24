@@ -71,9 +71,9 @@ public class JpaConfig {
         dataSource.addConnectionProperty("uceUnicode", "yes");
         dataSource.addConnectionProperty("characterEncoding", "UTF-8");
         dataSource.addConnectionProperty("useSSL", "false");
-        dataSource.addConnectionProperty("useJDBCCompliantTimezoneShift", "true"); // ubuntu
-        dataSource.addConnectionProperty("useLegacyDatetimeCode", "false"); // ubuntu
-        dataSource.addConnectionProperty("serverTimezone", "UTC"); // ubuntu
+        dataSource.addConnectionProperty("useJDBCCompliantTimezoneShift", "true");
+        dataSource.addConnectionProperty("useLegacyDatetimeCode", "false");
+        dataSource.addConnectionProperty("serverTimezone", "UTC");
         return dataSource;
     }
 
@@ -103,6 +103,7 @@ public class JpaConfig {
     @Bean
     public DataSourceInitializer dataSourceInitializer() {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+        resourceDatabasePopulator.setSqlScriptEncoding("UTF-8");
         resourceDatabasePopulator.addScript(new ClassPathResource("/data.sql"));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();

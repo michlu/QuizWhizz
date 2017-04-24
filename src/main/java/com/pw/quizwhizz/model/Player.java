@@ -1,10 +1,11 @@
 package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.account.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 /**
  * Created by Karolina on 20.03.2017.
@@ -15,19 +16,10 @@ import javax.persistence.*;
 
 @Getter
 @EqualsAndHashCode
-@Entity
-@Table(name = "player")
+@Embeddable
 public class Player {
-    @Id
-    @Column(name = "player_id")
-    Long id;
 
-    @MapsId
-    @OneToOne(mappedBy = "player")
-    @JoinColumn(name = "user_id")   //same name as id @Column
-    private User user;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Transient
     private final String name;
 
     @Column(name = "player_xp")
@@ -40,7 +32,7 @@ public class Player {
         this.name = name;
     }
 
-    protected void addXp(int xp) {
+    void addXp(int xp) {
         this.xp += xp;
     }
 
