@@ -21,8 +21,7 @@ public class User {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	@Embedded
 	private Player player;
 
 	@NotEmpty

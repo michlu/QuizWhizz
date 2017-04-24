@@ -17,6 +17,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     private UserService userService;
@@ -41,14 +42,14 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin/adminadd")
+    @GetMapping("/adminadd")
     public String getAddCategoryQuestion(Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("categories", categoryService.findAll());
         return "admin_add";
     }
 
-    @PostMapping("/admin/addcategory")
+    @PostMapping("/addcategory")
     public String addCategory(@ModelAttribute @Valid Category category, BindingResult bindResult) {
         if (bindResult.hasErrors())
             return "admin_add";
@@ -58,7 +59,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping(value = "/admin/addquestion", produces = "text/plain;charset=UTF-8")
+    @PostMapping(value = "/addquestion", produces = "text/plain;charset=UTF-8")
     public String addQuestion(
             @RequestParam String categoryId,
             @RequestParam String inputQuestion,
@@ -71,32 +72,32 @@ public class AdminController {
         return "redirect:adminadd";
     }
 
-    @GetMapping("/admin/listcategory")
+    @GetMapping("/listcategory")
     public String listCategory(Model model) {
         model.addAttribute("categories", categoryService.findAll());
         return "admin_list_categories";
     }
 
-    @GetMapping("/admin/category/delete/{categoryId}")
+    @GetMapping("/category/delete/{categoryId}")
     public String categoryDelete(@PathVariable String categoryId) {
         categoryService.deleteById(Long.parseLong(categoryId));
         return "redirect:/admin/listcategory";
     }
 
-    @GetMapping("/admin/category/edit/{categoryId}")
+    @GetMapping("/category/edit/{categoryId}")
     public String getCategoryEdit(@PathVariable String categoryId, Model model) {
         model.addAttribute("category", categoryService.findById(Long.parseLong(categoryId)));
         return "admin_edit_category";
     }
 
-    @PostMapping("/admin/category/edit")
+    @PostMapping("/category/edit")
     public String postCategoryEdit(@ModelAttribute Category category) {
         categoryService.updateCategory(category);
 //        categoryService.updateCategoryById(category.getId(), category.getName(), category.getDescription(), category.getUrlImage());
         return "redirect:/admin/listcategory";
     }
 
-    @GetMapping("/admin/listquestions/{categoryId}")
+    @GetMapping("/listquestions/{categoryId}")
     public String listQuestion(@PathVariable String categoryId, Model model) {
         Category category = categoryService.findById(Long.parseLong(categoryId));
         model.addAttribute("questions", questionService.findAllByCategory(category));
@@ -104,13 +105,13 @@ public class AdminController {
         return "admin_list_questions";
     }
 
-    @GetMapping("/admin/question/edit/{questionId}")
+    @GetMapping("/question/edit/{questionId}")
     public String getQuestionEdit(@PathVariable String questionId, Model model) {
         model.addAttribute("question", questionService.findById(Long.parseLong(questionId)));
         return "admin_edit_question";
     }
 
-    @GetMapping("/admin/question/delete/{questionId}")
+    @GetMapping("/question/delete/{questionId}")
     public String questionDelete(@PathVariable String questionId) {
         Long idCategoryByQuestion = questionService.findById(Long.parseLong(questionId)).getCategory().getId();
         questionService.deleteById(Long.parseLong(questionId));
@@ -118,7 +119,7 @@ public class AdminController {
         return "redirect:/admin/listquestions/" + idCategoryByQuestion.toString();
     }
 
-    @PostMapping("/admin/question/edit")
+    @PostMapping("/question/edit")
     public String postQuestionEdit(
             @RequestParam String inputId,
             @RequestParam String inputQuestion,
@@ -139,7 +140,7 @@ public class AdminController {
 
     // === Users ===
 
-    @GetMapping("/admin/listuser")
+    @GetMapping("/listuser")
     public String userList(Model model) {
         List<User> users = userService.findAll();
         if (users != null)
@@ -147,27 +148,27 @@ public class AdminController {
         return "admin_list_users";
     }
 
-    @GetMapping("/admin/user/delete/{userId}")
+    @GetMapping("/user/delete/{userId}")
     public String userDelete(@PathVariable String userId) {
         userService.deleteById(Long.parseLong(userId));
         return "redirect:/admin/listuser";
     }
 
-    @GetMapping("/admin/user/edit/{userId}")
+    @GetMapping("/user/edit/{userId}")
     public String getUserEdit(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.findById(Long.parseLong(userId)));
         model.addAttribute("roles", roleService.findAll());
         return "admin_edit_user";
     }
 
-    @PostMapping("/admin/user/edit")
+    @PostMapping("/user/edit")
     public String postUserEdit(@ModelAttribute User user) {
         System.out.println("User: " + user.toString());
         userService.update(user);
         return "redirect:/admin/listuser";
     }
 
-    @PostMapping("/admin/user/role/{userId}")
+    @PostMapping("/user/role/{userId}")
     public String postUserEditRole(
             @PathVariable String userId,
             @RequestParam String[] roles,

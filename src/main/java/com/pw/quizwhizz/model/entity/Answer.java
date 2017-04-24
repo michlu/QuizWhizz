@@ -10,9 +10,9 @@ import javax.persistence.*;
 /**
  * Created by Karolina on 25.03.2017.
  */
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
 @Table(name = "answer")
 @JsonIgnoreProperties
 public class Answer {
@@ -22,7 +22,7 @@ public class Answer {
     private Long id;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
-    @Column(columnDefinition = "TINYINT DEFAULT FALSE", nullable = false)
+    @Column(nullable = false)
     @JsonProperty
     private boolean isCorrect;
 
