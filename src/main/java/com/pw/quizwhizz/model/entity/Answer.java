@@ -1,12 +1,20 @@
 package com.pw.quizwhizz.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
+/**
+ * Created by Karolina on 25.03.2017.
+ */
 @Data
+@NoArgsConstructor
+@Entity
 @Table(name = "answer")
+@JsonIgnoreProperties
 public class Answer {
     @Id
     @Column(name = "id_answer")
@@ -14,12 +22,12 @@ public class Answer {
     private Long id;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
-
     @Column(columnDefinition = "TINYINT DEFAULT FALSE", nullable = false)
-    private Boolean isCorrect = false;
+    @JsonProperty
+    private boolean isCorrect;
 
-//    @ManyToOne
-//    @JoinColumn(name = "question")
-//    private Question question;
-
+    public Answer(String answer, boolean isCorrect) {
+        this.answer = answer;
+        this.isCorrect = isCorrect;
+    }
 }

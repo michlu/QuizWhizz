@@ -1,6 +1,5 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.exception.EmailExistsException;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
@@ -104,7 +103,6 @@ public class UserServiceImpl implements UserService {
 	 * Dodaje nowe konto dla podanego uzytkownika. Hashuje haslo przed zapisaniem do bazy danych.
 	 * @param user
 	 * @param userProfileType przyjmuje Enumy odpowiadajace rolą
-	 * @throws EmailExistsException
 	 */
 	private void addAccountForUserWithRole(User user, UserProfileType... userProfileType) {
 		for (int i = 0; i < userProfileType.length; i++) {

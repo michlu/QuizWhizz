@@ -23,75 +23,106 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div  class="container">
-            <!-- import navbar -->
-            <div th:replace="fragments/navbar :: navbar"></div>
-        </div>
-
-    </nav>
-
-    <!-- Full Width Image Header -->
-    <header class="header-image">
-        <div class="headline">
-            <div class="container">
-                <h1>Quiz Whizz</h1>
-                <h2>Sprawdź swoja wiedzę</h2>
-            </div>
-        </div>
-    </header>
-
-    <!-- Page Content -->
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
+        <!-- import navbar -->
+        <div th:replace="fragments/navbar :: navbar"></div>
+    </div>
+
+</nav>
+
+<!-- Full Width Image Header -->
+<header class="header-image">
+    <div class="headline">
+        <div class="container">
+            <h1>Quiz Whizz</h1>
+            <h2>Sprawdź swoja wiedzę</h2>
+        </div>
+    </div>
+</header>
+
+<!-- Page Content -->
+<div class="container">
 
 
-            <div class="container">
-              <div class="page-header">
-                <h1 class="text-center">Zagraj!</h1>
-              </div>
-              <p class="lead text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                
-              <div class="container">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="text-center">Rozpocznij grę...</h1>
+        </div>
+        <p class="lead text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</p>
+
+        <div class="container">
 
 
-                <div class="row stylish-panel">
+            <div class="row stylish-panel">
 
-                        <div class="col-md-4" th:each="category,iterationStatus  : ${categories}">
-                            <div>
-                                <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
-                                <h2 th:text="${category.name}"></h2>
-                                <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
-                                <a href="#" th:href="@{/category/${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
-                            </div>
-                        </div>
+                <div class="col-md-4" th:each="category,iterationStatus  : ${categories}">
+                    <div>
+                        <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
+                        <h2 th:text="${category.name}"></h2>
+                        <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
+                        <a href="#" th:href="@{/category/${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
+                    </div>
                 </div>
-
-
-              </div>
-                  
-              </div>
             </div>
-
-        <hr class="featurette-divider">
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p class="text-muted">QuizWhizz - developed by Michał Nowiński and Karolina Prusaczyk</p>
-                </div>
-            </div>
-        </footer>
+        </div>
 
     </div>
-    <!-- /.container -->
+</div>
 
-    <!-- jQuery -->
-    <script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+<div class="container">
+    <div class="page-header">
+        <h1 class="text-center">...lub dołącz do gry</h1>
+    </div>
+    <table class="lead table table-hover">
+        <thead>
+        <tr>
+            <th>Kategoria</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Laboratorium</td>
+            <td>Otwarta</td>
+            <td><a href="#" class="btn btn-primary">Dołącz</a></td>
+        </tr>
+        <tr>
+            <td>Geografia</td>
+            <td>Trwa</td>
+            <td><a href="#" class="btn btn-primary">Dołącz</a></td>
+        </tr>
+        <tr>
+            <td>Java</td>
+            <td>Trwa</td>
+            <td><a href="#" class="btn btn-primary">Dołącz</a></td>
+        </tr>
+        </tbody>
+    </table>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
+</div>
+
+<hr class="featurette-divider">
+<!-- Footer -->
+<footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <p class="text-muted">QuizWhizz - developed by Michał Nowiński and Karolina Prusaczyk</p>
+        </div>
+    </div>
+</footer>
+
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
 
 </body>
 

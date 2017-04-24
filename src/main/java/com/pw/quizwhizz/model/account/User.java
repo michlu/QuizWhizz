@@ -2,6 +2,7 @@ package com.pw.quizwhizz.model.account;
 
 import com.pw.quizwhizz.annotation.UniqueEmail;
 import com.pw.quizwhizz.annotation.ValidEmail;
+import com.pw.quizwhizz.model.Player;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,6 +20,10 @@ public class User {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
+	private Player player;
 
 	@NotEmpty
 	@Column(name = "first_name", nullable = false)

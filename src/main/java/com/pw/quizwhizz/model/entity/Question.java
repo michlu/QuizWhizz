@@ -1,35 +1,34 @@
 package com.pw.quizwhizz.model.entity;
 
-import lombok.Data;
-
+import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+/**
+ * Created by Karolina on 24.03.2017.
+ */
 @Data
+@NoArgsConstructor
+@Entity
 @Table(name = "question")
 public class Question {
     @Id
     @Column(name = "id_question")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String question;
-
     @ManyToOne
     @JoinColumn(name = "category")
     private Category category;
-
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String question;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "question")
-    private List<Answer> answers = new ArrayList<>();
+    private List<Answer> answers;
 
-    public void addAnswer(Answer... addAnswers){
-        for (Answer addAnswer : addAnswers) {
-            answers.add(addAnswer);
-        }
+    public Question(String question, Category category, List<Answer> answers) {
+        this.category = category;
+        this.question = question;
+        this.answers = answers;
     }
-
 }
+

@@ -105,21 +105,25 @@ public class QuestionServiceImpl implements QuestionService {
         Answer answer1 = new Answer();
         answer1.setAnswer(inputAnswer1);
         if("correct_1".equals(answerCorrect))
-            answer1.setIsCorrect(true);
+            answer1.setCorrect(true);
         Answer answer2 = new Answer();
         answer2.setAnswer(inputAnswer2);
         if("correct_2".equals(answerCorrect))
-            answer2.setIsCorrect(true);
+            answer2.setCorrect(true);
         Answer answer3 = new Answer();
         answer3.setAnswer(inputAnswer3);
         if("correct_3".equals(answerCorrect))
-            answer3.setIsCorrect(true);
+            answer3.setCorrect(true);
         Answer answer4 = new Answer();
         answer4.setAnswer(inputAnswer4);
         if("correct_4".equals(answerCorrect))
-            answer4.setIsCorrect(true);
-        question.addAnswer(answer1, answer2, answer3, answer4);
-
+            answer4.setCorrect(true);
+        List<Answer> answers = new ArrayList<>();
+        answers.add(answer1);
+        answers.add(answer2);
+        answers.add(answer3);
+        answers.add(answer4);
+        question.setAnswers(answers);
         questionRepository.save(question);
     }
 
@@ -144,24 +148,24 @@ public class QuestionServiceImpl implements QuestionService {
 
         Answer answer1 = answerRepository.findOne(Long.parseLong(answerId1));
         answer1.setAnswer(inputAnswer1);
-        answer1.setIsCorrect(false);
+        answer1.setCorrect(false);
         if("correct_1".equals(answerCorrect))
-            answer1.setIsCorrect(true);
+            answer1.setCorrect(true);
         Answer answer2 = answerRepository.findOne(Long.parseLong(answerId2));
         answer2.setAnswer(inputAnswer2);
-        answer2.setIsCorrect(false);
+        answer2.setCorrect(false);
         if("correct_2".equals(answerCorrect))
-            answer2.setIsCorrect(true);
+            answer2.setCorrect(true);
         Answer answer3 = answerRepository.findOne(Long.parseLong(answerId3));
         answer3.setAnswer(inputAnswer3);
-        answer3.setIsCorrect(false);
+        answer3.setCorrect(false);
         if("correct_3".equals(answerCorrect))
-            answer3.setIsCorrect(true);
+            answer3.setCorrect(true);
         Answer answer4 = answerRepository.findOne(Long.parseLong(answerId4));
         answer4.setAnswer(inputAnswer4);
-        answer4.setIsCorrect(false);
+        answer4.setCorrect(false);
         if("correct_4".equals(answerCorrect))
-            answer4.setIsCorrect(true);
+            answer4.setCorrect(true);
 
         answerRepository.save(answer1);
         answerRepository.save(answer2);
