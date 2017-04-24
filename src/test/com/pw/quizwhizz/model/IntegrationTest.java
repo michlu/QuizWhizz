@@ -6,15 +6,16 @@ import com.pw.quizwhizz.model.entity.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
+import com.pw.quizwhizz.repository.QuestionRepository;
 import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.impl.QuestionServiceImpl;
 import org.junit.Test;
+import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Karolina on 14.04.2017.
@@ -35,15 +36,12 @@ public class IntegrationTest {
         when(service.get10RandomQuestions(testCategory)).thenReturn(questions);
 
         Game game = new Game(testCategory, questions, gsm);
+        PlayerInGame playerOne = new PlayerInGame("Player 1", game);
 
-        Player player1 = new Player("Player 1");
-        PlayerInGame playerOne = new PlayerInGame(player1, game);
         // Third API call (Player joins)
-        Player player2 = new Player("Player 2");
-        PlayerInGame playerTwo = new PlayerInGame(player2, game);
+        PlayerInGame playerTwo = new PlayerInGame("Player 2", game);
         // Fourth API call (Player joins)
-        Player player3 = new Player("Player 3");
-        PlayerInGame playerThree = new PlayerInGame(player3, game);
+        PlayerInGame playerThree = new PlayerInGame("Player 3", game);
 
         // Fifth API call (Owner starts the game)
         playerOne.startGame();
@@ -68,7 +66,7 @@ public class IntegrationTest {
         assertThat(playerOne.isOwner()).isTrue();
         assertThat(playerTwo.isOwner()).isFalse();
         assertThat(playerThree.isOwner()).isFalse();
-        assertThat(actualWinner).isEqualTo(playerTwo.getPlayer());
+        assertThat(actualWinner).isEqualTo(playerTwo);
         assertThat(actualWinner.getXp()).isEqualTo(6 * 10 + 30); // 6 correct answers and a bonus
     }
 
