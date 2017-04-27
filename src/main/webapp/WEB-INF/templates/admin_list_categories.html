@@ -29,7 +29,7 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container container-padding">
 
         <!-- Panel -->
         <div  class="panel panel-primary">
@@ -68,7 +68,7 @@
                                     <li><a href="#" th:href="@{'/admin/listquestions/'+${category.id}}" >Sprawdź pytania</a></li>
                                     <li><a href="#" th:href="@{'/admin/category/edit/'+${category.id}}">Edytuj Kategorie</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#" th:href="@{'/admin/category/delete/'+${category.id}}">Usuń kategorie</a></li>
+                                    <li><a href="#" th:href="@{'/admin/category/delete/'+${category.id}}" onclick="return confirm('Czy na pewno chcesz usunąć?');">Usuń kategorie</a></li>
                                 </ul>
                                 </form>
                             </div>

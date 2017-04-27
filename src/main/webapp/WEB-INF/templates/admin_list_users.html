@@ -31,10 +31,10 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container container-padding">
 
         <!-- Panel -->
-        <div  class="panel panel-primary">
+        <div  class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Użytkownicy</h3>
             </div>
@@ -42,7 +42,7 @@
 
                 <table class="table table-striped">
                     <thead>
-                    <tr class="success">
+                    <tr class="info">
                         <th>SNO</th>
                         <th>Id</th>
                         <th>Imie</th>
@@ -69,7 +69,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#" th:href="@{'/admin/user/edit/'+${user.id}}">Edytuj dane</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#" th:href="@{'/admin/user/delete/'+${user.id}}">Usuń użytkownika</a></li>
+                                    <li><a href="#" th:href="@{'/admin/user/delete/'+${user.id}}" onclick="return confirm('Czy na pewno chcesz usunąć?');">Usuń użytkownika</a></li>
                                 </ul>
                             </div>
                         </td>

@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -30,6 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findById(id);
     }
 
+    @Override
+    public Category findByName(String categoryName) {
+        return categoryRepository.findByName(categoryName);
+    }
+
     @Transactional
     @Override
     public void deleteById(Long id) {
@@ -39,9 +49,33 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void addCategory(Category category){
         if(category.getUrlImage().equals(null) || category.getUrlImage().equals(""))
-            category.setUrlImage("/resources/images/default.png");
+            category.setUrlImage("/resources/images/category_default.png");
         categoryRepository.save(category);
     }
+
+    @Override
+    public void addCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException {
+
+        String fileNameWithExtension = "category_" + category.getName().toLowerCase().replace(' ', '_') + "." + file.getOriginalFilename().split("\\.")[1];
+        byte[] bytes = file.getBytes();
+        category.setUrlImage("/resources/images/" + fileNameWithExtension);
+        Path path = Paths.get(saveDirectory + fileNameWithExtension);
+        Files.write(path, bytes);
+        categoryRepository.save(category);
+    }
+
+    @Transactional
+    @Modifying
+    @Override
+    public void updateCategoryWithImage(Category updateCategory, MultipartFile file, String saveDirectory) throws IOException {
+        String fileNameWithExtension = "category_" + updateCategory.getName().toLowerCase().replace(' ', '_') + "." + file.getOriginalFilename().split("\\.")[1];
+        byte[] bytes = file.getBytes();
+        updateCategory.setUrlImage("/resources/images/" + fileNameWithExtension);
+        Path path = Paths.get(saveDirectory + fileNameWithExtension);
+        Files.write(path, bytes);
+        categoryRepository.saveAndFlush(updateCategory);
+    }
+
 
     @Transactional
     @Modifying

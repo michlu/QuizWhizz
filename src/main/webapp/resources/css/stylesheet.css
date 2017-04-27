@@ -25,6 +25,14 @@
     transform: rotate(360deg);
 }
 
+.container-padding {
+    padding: 40px 0;
+}
+
+.panel{
+    box-shadow: 10px 10px 32px 2px rgba(0,0,0,0.75);
+}
+
 table {
     text-align: center;
 }

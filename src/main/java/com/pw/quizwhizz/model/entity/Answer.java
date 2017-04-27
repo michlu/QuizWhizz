@@ -30,4 +30,13 @@ public class Answer {
         this.answer = answer;
         this.isCorrect = isCorrect;
     }
+
+    // GET wymagany dla Thymeleafa
+    public boolean getIsCorrect() {
+        return isCorrect;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
 }

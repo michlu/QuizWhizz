@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.controller;
 
-import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.model.account.User;
+import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.RoleService;
@@ -11,8 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class AdminController {
     private CategoryService categoryService;
     private QuestionService questionService;
     private RoleService roleService;
+
 
     @Autowired
     public void setQuestionService(QuestionService questionService) {
@@ -42,6 +46,7 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+
     @GetMapping("/adminadd")
     public String getAddCategoryQuestion(Model model) {
         model.addAttribute("category", new Category());
@@ -49,15 +54,36 @@ public class AdminController {
         return "admin_add";
     }
 
+
     @PostMapping("/addcategory")
-    public String addCategory(@ModelAttribute @Valid Category category, BindingResult bindResult) {
+    public String addCategory(
+            @ModelAttribute @Valid Category category,
+            @RequestParam MultipartFile file,
+            BindingResult bindResult,
+            HttpServletRequest request,
+            Model model) {
+        String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+
         if (bindResult.hasErrors())
+            //TODO HTTP 400
             return "admin_add";
         else {
-            categoryService.addCategory(category);
+            if (!file.isEmpty()) {
+                try {
+                    categoryService.addCategoryWithImage(category, file, saveDirectory);
+                    model.addAttribute("message", "Kategoria została zapisana, z załadowanym obrazem: '" + file.getOriginalFilename() + "'");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                categoryService.addCategory(category);
+                model.addAttribute("message", "Kategoria została zapisana z domyślnym obrazem.");
+            }
             return "redirect:adminadd";
         }
     }
+
 
     @PostMapping(value = "/addquestion", produces = "text/plain;charset=UTF-8")
     public String addQuestion(
@@ -91,10 +117,28 @@ public class AdminController {
     }
 
     @PostMapping("/category/edit")
-    public String postCategoryEdit(@ModelAttribute Category category) {
-        categoryService.updateCategory(category);
-//        categoryService.updateCategoryById(category.getId(), category.getName(), category.getDescription(), category.getUrlImage());
-        return "redirect:/admin/listcategory";
+    public String postCategoryEdit(@ModelAttribute Category category,
+            @RequestParam MultipartFile file,
+            BindingResult bindResult,
+            HttpServletRequest request) {
+        String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+
+        if (bindResult.hasErrors())
+            //TODO HTTP 400
+            return "redirect:/admin/listcategory";
+        else {
+            if (!file.isEmpty()) {
+                try {
+                    categoryService.updateCategoryWithImage(category, file, saveDirectory);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                categoryService.updateCategory(category);
+            }
+            return "redirect:/admin/listcategory";
+        }
     }
 
     @GetMapping("/listquestions/{categoryId}")

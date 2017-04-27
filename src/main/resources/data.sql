@@ -12,12 +12,12 @@ INSERT INTO `user_role` (`user_id`,`role_id`) VALUES
 
 INSERT INTO `category` (`id`,`description`,`category_name`,`urlImage`)
 VALUES
-  (1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Laboratorium','/resources/images/laboratory.png'),
-  (2,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Geografia','/resources/images/geography.png'),
-  (3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Biologia','/resources/images/biology.png'),
-  (4,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Java','/resources/images/java.png'),
-  (5,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Historia','/resources/images/history.png'),
-  (6,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Sport i dieta','/resources/images/sport.png');
+  (1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Laboratorium','/resources/images/category_laboratory.png'),
+  (2,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Geografia','/resources/images/category_geography.png'),
+  (3,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Biologia','/resources/images/category_biology.png'),
+  (4,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Java','/resources/images/category_java.png'),
+  (5,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Historia','/resources/images/category_history.png'),
+  (6,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.','Sport i dieta','/resources/images/category_sport.png');
 
 INSERT INTO `question`
 VALUES

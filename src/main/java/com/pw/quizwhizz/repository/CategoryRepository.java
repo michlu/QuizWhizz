@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findById(Long id);
+    Category findByName(String categoryName);
     void deleteById(Long id);
 
     @Transactional

@@ -34,7 +34,7 @@
 
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container container-padding">
 
 
         <!-- Panel -->
@@ -43,39 +43,49 @@
                 <h3 class="panel-title">Edytuj KATEGORIE</h3>
             </div>
             <div class="panel-body">
+                <div class="col-sm-2">
+                    <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
+                </div>
+                <div class="col-sm-10">
 
-                <form action="#"  th:action="@{/admin/category/edit}" th:object="${category}" method="POST" class="form-horizontal">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="categoryId">Id:</label>
-                        <div class="col-sm-10">
-                            <input th:field="*{id}" name="inputId" type="text" class="form-control" id="categoryId" readonly>
+                    <form action="#" th:action="@{/admin/category/edit}+'?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${category}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="categoryId">Id:</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{id}" name="inputId" type="text" class="form-control" id="categoryId" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="category">Nazwa kategorii:</label>
-                        <div class="col-sm-10">
-                            <input th:field="*{name}" name="inputCategory" type="text" class="form-control" id="category" placeholder="Podaj kategorie" required>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="category">Nazwa kategorii:</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{name}" name="inputCategory" type="text" class="form-control" id="category" placeholder="Podaj kategorie" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="description">Opis:</label>
-                        <div class="col-sm-10">
-                            <textarea th:field="*{description}" name="inputDescription" class="form-control" rows="3" id="description" placeholder="Podaj opisu tematu" maxlength="400" required></textarea>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="description">Opis:</label>
+                            <div class="col-sm-10">
+                                <textarea th:field="*{description}" name="inputDescription" class="form-control" rows="3" id="description" placeholder="Podaj opisu tematu" maxlength="400" required></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="urlImage">Url obrazka:</label>
-                        <div class="col-sm-10">
-                            <input th:field="*{urlImage}" name="inputUrlImage" type="text" class="form-control" id="urlImage" placeholder="/resources/images/">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="urlImage">Url obrazka:</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{urlImage}" name="inputUrlImage" type="text" class="form-control" id="urlImage" placeholder="/resources/images/" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-danger">Zapisz</button>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="uploadImage">Zmień obrazek:</label>
+                            <div class="col-sm-10"><!-- TODO bootstrapowy input plikow -->
+                                <input type="file" name="file" th:name="file" id="uploadImage" size="1" class="custom-file-input" />
+                            </div>
                         </div>
-                    </div>
-                </form>
-
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-danger">Zapisz</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="panel-footer"></div>
         </div>

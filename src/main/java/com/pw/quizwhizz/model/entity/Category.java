@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model.entity;
 
+import com.pw.quizwhizz.annotation.UniqueCategory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,11 +18,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "category_name", nullable = false)
+    @UniqueCategory
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
     @Column(nullable = false)
-    private String urlImage;
+    private String urlImage = "";
 
     public Category(String name) {
         this.name = name;
