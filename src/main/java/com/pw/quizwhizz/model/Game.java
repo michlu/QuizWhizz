@@ -7,7 +7,7 @@ import com.pw.quizwhizz.model.entity.Answer;
 import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.model.entity.Question;
 import lombok.Getter;
-
+import lombok.Setter;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Getter
 public class Game {
+    @Setter
     private long id;
     static final int appropriateNumberOfQuestions = 10;
     private final Category category;

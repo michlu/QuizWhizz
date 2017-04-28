@@ -1,8 +1,9 @@
 package com.pw.quizwhizz.controller;
 
+import com.pw.quizwhizz.model.Game;
 import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.model.entity.Question;
-import com.pw.quizwhizz.model.entity.QuestionInGameEntity;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.QuestionService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -45,10 +45,16 @@ public class GameController {
     }
 
     @GetMapping("/start/{categoryId}")
-    public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) {
+    public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
         List<Question> questions = questionService.get10RandomQuestions(category);
-      //  List<QuestionInGameEntity> questionsInGame = gameService.convertToQuestionsInGame(questions, gameId);
+        Game game = gameService.createGame(category, questions);
+
+
+
+
+
+        //  List<QuestionInGameDTO> questionsInGame = gameService.convertToQuestionsInGame(questions, gameId);
 
 
 
