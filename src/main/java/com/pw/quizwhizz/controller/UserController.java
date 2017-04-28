@@ -3,16 +3,17 @@ package com.pw.quizwhizz.controller;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 
 @Controller
@@ -54,6 +55,55 @@ public class UserController {
 		}
 	}
 
+	@GetMapping("/user/{userId}")
+	public String userProfile(
+			@PathVariable Long userId,
+			Authentication authentication,
+			Model model) {
+		User user = userService.findById(userId);
+		boolean userCheckHimself = false;
+		if(user.getEmail().equals(authentication.getName())){
+			userCheckHimself = true; // czy user sprawdza swoj profil (dodaje opcje edytowania)
+		}
+		model.addAttribute("userCheckHimself", userCheckHimself);
+		model.addAttribute("user", user);
+		return "user_profile";
+	}
 
-	
+	@GetMapping("/user/my")
+	public String userProfileMy(
+			Authentication authentication,
+			Model model) {
+		boolean userCheckHimself = true;
+		model.addAttribute("userCheckHimself", userCheckHimself);
+		model.addAttribute("user", userService.findByEmail(authentication.getName()));
+		return "user_profile";
+	}
+
+	@PostMapping("/user/editme")
+	public String postUserEditMe(
+			@ModelAttribute User user,
+			@RequestParam MultipartFile file,
+			BindingResult bindResult,
+			HttpServletRequest request) {
+		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+
+		if (bindResult.hasErrors())
+			//TODO HTTP 400
+			return "redirect:/user/my";
+		else {
+			if (!file.isEmpty()) {
+				try {
+					userService.updateUserWithImage(user, file, saveDirectory);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else{
+				userService.update(user);
+			}
+			return "redirect:/user/my";
+		}
+	}
+
 }

@@ -10,7 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -91,6 +96,28 @@ public class UserServiceImpl implements UserService {
 		User updateUser = userRepository.findById(user.getId());
 		if(user.getFirstName()!=null)
 		updateUser.setFirstName(user.getFirstName());
+		if(user.getEmail()!=null)
+			updateUser.setEmail(user.getEmail());
+		if(user.getUrlImage()!=null)
+			updateUser.setUrlImage(user.getUrlImage());
+		if(user.getPassword()!=null)
+			updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
+
+		userRepository.save(updateUser);
+	}
+
+	@Transactional
+	@Override
+	public void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException {
+		User updateUser = userRepository.findById(user.getId());
+		String fileNameWithExtension = "profile_" + user.getId() + "." + file.getOriginalFilename().split("\\.")[1];
+		byte[] bytes = file.getBytes();
+		updateUser.setUrlImage("/resources/images/" + fileNameWithExtension);
+		Path path = Paths.get(saveDirectory + fileNameWithExtension);
+		Files.write(path, bytes);
+
+		if(user.getFirstName()!=null)
+			updateUser.setFirstName(user.getFirstName());
 		if(user.getEmail()!=null)
 			updateUser.setEmail(user.getEmail());
 		if(user.getPassword()!=null)
