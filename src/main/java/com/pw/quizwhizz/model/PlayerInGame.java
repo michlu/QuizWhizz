@@ -16,22 +16,21 @@ import java.util.List;
 // Jak rozwiazac kwestie dodania user_id, skoro PlayerInGame dziedziczy z Playera??
 
 @Getter
-public class PlayerInGame {
-    private Player player;
+public class PlayerInGame extends Player {
     private Game game;
     private boolean isOwner;
 
-    public PlayerInGame(Player player, Game game) {
-        this.player = player;
+    public PlayerInGame(String name, Game game) {
+        super(name);
         this.game = game;
 
-        if(game.getPlayers().size() == 0) {
+        if (game.getPlayers().size() == 0) {
             this.isOwner = true;
         } else {
             this.isOwner = false;
         }
 
-        game.addPlayer(this.getPlayer());
+        game.addPlayer(this);
     }
 
     public void startGame() {
@@ -44,6 +43,6 @@ public class PlayerInGame {
             return;
         }
 
-        game.evaluateAnswers(this.getPlayer(), answers);
+        game.evaluateAnswers(this, answers);
     }
 }
