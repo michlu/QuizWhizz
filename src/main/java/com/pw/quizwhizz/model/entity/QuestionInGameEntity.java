@@ -2,7 +2,6 @@ package com.pw.quizwhizz.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
 // QuestionInGameEntity zostanie stworzone i zapisane do bazy po uzyskaniu pytan do konkretnej gry w kontrolerze
@@ -27,4 +26,10 @@ public class QuestionInGameEntity {
     private long gameId;
 
     int sequence;
+
+    public QuestionInGameEntity(Question question, long gameId, int sequence) {
+        this.question = question;
+        this.gameId = gameId;
+        this.sequence = sequence;
+    }
 }

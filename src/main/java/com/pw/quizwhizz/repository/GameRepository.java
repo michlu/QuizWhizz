@@ -1,8 +1,6 @@
 package com.pw.quizwhizz.repository;
 
-
 import com.pw.quizwhizz.model.Game;
-
 import java.util.HashMap;
 
 public interface GameRepository {

@@ -4,19 +4,18 @@ package com.pw.quizwhizz.service.impl;
 import com.pw.quizwhizz.model.Game;
 import com.pw.quizwhizz.model.PlayerInGame;
 import com.pw.quizwhizz.model.account.User;
-import com.pw.quizwhizz.model.entity.GameEntity;
-import com.pw.quizwhizz.model.entity.GameStats;
-import com.pw.quizwhizz.model.entity.PlayerInGameEntity;
-import com.pw.quizwhizz.model.entity.QuestionInGameEntity;
+import com.pw.quizwhizz.model.entity.*;
 import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
-public class GameServiceImpl implements GameService{
+public class GameServiceImpl implements GameService {
 
     GameRepository gameRepository;
     GameEntityRepository gameEntityRepository;
@@ -70,7 +69,6 @@ public class GameServiceImpl implements GameService{
         gameRepository.update(gameId,game);
     }
 
-
 //    public PlayerInGame addPlayerInGame(User user, Game game){
 //        /*
 //        POLACZYC PlayerInGame i PlayerInGameEntity
@@ -97,5 +95,24 @@ public class GameServiceImpl implements GameService{
     @Override
     public GameStats findGameStatsByGameId(Long gameId) {
         return gameStatsRepository.findByGameId(gameId);
+    }
+
+    @Override
+    public List<QuestionInGameEntity> convertToQuestionsInGame(List<Question> questions, Long gameId) {
+        List<QuestionInGameEntity> questionsInGame = new ArrayList<>();
+
+        for (int i = 0; i < questions.size(); i++) {
+            Question q = questions.get(i);
+            QuestionInGameEntity question = new QuestionInGameEntity(q, gameId, i);
+            questionsInGame.add(question);
+        }
+            return questionsInGame;
+    }
+
+    @Override
+    public void saveQuestionsInGame(List<QuestionInGameEntity> questions) {
+        for (QuestionInGameEntity question : questions) {
+            questionInGameRepository.save(question);
+        }
     }
 }

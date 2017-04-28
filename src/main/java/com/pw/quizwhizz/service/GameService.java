@@ -1,12 +1,10 @@
 package com.pw.quizwhizz.service;
 
 import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.model.entity.GameEntity;
-import com.pw.quizwhizz.model.entity.GameStats;
-import com.pw.quizwhizz.model.entity.PlayerInGameEntity;
-import com.pw.quizwhizz.model.entity.QuestionInGameEntity;
+import com.pw.quizwhizz.model.entity.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public interface GameService {
@@ -15,9 +13,14 @@ public interface GameService {
     Game findGameById(Long gameId);
     void deleteGameById(Long gameId);
     void updateGame(Long gameId, Game game);
+    void saveQuestionsInGame(List<QuestionInGameEntity> questions);
 
     GameEntity findGameEntityByGameId(Long gameId);
     PlayerInGameEntity findPlayerInGameEntityByGameId(Long gameId);
     QuestionInGameEntity findQuestionInGameEntityByGameId(Long gameId);
     GameStats findGameStatsByGameId(Long gameId);
+
+    List<QuestionInGameEntity> convertToQuestionsInGame(List<Question> questions, Long gameId);
+
+
 }

@@ -2,6 +2,7 @@ package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.entity.Category;
 import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.entity.QuestionInGameEntity;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.QuestionService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,10 +44,13 @@ public class GameController {
         this.questionService = questionService;
     }
 
-    @GetMapping("/getstarted/{categoryId}")
-    public String getStartedGame(@PathVariable String categoryId, Model model, Authentication authentication) {
+    @GetMapping("/start/{categoryId}")
+    public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) {
         Category category = categoryService.findById(Long.parseLong(categoryId));
-        List<Question> questionList = questionService.get10RandomQuestions(category);
+        List<Question> questions = questionService.get10RandomQuestions(category);
+      //  List<QuestionInGameEntity> questionsInGame = gameService.convertToQuestionsInGame(questions, gameId);
+
+
 
         model.addAttribute("category", category);
         model.addAttribute("user", userService.findByEmail(authentication.getName()));
