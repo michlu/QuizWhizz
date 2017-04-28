@@ -2,93 +2,78 @@ package com.pw.quizwhizz.service.impl;
 
 
 import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.model.PlayerInGame;
-import com.pw.quizwhizz.model.account.User;
+import com.pw.quizwhizz.model.GameState;
 import com.pw.quizwhizz.model.entity.*;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class GameServiceImpl implements GameService {
 
-    GameRepository gameRepository;
-    GameEntityRepository gameEntityRepository;
+    GameDTORepository gameDTORepository;
+    UserRepository userRepository;
     PlayerInGameRepository playerInGameRepository;
     QuestionInGameRepository questionInGameRepository;
     GameStatsRepository gameStatsRepository;
 
     @Autowired
-    public void setGameRepository(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
-    }
-    @Autowired
-    public void setGameEntityRepository(GameEntityRepository gameEntityRepository) {
-        this.gameEntityRepository = gameEntityRepository;
-    }
-    @Autowired
-    public void setPlayerInGameRepository(PlayerInGameRepository playerInGameRepository) {
+    public void GameServiceImpl(GameDTORepository gameEntityRepository,
+                                UserRepository userRepository,
+                                PlayerInGameRepository playerInGameRepository,
+                                QuestionInGameRepository questionInGameRepository,
+                                GameStatsRepository gameStatsRepository) {
+        this.gameDTORepository = gameEntityRepository;
+        this.userRepository = userRepository;
         this.playerInGameRepository = playerInGameRepository;
-    }
-    @Autowired
-    public void setQuestionInGameRepository(QuestionInGameRepository questionInGameRepository) {
         this.questionInGameRepository = questionInGameRepository;
-    }
-    @Autowired
-    public void setGameStatsRepository(GameStatsRepository gameStatsRepository) {
         this.gameStatsRepository = gameStatsRepository;
     }
 
     @Override
-    public HashMap<Long, Game> findAllGames() {
-        return gameRepository.findAll();
+    public List<GameDTO> findAll() {
+        return gameDTORepository.findAll();
     }
 
     @Override
-    public void addGame(Game game) {
-        gameRepository.create(game);
+    public GameDTO findGameById(Long gameId) {
+        return gameDTORepository.findById(gameId);
     }
 
     @Override
-    public Game findGameById(Long gameId) {
-        return gameRepository.read(gameId);
+    public void deleteGameById(Long id) {
+        gameDTORepository.delete(id);
     }
 
     @Override
-    public void deleteGameById(Long gameId) {
-        gameRepository.delete(gameId);
+    public Game createGame(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
+        Game game = new Game(category, questions);
+
+        GameDTO gameDTO = new GameDTO();
+        gameDTO.setCategory(game.getCategory());
+        gameDTO.setCurrentState(GameState.OPEN);
+        gameDTORepository.save(gameDTO);
+
+        game.setId(gameDTO.getId());
+
+        // TODO: ma zwracac Game czy void? Co z ID pytan i playera w grze?
+
+        return game;
     }
 
-    @Override
-    public void updateGame(Long gameId, Game game) {
-        gameRepository.update(gameId,game);
-    }
-
-//    public PlayerInGame addPlayerInGame(User user, Game game){
-//        /*
-//        POLACZYC PlayerInGame i PlayerInGameEntity
-//        zapisac informacje do repozytorium
-//         */
-//        return new PlayerInGame(user, gameRepository.read(game.getId()));
-//    }
 
     @Override
-    public GameEntity findGameEntityByGameId(Long gameId) {
-        return gameEntityRepository.findByGameId(gameId);
-    }
-
-    @Override
-    public PlayerInGameEntity findPlayerInGameEntityByGameId(Long gameId) {
+    public PlayerInGameDTO findPlayerInGameByGameId(Long gameId) {
         return playerInGameRepository.findByGameId(gameId);
     }
 
     @Override
-    public QuestionInGameEntity findQuestionInGameEntityByGameId(Long gameId) {
+    public QuestionInGameDTO findQuestionInGameByGameId(Long gameId) {
         return questionInGameRepository.findByGameId(gameId);
     }
 
@@ -98,21 +83,49 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<QuestionInGameEntity> convertToQuestionsInGame(List<Question> questions, Long gameId) {
-        List<QuestionInGameEntity> questionsInGame = new ArrayList<>();
+    public List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId) {
+        List<QuestionInGameDTO> questionsInGame = new ArrayList<>();
 
         for (int i = 0; i < questions.size(); i++) {
             Question q = questions.get(i);
-            QuestionInGameEntity question = new QuestionInGameEntity(q, gameId, i);
+            QuestionInGameDTO question = new QuestionInGameDTO(q, gameId, i);
             questionsInGame.add(question);
         }
             return questionsInGame;
     }
 
     @Override
-    public void saveQuestionsInGame(List<QuestionInGameEntity> questions) {
-        for (QuestionInGameEntity question : questions) {
+    public void saveQuestionsInGame(List<QuestionInGameDTO> questions) {
+        for (QuestionInGameDTO question : questions) {
             questionInGameRepository.save(question);
         }
     }
+//
+//    @Override
+//    public HashMap<Long, Game> findAllGames() {
+//        return gameRepository.findAll();
+//    }
+//
+//    @Override
+//    public void addGame(Game game) {
+//        gameRepository.create(game);
+//    }
+//
+//    @Override
+//    public Game findGameById(Long gameId) {
+//        return gameRepository.read(gameId);
+//    }
+
+//    @Override
+//    public void updateGame(Long gameId, Game game) {
+//        gameRepository.update(gameId,game);
+//    }
+
+//    public PlayerInGame addPlayerInGame(User user, Game game){
+//        /*
+//        POLACZYC PlayerInGame i PlayerInGameDTO
+//        zapisac informacje do repozytorium
+//         */
+//        return new PlayerInGame(user, gameRepository.read(game.getId()));
+//    }
 }
