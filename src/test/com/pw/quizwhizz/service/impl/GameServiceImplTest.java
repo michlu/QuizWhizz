@@ -1,17 +1,13 @@
 package com.pw.quizwhizz.service.impl;
 
 import com.pw.quizwhizz.model.entity.Question;
-import com.pw.quizwhizz.model.entity.QuestionInGameEntity;
-import com.pw.quizwhizz.repository.GameRepository;
+import com.pw.quizwhizz.model.entity.QuestionInGameDTO;
 import com.pw.quizwhizz.service.GameService;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -20,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class GameServiceImplTest {
 
     private GameService gameService = new GameServiceImpl();
-    private List<QuestionInGameEntity> questionsInGame;
+    private List<QuestionInGameDTO> questionsInGame;
 
 
     @Test

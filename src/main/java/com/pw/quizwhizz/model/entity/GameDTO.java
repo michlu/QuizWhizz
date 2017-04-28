@@ -9,13 +9,12 @@ import java.time.Instant;
 @Entity
 @Data
 @Table(name = "game")
-public class GameEntity {
+public class GameDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "game_id")
-    private Long gameId;
+    // Game_id niepotrzebne: gra dostanie id z GameDTO po zapisaniu do bazy
 
     @OneToOne
     @JoinColumn(name = "category_id")
@@ -28,6 +27,6 @@ public class GameEntity {
     // Domyslnie mapuje na DATETIME !! sprawdzic czy to odpowiedni format
     @Column(name = "start_time")
     Instant startTime;          // podobnie: po startcie wycigniemy z GSM
-                                // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameEntity
+                                // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameDTO
 
 }
