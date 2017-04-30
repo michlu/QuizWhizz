@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
@@ -97,6 +98,14 @@ public class UserServiceImpl implements UserService {
 			updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		userRepository.save(updateUser);
+	}
+
+	@Override
+	public Player convertToPlayer(User user) {
+		Player player = new Player();
+		player.setName(user.getFirstName());
+		player.setId(user.getId());
+		return player;
 	}
 
 	/**
