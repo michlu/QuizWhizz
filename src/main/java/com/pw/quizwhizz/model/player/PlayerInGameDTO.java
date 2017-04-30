@@ -1,6 +1,5 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.player;
 
-import com.pw.quizwhizz.model.Player;
 import com.pw.quizwhizz.model.account.User;
 import lombok.Data;
 

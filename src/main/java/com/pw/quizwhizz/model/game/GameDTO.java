@@ -1,7 +1,6 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.model.GameState;
-import lombok.Builder;
+import com.pw.quizwhizz.model.category.Category;
 import lombok.Data;
 
 import javax.persistence.*;

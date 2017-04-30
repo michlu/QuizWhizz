@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.repository;
 
-import com.pw.quizwhizz.model.entity.PlayerInGameDTO;
+import com.pw.quizwhizz.model.player.PlayerInGameDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

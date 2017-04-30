@@ -1,5 +1,6 @@
-package com.pw.quizwhizz.model.game;
+package com.pw.quizwhizz.model;
 
+import com.pw.quizwhizz.model.game.GameState;
 import lombok.Getter;
 
 import java.time.Clock;

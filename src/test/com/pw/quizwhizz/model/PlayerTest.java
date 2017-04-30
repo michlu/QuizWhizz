@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model;
 
+import com.pw.quizwhizz.model.player.Player;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 

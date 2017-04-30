@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.category;
 
 import com.pw.quizwhizz.annotation.UniqueCategory;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
-import com.pw.quizwhizz.model.entity.Answer;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.answer.Answer;
 import com.pw.quizwhizz.repository.AnswerRepository;
 import com.pw.quizwhizz.repository.CategoryRepository;
 import com.pw.quizwhizz.repository.QuestionRepository;

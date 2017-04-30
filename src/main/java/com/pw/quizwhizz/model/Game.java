@@ -1,13 +1,12 @@
-package com.pw.quizwhizz.model.game;
+package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.Player;
-import com.pw.quizwhizz.model.Score;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.model.entity.Answer;
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.player.Player;
+import com.pw.quizwhizz.model.question.Question;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.Clock;

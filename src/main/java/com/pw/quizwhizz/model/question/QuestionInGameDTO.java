@@ -1,5 +1,6 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.question;
 
+import com.pw.quizwhizz.model.question.Question;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;

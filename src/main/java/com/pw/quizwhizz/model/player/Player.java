@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model;
+package com.pw.quizwhizz.model.player;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,11 +40,11 @@ public class Player {
         this.name = name;
     }
 
-    void addXp(int xp) {
+    public void addXp(int xp) {
         this.xp += xp;
     }
 
-    protected void incrementGamesPlayed() {
+    public void incrementGamesPlayed() {
         this.gamesPlayed += 1;
     }
 }

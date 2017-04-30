@@ -1,10 +1,10 @@
 package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.entity.Answer;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.category.Category;
 import org.junit.Test;
 import java.util.List;
 import static org.assertj.core.api.Assertions.*;

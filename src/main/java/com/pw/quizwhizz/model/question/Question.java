@@ -1,5 +1,7 @@
-package com.pw.quizwhizz.model.entity;
+package com.pw.quizwhizz.model.question;
 
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.category.Category;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
