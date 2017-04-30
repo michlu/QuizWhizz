@@ -2,32 +2,36 @@ package com.pw.quizwhizz.service.impl;
 
 
 import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.model.GameFactory;
-import com.pw.quizwhizz.model.entity.*;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.player.PlayerInGameDTO;
+import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.repository.*;
-import com.pw.quizwhizz.service.GameService;
+import com.pw.quizwhizz.service.GameDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class GameServiceImpl implements GameService {
+public class GameDTOServiceImpl implements GameDTOService {
     private final GameDTORepository gameDTORepository;
     private final PlayerInGameRepository playerInGameRepository;
     private final GameStatsRepository gameStatsRepository;
     private final GameFactory gameFactory;
+    private final GameDTOBuilder builder;
 
     @Autowired
-    public GameServiceImpl(GameDTORepository gameDTORepository,
-                           PlayerInGameRepository playerInGameRepository,
-                           GameStatsRepository gameStatsRepository,
-                           GameFactory gameFactory) {
+    public GameDTOServiceImpl(GameDTORepository gameDTORepository,
+                              PlayerInGameRepository playerInGameRepository,
+                              GameStatsRepository gameStatsRepository,
+                              GameFactory gameFactory, GameDTOBuilder builder) {
         this.gameDTORepository = gameDTORepository;
         this.playerInGameRepository = playerInGameRepository;
         this.gameStatsRepository = gameStatsRepository;
         this.gameFactory = gameFactory;
+        this.builder = builder;
     }
 
     @Override
@@ -48,23 +52,19 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game createGameWithId(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
         Game game = gameFactory.build(category, questions);
-        GameDTO gameDTO = GameDTO.builder()
-                .category(game.getCategory())
-                .currentState(game.getGameStateMachine().getCurrentState())
-                .build();
-
+        GameDTO gameDTO = convertToGameDTO(game);
         gameDTORepository.save(gameDTO);
         game.setId(gameDTO.getId());
         return game;
     }
 
-    protected GameDTO saveAsGameDTO(Game game) {
-        GameDTO gameDTO = GameDTO.builder()
-                .category(game.getCategory())
-                .currentState(game.getGameStateMachine().getCurrentState())
+    @Override
+    public GameDTO convertToGameDTO(Game game) {
+        Category category = game.getCategory();
+        GameState currentState = game.getGameStateMachine().getCurrentState();
+        GameDTO gameDTO = builder.withCategory(category)
+                .withCurrentState(currentState)
                 .build();
-
-        gameDTORepository.save(gameDTO);
         return gameDTO;
     }
 
