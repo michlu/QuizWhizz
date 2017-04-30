@@ -12,6 +12,7 @@ import com.pw.quizwhizz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class GameController {
     private QuestionInGameService questionInGameService;
 
     @GetMapping("/start/{categoryId}")
-    public String createGame(@PathVariable String categoryId, ModelAndView modelAndView, Authentication authentication) throws IllegalNumberOfQuestionsException {
+    public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
         List<Question> randomQuestions = questionService.get10RandomQuestions(category);
 
@@ -47,12 +48,12 @@ public class GameController {
         User currentUser = userService.findByEmail(authentication.getName());
         Player currentPlayer = userService.convertToPlayer(currentUser);
         PlayerInGame player = playerInGameService.convertToPlayerInGame(currentPlayer, game);
+        
 
 
-
-
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("player", player);
+        model.addAttribute ("category", category);
+        model.addAttribute("player", player);
+        model.addAttribute("game", game);
         /*
             Przygotowanie gry
          */
