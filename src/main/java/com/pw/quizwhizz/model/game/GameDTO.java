@@ -1,13 +1,14 @@
 package com.pw.quizwhizz.model.entity;
 
 import com.pw.quizwhizz.model.GameState;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.time.Instant;
 
-@Entity
 @Data
+@Entity
 @Table(name = "game")
 public class GameDTO {
     @Id

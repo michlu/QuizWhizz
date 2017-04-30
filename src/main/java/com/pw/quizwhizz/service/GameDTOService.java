@@ -14,16 +14,16 @@ public interface GameService {
     // void updateGame(Long gameId, Game game);
 
     List<GameDTO> findAll();
-    Game createGame(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException;
+    Game createGameWithId(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException;
     void deleteGameById(Long gameId);
-    void saveQuestionsInGame(List<QuestionInGameDTO> questions);
+   // void saveQuestionsInGame(List<QuestionInGameDTO> questions);
     GameDTO findGameById(Long id);
 
     PlayerInGameDTO findPlayerInGameByGameId(Long gameId);
-    QuestionInGameDTO findQuestionInGameByGameId(Long gameId);
+  //  QuestionInGameDTO findQuestionInGameByGameId(Long gameId);
     GameStats findGameStatsByGameId(Long gameId);
 
-    List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId);
+    //List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId);
 
 
 }

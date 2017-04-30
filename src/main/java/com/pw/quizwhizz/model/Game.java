@@ -1,5 +1,7 @@
-package com.pw.quizwhizz.model;
+package com.pw.quizwhizz.model.game;
 
+import com.pw.quizwhizz.model.Player;
+import com.pw.quizwhizz.model.Score;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;

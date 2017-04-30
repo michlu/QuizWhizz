@@ -2,6 +2,8 @@ package com.pw.quizwhizz.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -15,12 +17,18 @@ import javax.persistence.Transient;
 // Do tabeli Usera dojda tylko informacje o XP i gamesPlayed
 
 @Getter
+@NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable
 public class Player {
 
     @Transient
-    private final String name;
+    @Setter
+    private String name;
+
+    @Transient
+    @Setter
+    private long id;
 
     @Column(name = "player_xp")
     private int xp;

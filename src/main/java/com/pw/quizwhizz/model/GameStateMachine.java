@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.model;
+package com.pw.quizwhizz.model.game;
 
 import lombok.Getter;
 
