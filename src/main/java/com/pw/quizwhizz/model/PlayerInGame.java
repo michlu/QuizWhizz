@@ -22,7 +22,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class PlayerInGame extends Player {
-    private long id;
     private Game game;
     private boolean isOwner;
 

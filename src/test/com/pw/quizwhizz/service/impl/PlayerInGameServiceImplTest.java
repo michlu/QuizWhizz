@@ -4,6 +4,7 @@ import com.pw.quizwhizz.model.Game;
 import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.PlayerInGame;
 import com.pw.quizwhizz.repository.PlayerInGameRepository;
+import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.service.PlayerInGameService;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +19,13 @@ import static org.mockito.Mockito.mock;
 public class PlayerInGameServiceImplTest {
     @Mock
     private PlayerInGameRepository repository;
+    @Mock
+    private UserRepository userRepository;
     private PlayerInGameService service;
 
     @Before
     public void setup() {
-        service = new PlayerInGameServiceImpl(repository);
+        service = new PlayerInGameServiceImpl(repository, userRepository);
     }
 
     @Test

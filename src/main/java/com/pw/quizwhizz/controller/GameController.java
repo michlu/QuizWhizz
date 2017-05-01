@@ -5,6 +5,7 @@ import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.PlayerInGame;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.player.PlayerInGameDTO;
 import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.question.QuestionInGameDTO;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
@@ -40,29 +41,23 @@ public class GameController {
     @GetMapping("/start/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
-        List<Question> randomQuestions = questionService.get10RandomQuestions(category);
+        List<Question> questions = questionService.get10RandomQuestions(category);
 
-        Game game = gameService.createGameWithId(category, randomQuestions);
-        List<QuestionInGameDTO> questions = questionInGameService.convertToQuestionsInGame(randomQuestions, game.getId());
+        Game game = gameService.createGameWithId(category, questions);
+        List<QuestionInGameDTO> questionsInGame = questionInGameService.convertToQuestionsInGame(questions, game.getId());
 
         User currentUser = userService.findByEmail(authentication.getName());
         Player currentPlayer = userService.convertToPlayer(currentUser);
         PlayerInGame player = playerInGameService.convertToPlayerInGame(currentPlayer, game);
-        
+        PlayerInGameDTO playerInGameDTO = playerInGameService.convertToPlayerInGameDTO(player);
 
+        playerInGameService.savePlayerInGameDTO(playerInGameDTO);
+        questionInGameService.saveQuestionsInGame(questionsInGame);
 
         model.addAttribute ("category", category);
-        model.addAttribute("player", player);
         model.addAttribute("game", game);
-        /*
-            Przygotowanie gry
-         */
-//        model.addAttribute("game",
-//                gameService.addGame(
-//                        new Game(category,
-//                                questionList,
-//                                gsm
-//                        )));
+        model.addAttribute("player", player);
+        model.addAttribute("questions", questions);
 
         return "redirect:/game/game_open";
     }
