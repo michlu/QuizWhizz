@@ -61,11 +61,11 @@ public class GameController {
 
         return "/ongoing_game";
 
-      //  return "redirect:/game/play/" + game.getId();
+         // return "redirect:/game/play/" + game.getId();
     }
 
     @GetMapping("/game/play/{gameId}")
-    public String startGame(@RequestParam String gameId, Model model) {
+    public String startGame(@PathVariable String gameId, Model model) {
         model.addAttribute("gameId", Long.parseLong(gameId));
 
         return "ongoing_game";
