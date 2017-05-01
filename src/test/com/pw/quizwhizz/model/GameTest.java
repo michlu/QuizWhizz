@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.pw.quizwhizz.model.entity.Answer;
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.player.Player;
+import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;

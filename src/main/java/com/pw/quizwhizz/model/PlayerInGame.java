@@ -1,8 +1,11 @@
 package com.pw.quizwhizz.model;
 
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
-import com.pw.quizwhizz.model.entity.Answer;
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.player.Player;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -16,6 +19,8 @@ import java.util.List;
 // Jak rozwiazac kwestie dodania user_id, skoro PlayerInGame dziedziczy z Playera??
 
 @Getter
+@Setter
+@NoArgsConstructor
 public class PlayerInGame extends Player {
     private Game game;
     private boolean isOwner;

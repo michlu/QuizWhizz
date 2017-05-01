@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.entity.Question;
-import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.category.Category;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import java.util.List;

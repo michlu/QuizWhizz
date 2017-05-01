@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.repository;
 
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.question.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -78,7 +78,7 @@ public class JpaConfig {
     }
 
     /**
-     * Manager springa do zarzadzania tranzakcjami
+     * Manager springa do zarzadzania transakcjami
      * @param entityManagerFactory
      */
     @Bean

@@ -1,10 +1,10 @@
 package com.pw.quizwhizz.repository;
 
-import com.pw.quizwhizz.model.game.GameStats;
+import com.pw.quizwhizz.model.game.GameDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GameStatsRepository extends JpaRepository<GameStats, Long> {
-    GameStats findByGameId(Long gameId);
+public interface GameDTORepository extends JpaRepository<GameDTO, Long> {
+    GameDTO findById(Long id);
 }

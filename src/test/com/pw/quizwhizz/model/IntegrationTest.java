@@ -1,16 +1,16 @@
 package com.pw.quizwhizz.model;
 
-import com.pw.quizwhizz.model.entity.Answer;
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
+import com.pw.quizwhizz.model.answer.Answer;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.player.Player;
+import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.repository.QuestionRepository;
 import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.impl.QuestionServiceImpl;
 import org.junit.Test;
-import org.mockito.Mockito;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.account.User;
-import com.pw.quizwhizz.model.entity.Category;
+import com.pw.quizwhizz.model.category.Category;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.RoleService;

@@ -1,11 +1,14 @@
 package com.pw.quizwhizz.controller;
 
-import com.pw.quizwhizz.model.entity.Category;
-import com.pw.quizwhizz.model.entity.Question;
-import com.pw.quizwhizz.service.CategoryService;
-import com.pw.quizwhizz.service.GameService;
-import com.pw.quizwhizz.service.QuestionService;
-import com.pw.quizwhizz.service.UserService;
+import com.pw.quizwhizz.model.Game;
+import com.pw.quizwhizz.model.player.Player;
+import com.pw.quizwhizz.model.PlayerInGame;
+import com.pw.quizwhizz.model.account.User;
+import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.question.QuestionInGameDTO;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -20,35 +24,36 @@ import java.util.List;
 @RequestMapping("/game")
 public class GameController {
 
-    private GameService gameService;
+    @Autowired
+    private GameDTOService gameService;
+    @Autowired
     private UserService userService;
+    @Autowired
     private CategoryService categoryService;
+    @Autowired
     private QuestionService questionService;
+    @Autowired
+    private PlayerInGameService playerInGameService;
+    @Autowired
+    private QuestionInGameService questionInGameService;
 
-    @Autowired
-    public void setGameService(GameService gameService) {
-        this.gameService = gameService;
-    }
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-    @Autowired
-    public void setQuestionService(QuestionService questionService) {
-        this.questionService = questionService;
-    }
-
-    @GetMapping("/getstarted/{categoryId}")
-    public String getStartedGame(@PathVariable String categoryId, Model model, Authentication authentication) {
+    @GetMapping("/start/{categoryId}")
+    public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
-        List<Question> questionList = questionService.get10RandomQuestions(category);
+        List<Question> randomQuestions = questionService.get10RandomQuestions(category);
 
-        model.addAttribute("category", category);
-        model.addAttribute("user", userService.findByEmail(authentication.getName()));
+        Game game = gameService.createGameWithId(category, randomQuestions);
+        List<QuestionInGameDTO> questions = questionInGameService.convertToQuestionsInGame(randomQuestions, game.getId());
+
+        User currentUser = userService.findByEmail(authentication.getName());
+        Player currentPlayer = userService.convertToPlayer(currentUser);
+        PlayerInGame player = playerInGameService.convertToPlayerInGame(currentPlayer, game);
+        
+
+
+        model.addAttribute ("category", category);
+        model.addAttribute("player", player);
+        model.addAttribute("game", game);
         /*
             Przygotowanie gry
          */
