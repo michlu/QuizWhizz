@@ -1,13 +1,15 @@
 insert into role(id, role) VALUES (null,"ROLE_USER"), (null, "ROLE_ADMIN");
 
-INSERT INTO `user` (`id`,`user_email`,`first_name`,`password`,`date_registration`)
+INSERT INTO `user` (`id`,`user_email`,`first_name`,`password`,`date_registration`, `url_image`)
 VALUES
-  (1,'michlu@o2.pl','Nowin','$2a$10$nWPT.sl.oljfWR5zu.BSwuOw67CsDM2XqjQ8P0rhjpXUr1MgEWf62','2017-04-10'),
-  (2,'asd@asd.pl','User','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-14');
+  (1,'michlu@o2.pl','Games Josling','$2a$10$nWPT.sl.oljfWR5zu.BSwuOw67CsDM2XqjQ8P0rhjpXUr1MgEWf62','2017-04-10', '/resources/images/profile_1.png'),
+  (2,'asd@asd.pl','Tonald Drump','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-14', '/resources/images/profile_2.png'),
+  (3,'dsa@dsa.pl','User','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-19', '/resources/images/profile_default.png');
 
 INSERT INTO `user_role` (`user_id`,`role_id`) VALUES
   (1,1),
   (2,1),
+  (3,1),
   (1,2);
 
 INSERT INTO `category` (`id`,`description`,`category_name`,`urlImage`)

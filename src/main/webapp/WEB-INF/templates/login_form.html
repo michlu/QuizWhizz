@@ -49,14 +49,20 @@
 
         <div class="form-group">
             <label class="control-label" for="inputLogin">Email</label>
-            <input name="username" class="form-control" data-error="Please enter email field." id="inputLogin" placeholder="Podaj email"  type="text" required />
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                <input name="username" class="form-control" data-error="Please enter email field." id="inputLogin" placeholder="Podaj email"  type="text" required />
+            </div>
             <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group">
             <label for="inputPassword" class="control-label">Hasło</label>
             <div class="form-group">
-                <input name="password" type="password" data-minlength="5" class="form-control" id="inputPassword" data-error="must enter minimum of 5 characters" placeholder="Podaj hasło" required>
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                    <input name="password" type="password" data-minlength="5" class="form-control" id="inputPassword" data-error="must enter minimum of 5 characters" placeholder="Podaj hasło" required>
+                </div>
                 <div class="help-block with-errors"></div>
             </div>
         </div>

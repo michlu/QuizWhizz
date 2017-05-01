@@ -43,6 +43,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr class="info">
+                        <th></th>
                         <th>SNO</th>
                         <th>Id</th>
                         <th>Imie</th>
@@ -54,6 +55,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="user, iterationStatus : ${users}">
+                        <td><img src="#" th:src="@{${user.urlImage}}" class="img-circle" width="50"></td>
                         <td th:text="${iterationStatus.count}">1</td>
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.firstName}"></td>

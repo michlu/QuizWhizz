@@ -49,6 +49,10 @@ public class User {
 			inverseJoinColumns = { @JoinColumn(name = "role_id")})
 	private Set<Role> roles = new HashSet<>();
 
+	@Column(name = "url_image", nullable = false)
+	private String urlImage = "/resources/images/profile_default.png";
+
+
 	public void addRole(Role role) {
 		if(! roles.contains(role))
 			roles.add(role);
