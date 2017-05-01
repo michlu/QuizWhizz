@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -38,7 +36,9 @@ public class GameController {
     @Autowired
     private QuestionInGameService questionInGameService;
 
-    @GetMapping("/start/{categoryId}")
+    // TODO: Handle IllegalNumberOfQuestionsException
+
+    @GetMapping ("/start/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
         List<Question> questions = questionService.get10RandomQuestions(category);
@@ -59,7 +59,15 @@ public class GameController {
         model.addAttribute("player", player);
         model.addAttribute("questions", questions);
 
-        return "redirect:/game/game_open";
+        return "/ongoing_game";
+
+      //  return "redirect:/game/play/" + game.getId();
     }
 
+    @GetMapping("/game/play/{gameId}")
+    public String startGame(@RequestParam String gameId, Model model) {
+        model.addAttribute("gameId", Long.parseLong(gameId));
+
+        return "ongoing_game";
+    }
 }
