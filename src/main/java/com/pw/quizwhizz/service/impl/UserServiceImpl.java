@@ -21,7 +21,8 @@ import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements UserService {
+public class
+UserServiceImpl implements UserService {
 
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
@@ -129,9 +130,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Player convertToPlayer(User user) {
-		Player player = new Player();
-		player.setName(user.getFirstName());
-		player.setId(user.getId());
+		Player player;
+		if(user.getPlayer() == null) {
+			player = new Player(user.getFirstName());
+			player.setId(user.getId());
+		} else {
+			player = user.getPlayer();
+		}
 		return player;
 	}
 

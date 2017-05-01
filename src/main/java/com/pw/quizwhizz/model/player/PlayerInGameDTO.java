@@ -18,14 +18,14 @@ public class PlayerInGameDTO {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Transient
-    private Player player;
-
     @Column(name = "game_id")
-    private Long gameId;
+    private long gameId;
 
     @Column(name = "owner")
     private boolean isOwner;
+
+    @Transient
+    private Player player;
 
     public Player getPlayer() {
         if(player==null)

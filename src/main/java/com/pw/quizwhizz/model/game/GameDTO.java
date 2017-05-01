@@ -2,12 +2,14 @@ package com.pw.quizwhizz.model.game;
 
 import com.pw.quizwhizz.model.category.Category;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.Instant;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "game")
 public class GameDTO {
     @Id
@@ -15,7 +17,6 @@ public class GameDTO {
     Long id;
 
     // Game_id niepotrzebne: gra dostanie id z GameDTO po zapisaniu do bazy
-
     @OneToOne
     @JoinColumn(name = "category_id")
     Category category;
@@ -27,6 +28,12 @@ public class GameDTO {
     // Domyslnie mapuje na DATETIME !! sprawdzic czy to odpowiedni format
     @Column(name = "start_time")
     Instant startTime;          // podobnie: po startcie wycigniemy z GSM
-                                // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameDTO
+
+    public GameDTO(GameDTOBuilder builder) {
+        this.category = builder.getCategory();
+        this.currentState = builder.getGameState();
+        this.startTime = builder.getStartTime();
+    }
+    // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameDTO
 
 }
