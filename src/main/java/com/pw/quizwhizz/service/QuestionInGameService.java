@@ -10,8 +10,10 @@ import java.util.List;
  */
 public interface QuestionInGameService {
 
+    QuestionInGameDTO findByGameId(Long gameId);
     List<QuestionInGameDTO> findAll();
-    QuestionInGameDTO findQuestionInGameByGameId(Long gameId);
+    List <QuestionInGameDTO> findQuestionsInGameByGameId(Long gameId);
     List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId);
+    List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame);
     void saveQuestionsInGame(List<QuestionInGameDTO> questions);
 }

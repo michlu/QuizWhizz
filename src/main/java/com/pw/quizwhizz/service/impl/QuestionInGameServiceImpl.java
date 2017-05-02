@@ -22,13 +22,18 @@ public class QuestionInGameServiceImpl implements QuestionInGameService {
 
 
     @Override
+    public QuestionInGameDTO findByGameId(Long gameId) {
+        return questionInGameRepository.findByGameId(gameId);
+    }
+
+    @Override
     public List<QuestionInGameDTO> findAll() {
         return questionInGameRepository.findAll();
     }
 
     @Override
-    public QuestionInGameDTO findQuestionInGameByGameId(Long gameId) {
-        return questionInGameRepository.findByGameId(gameId);
+    public List <QuestionInGameDTO> findQuestionsInGameByGameId(Long gameId) {
+        return questionInGameRepository.findAllByGameId(gameId);
     }
 
     @Override
@@ -41,6 +46,17 @@ public class QuestionInGameServiceImpl implements QuestionInGameService {
             questionsInGame.add(question);
         }
         return questionsInGame;
+    }
+
+    @Override
+    public List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
+        List<Question> questions = new ArrayList<>();
+
+        for (int i = 0; i < questionsInGame.size(); i++) {
+            Question question = questionsInGame.get(i).getQuestion();
+            questions.add(question);
+        }
+        return questions;
     }
 
     @Override

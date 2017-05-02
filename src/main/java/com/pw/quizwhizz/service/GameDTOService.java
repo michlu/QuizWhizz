@@ -21,7 +21,8 @@ public interface GameDTOService {
     Game createGameWithId(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException;
     void deleteGameById(Long gameId);
    // void saveQuestionsInGame(List<QuestionInGameDTO> questions);
-    GameDTO findGameById(Long id);
+    GameDTO findById(Long id);
+    Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
 
     PlayerInGameDTO findPlayerInGameByGameId(Long gameId);
   //  QuestionInGameDTO findQuestionInGameByGameId(Long gameId);

@@ -38,11 +38,12 @@
     </div>
 
     <div class="progress">
-        <div class="progress-bar" role="progressbar" th:attr="aria-valuenow=${iterationStatus.count * 10}" aria-valuemin="0" aria-valuemax="100" th:style="'width:' + ${iterationStatus.count * 10} + '%'" th:text="${iterationStatus.count * 10 + '%'}"></div>
+        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" th:attr="aria-valuenow=${iterationStatus.count * 10}" aria-valuemin="0" aria-valuemax="100" th:style="'width:' + ${iterationStatus.count * 10} + '%'" th:text="${iterationStatus.count * 10 + '%'}">
+        </div>
 </div>
 
     <div class="container">
-        <h1 class="lead text-center" th:text="${questions.get(iterationStatus.index).getQuestion()}"></h1>
+        <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1>
     </div>
 </div>
 

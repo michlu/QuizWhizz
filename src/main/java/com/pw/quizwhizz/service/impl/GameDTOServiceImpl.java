@@ -7,17 +7,21 @@ import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.player.PlayerInGameDTO;
 import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.question.QuestionInGameDTO;
 import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.service.GameDTOService;
+import com.pw.quizwhizz.service.QuestionInGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
 public class GameDTOServiceImpl implements GameDTOService {
     private final GameDTORepository gameDTORepository;
     private final PlayerInGameRepository playerInGameRepository;
+    private final QuestionInGameService questionInGameService;
     private final GameStatsRepository gameStatsRepository;
     private final GameFactory gameFactory;
     private final GameDTOBuilder builder;
@@ -25,10 +29,11 @@ public class GameDTOServiceImpl implements GameDTOService {
     @Autowired
     public GameDTOServiceImpl(GameDTORepository gameDTORepository,
                               PlayerInGameRepository playerInGameRepository,
-                              GameStatsRepository gameStatsRepository,
+                              QuestionInGameService questionInGameService, GameStatsRepository gameStatsRepository,
                               GameFactory gameFactory, GameDTOBuilder builder) {
         this.gameDTORepository = gameDTORepository;
         this.playerInGameRepository = playerInGameRepository;
+        this.questionInGameService = questionInGameService;
         this.gameStatsRepository = gameStatsRepository;
         this.gameFactory = gameFactory;
         this.builder = builder;
@@ -40,8 +45,18 @@ public class GameDTOServiceImpl implements GameDTOService {
     }
 
     @Override
-    public GameDTO findGameById(Long gameId) {
+    public GameDTO findById(Long gameId) {
         return gameDTORepository.findById(gameId);
+    }
+
+    @Override
+    public Game findGameById(Long id) throws IllegalNumberOfQuestionsException {
+        GameDTO gameDTO = findById(id);
+        Category category = gameDTO.getCategory();
+        List<QuestionInGameDTO> questionsInGame = questionInGameService.findQuestionsInGameByGameId(id);
+        List<Question> questions = questionInGameService.convertToQuestions(questionsInGame);
+        Game game = gameFactory.build(category, questions);
+        return game;
     }
 
     @Override
@@ -90,7 +105,7 @@ public class GameDTOServiceImpl implements GameDTOService {
 //    }
 //
 //    @Override
-//    public Game findGameById(Long gameId) {
+//    public Game findById(Long gameId) {
 //        return gameRepository.read(gameId);
 //    }
 

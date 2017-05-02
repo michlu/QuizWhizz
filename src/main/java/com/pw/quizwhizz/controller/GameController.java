@@ -1,21 +1,23 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.PlayerInGame;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.category.Category;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.game.GameDTO;
+import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.player.PlayerInGameDTO;
 import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.question.QuestionInGameDTO;
-import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class GameController {
 
     // TODO: Handle IllegalNumberOfQuestionsException
 
-    @GetMapping ("/start/{categoryId}")
+    @RequestMapping ("/start/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
         List<Question> questions = questionService.get10RandomQuestions(category);
@@ -56,18 +58,31 @@ public class GameController {
 
         model.addAttribute ("category", category);
         model.addAttribute("game", game);
+        model.addAttribute("gameId", game.getId());
         model.addAttribute("player", player);
         model.addAttribute("questions", questions);
 
-        return "/ongoing_game";
+        return "/start_game";
 
          // return "redirect:/game/play/" + game.getId();
     }
 
-    @GetMapping("/game/play/{gameId}")
-    public String startGame(@PathVariable String gameId, Model model) {
-        model.addAttribute("gameId", Long.parseLong(gameId));
+    @RequestMapping("/play/{gameId}")
+    public String startGame(@PathVariable String gameId, Model model) throws IllegalNumberOfQuestionsException {
+        long gameID = Long.parseLong(gameId);
 
-        return "ongoing_game";
+
+
+        // TODO: Uwaga, kazde klikniecie Start podbija id gry
+        // TODO: z ktorego teraz korzystac?
+        GameDTO gameDTO = gameService.findById(gameID);
+        Game game = gameService.findGameById(gameID);
+
+
+
+        model.addAttribute("gameId", Long.parseLong(gameId));
+        model.addAttribute("questions", questionInGameService.findQuestionsInGameByGameId(Long.parseLong(gameId)));
+
+        return "/ongoing_game";
     }
 }
