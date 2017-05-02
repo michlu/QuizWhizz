@@ -6,6 +6,8 @@ import com.pw.quizwhizz.model.question.Question;
 import java.util.List;
 
 public interface QuestionService {
+    List<Question> getQuestionsForNewGame(long categoryId);
+
     List<Question> getRandomQuestions(Category category, int number);
     List<Question> findAllByCategory(Category category);
     Question findById(Long Id);

@@ -32,6 +32,11 @@ public class QuestionServiceImpl implements QuestionService {
         this.answerRepository = answerRepository;
     }
 
+    @Override
+    public List<Question> getQuestionsForNewGame(long categoryId) {
+        Category category = categoryRepository.findById(categoryId);
+        return getRandomQuestions(category, 10);
+    }
 
     @Override
     public List<Question> getRandomQuestions(Category category, int number) {

@@ -1,17 +1,10 @@
 package com.pw.quizwhizz.repository;
 
-import com.pw.quizwhizz.model.Game;
-import java.util.HashMap;
+import com.pw.quizwhizz.model.game.GameDTO;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GameRepository {
-
-    Game create(Game game);
-
-    Game read(Long gameId);
-
-    void update(Long gameId, Game game);
-
-    void delete(Long gameId);
-
-    HashMap<Long, Game> findAll();
+@Repository
+public interface GameRepository extends JpaRepository<GameDTO, Long> {
+    GameDTO findById(Long id);
 }

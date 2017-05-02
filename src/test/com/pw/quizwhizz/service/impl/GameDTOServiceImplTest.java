@@ -9,7 +9,7 @@ import com.pw.quizwhizz.model.game.GameDTO;
 import com.pw.quizwhizz.model.game.GameState;
 import com.pw.quizwhizz.model.question.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
-import com.pw.quizwhizz.repository.GameDTORepository;
+import com.pw.quizwhizz.repository.GameRepository;
 import com.pw.quizwhizz.repository.GameStatsRepository;
 import com.pw.quizwhizz.repository.PlayerInGameRepository;
 import com.pw.quizwhizz.service.QuestionInGameService;
@@ -27,7 +27,7 @@ public class GameDTOServiceImplTest {
     @Mock
     private PlayerInGameRepository playerInGameRepository;
     @Mock
-    private GameDTORepository gameDTORepository;
+    private GameRepository gameRepository;
     @Mock
     private GameStatsRepository gameStatsRepository;
     @Mock
@@ -44,13 +44,13 @@ public class GameDTOServiceImplTest {
 
     @Before
     public void setup() {
-        gameService = new GameDTOServiceImpl(gameDTORepository, playerInGameRepository, questionInGameService, gameStatsRepository, gameFactory, builder);
+        gameService = new GameDTOServiceImpl(gameRepository, playerInGameRepository, questionInGameService, gameStatsRepository, gameFactory, builder);
     }
 
     @Test
     public void findAllGameDTOS() {
         List<GameDTO> games = mock(List.class);
-        when(gameDTORepository.findAll()).thenReturn(games);
+        when(gameRepository.findAll()).thenReturn(games);
 
         assertThat(games).isNotNull();
     }
@@ -70,7 +70,7 @@ public class GameDTOServiceImplTest {
 
         gameService.createGameWithId(category, questions);
 
-        verify(gameDTORepository, times(1)).save(gameDTO);
+        verify(gameRepository, times(1)).save(gameDTO);
         verify(game, times(1)).setId(gameDTO.getId());
     }
 

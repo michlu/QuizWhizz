@@ -14,12 +14,11 @@ import com.pw.quizwhizz.service.QuestionInGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
 public class GameDTOServiceImpl implements GameDTOService {
-    private final GameDTORepository gameDTORepository;
+    private final GameRepository gameRepository;
     private final PlayerInGameRepository playerInGameRepository;
     private final QuestionInGameService questionInGameService;
     private final GameStatsRepository gameStatsRepository;
@@ -27,11 +26,11 @@ public class GameDTOServiceImpl implements GameDTOService {
     private final GameDTOBuilder builder;
 
     @Autowired
-    public GameDTOServiceImpl(GameDTORepository gameDTORepository,
+    public GameDTOServiceImpl(GameRepository gameRepository,
                               PlayerInGameRepository playerInGameRepository,
                               QuestionInGameService questionInGameService, GameStatsRepository gameStatsRepository,
                               GameFactory gameFactory, GameDTOBuilder builder) {
-        this.gameDTORepository = gameDTORepository;
+        this.gameRepository = gameRepository;
         this.playerInGameRepository = playerInGameRepository;
         this.questionInGameService = questionInGameService;
         this.gameStatsRepository = gameStatsRepository;
@@ -41,12 +40,12 @@ public class GameDTOServiceImpl implements GameDTOService {
 
     @Override
     public List<GameDTO> findAll() {
-        return gameDTORepository.findAll();
+        return gameRepository.findAll();
     }
 
     @Override
     public GameDTO findById(Long gameId) {
-        return gameDTORepository.findById(gameId);
+        return gameRepository.findById(gameId);
     }
 
     @Override
@@ -61,14 +60,14 @@ public class GameDTOServiceImpl implements GameDTOService {
 
     @Override
     public void deleteGameById(Long id) {
-        gameDTORepository.delete(id);
+        gameRepository.delete(id);
     }
 
     @Override
     public Game createGameWithId(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
         Game game = gameFactory.build(category, questions);
         GameDTO gameDTO = convertToGameDTO(game);
-        gameDTORepository.save(gameDTO);
+        gameRepository.save(gameDTO);
         game.setId(gameDTO.getId());
         return game;
     }
