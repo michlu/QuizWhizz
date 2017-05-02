@@ -123,22 +123,11 @@ public class GameServiceImpl implements GameService {
     //TODO: Sort out searching methods
 
     @Override
-    public PlayerInGame findPlayerInGameById(Long id) throws IllegalNumberOfQuestionsException {
-        PlayerInGameDTO dto = playerInGameRepository.findByUserId(id);
-        Game game = findGameById(dto.getGameId());
-        PlayerInGame playerInGame = new PlayerInGame(userRepository.findById(id).getFirstName(), game);
-        playerInGame.setOwner(dto.isOwner());
-        return playerInGame;
-    }
-
-    @Override
     public PlayerInGame findPlayerInGameByUserAndGame(User user, Game game) {
         PlayerInGameDTO dto = playerInGameRepository.findByGameIdAndUserId(game.getId(), user.getId());
         PlayerInGame playerInGame = new PlayerInGame(user.getFirstName(), game);
-   //     playerInGame.setOwner(dto.isOwner());
         return playerInGame;
     }
-
 
     @Override
     public List<PlayerInGameDTO> findAllPlayersInGameByGameId(Long gameId) {

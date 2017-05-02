@@ -50,7 +50,6 @@ public class GameController {
          // return "redirect:/game/play/" + game.getId();
     }
 
-    //TODO: Find all players in game and pass them to the game
     //TODO: Determine where null for user in PlayerDTO comes from
 
     @RequestMapping("/play/{gameId}")
@@ -60,7 +59,7 @@ public class GameController {
         PlayerInGame player = gameService.findPlayerInGameByUserAndGame(currentUser, game);
 
         System.out.println("Players: " + game.getPlayers().size() + " " + game.getPlayers().get(0).getName());
-        gameService.startGame(player);
+        System.out.println("PlayerInGame: is owner? " + player.isOwner());
         model.addAttribute("game", game);
         model.addAttribute("players", game.getPlayers());
         model.addAttribute("questions", game.getQuestions());

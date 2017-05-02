@@ -30,7 +30,6 @@ public interface GameService {
 
     PlayerInGame getNewPlayerInGame(User user, Game game);
     PlayerInGame findPlayerInGameByUserAndGame(User user, Game game);
-    PlayerInGame findPlayerInGameById(Long id) throws IllegalNumberOfQuestionsException;
     List<PlayerInGameDTO> findAllPlayersInGameByGameId(Long gameId);
     void savePlayerInGame(PlayerInGame playerInGame);
     void deletePlayerInGame(PlayerInGame playerInGame);
