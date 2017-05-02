@@ -10,4 +10,5 @@ import java.util.List;
 public interface QuestionInGameRepository extends JpaRepository<QuestionInGameDTO, Long> {
     QuestionInGameDTO findByGameId(Long gameId);
     List<QuestionInGameDTO> findAllByGameId(Long gameId);
+    void deleteAllByGameId(Long gameId);
 }

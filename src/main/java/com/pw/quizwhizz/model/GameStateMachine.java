@@ -2,6 +2,7 @@ package com.pw.quizwhizz.model;
 
 import com.pw.quizwhizz.model.game.GameState;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -12,9 +13,9 @@ public class GameStateMachine {
     static final int timeFrameForAnswerSubmissionInSeconds = 10;
     int timeUntilAnswerEvaluationInSeconds;
     int timeUntilGameClosureInSeconds;
-    @Getter
+    @Getter @Setter
     GameState currentState;
-    @Getter
+    @Getter @Setter
     Instant startTime;
 
     protected GameStateMachine(int appropriateNumberOfQuestions, Clock clock) {
