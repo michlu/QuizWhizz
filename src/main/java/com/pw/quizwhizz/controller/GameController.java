@@ -46,15 +46,11 @@ public class GameController {
         List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
         Game game = gameService.createGame(questions);
 
-        List<QuestionInGameDTO> questionsInGame = questionInGameService.convertToQuestionsInGame(questions, game.getId());
-
         User currentUser = userService.findByEmail(authentication.getName());
         Player currentPlayer = userService.convertToPlayer(currentUser);
         PlayerInGame player = playerInGameService.convertToPlayerInGame(currentPlayer, game);
         PlayerInGameDTO playerInGameDTO = playerInGameService.convertToPlayerInGameDTO(player);
-
         playerInGameService.savePlayerInGameDTO(playerInGameDTO);
-        questionInGameService.saveQuestionsInGame(questionsInGame);
 
         model.addAttribute("game", game);
         model.addAttribute("gameId", game.getId());

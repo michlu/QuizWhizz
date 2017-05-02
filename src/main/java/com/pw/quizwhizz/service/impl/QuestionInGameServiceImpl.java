@@ -37,18 +37,6 @@ public class QuestionInGameServiceImpl implements QuestionInGameService {
     }
 
     @Override
-    public List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId) {
-        List<QuestionInGameDTO> questionsInGame = new ArrayList<QuestionInGameDTO>();
-
-        for (int i = 0; i < questions.size(); i++) {
-            Question q = questions.get(i);
-            QuestionInGameDTO question = new QuestionInGameDTO(q, gameId, i);
-            questionsInGame.add(question);
-        }
-        return questionsInGame;
-    }
-
-    @Override
     public List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
         List<Question> questions = new ArrayList<>();
 
@@ -60,9 +48,22 @@ public class QuestionInGameServiceImpl implements QuestionInGameService {
     }
 
     @Override
-    public void saveQuestionsInGame(List<QuestionInGameDTO> questions) {
-        for (QuestionInGameDTO question : questions) {
+    public void saveQuestionsInGame(List<Question> questions, Long gameId) {
+
+
+        for (QuestionInGameDTO question : convertToQuestionsInGame(questions, gameId)) {
             questionInGameRepository.save(question);
         }
+    }
+
+    private List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId) {
+        List<QuestionInGameDTO> questionsInGame = new ArrayList<QuestionInGameDTO>();
+
+        for (int i = 0; i < questions.size(); i++) {
+            Question q = questions.get(i);
+            QuestionInGameDTO question = new QuestionInGameDTO(q, gameId, i);
+            questionsInGame.add(question);
+        }
+        return questionsInGame;
     }
 }

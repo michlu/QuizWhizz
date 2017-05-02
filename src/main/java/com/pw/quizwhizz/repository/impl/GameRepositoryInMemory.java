@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class GameRepositoryInMemory implements GameRepository {
+public class GameRepositoryInMemory implements com.pw.quizwhizz.repository.GameRepositoryInMemory {
     private Map<Long, Game> listOfGames = new HashMap<>();
 
 

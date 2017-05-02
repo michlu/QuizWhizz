@@ -13,7 +13,6 @@ public interface QuestionInGameService {
     QuestionInGameDTO findByGameId(Long gameId);
     List<QuestionInGameDTO> findAll();
     List <QuestionInGameDTO> findQuestionsInGameByGameId(Long gameId);
-    List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId);
     List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame);
-    void saveQuestionsInGame(List<QuestionInGameDTO> questions);
+    void saveQuestionsInGame(List<Question> questions, Long gameId);
 }

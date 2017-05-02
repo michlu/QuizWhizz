@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model.question;
 
+import com.pw.quizwhizz.model.Game;
 import com.pw.quizwhizz.model.answer.Answer;
 import com.pw.quizwhizz.model.category.Category;
 import lombok.*;

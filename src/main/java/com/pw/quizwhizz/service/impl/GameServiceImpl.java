@@ -8,8 +8,10 @@ import com.pw.quizwhizz.model.game.GameDTOBuilder;
 import com.pw.quizwhizz.model.game.GameFactory;
 import com.pw.quizwhizz.model.game.GameState;
 import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.question.QuestionInGameDTO;
 import com.pw.quizwhizz.repository.GameRepository;
 import com.pw.quizwhizz.service.GameService;
+import com.pw.quizwhizz.service.QuestionInGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,14 @@ public class GameServiceImpl implements GameService {
     private final GameFactory gameFactory;
     private final GameDTOBuilder gameDTOBuilder;
 
+    private final QuestionInGameService questionInGameService;
+
     @Autowired
-    public GameServiceImpl(GameRepository gameRepository, GameFactory gameFactory, GameDTOBuilder gameDTOBuilder) {
+    public GameServiceImpl(GameRepository gameRepository, GameFactory gameFactory, GameDTOBuilder gameDTOBuilder, QuestionInGameService questionInGameService) {
         this.gameRepository = gameRepository;
         this.gameFactory = gameFactory;
         this.gameDTOBuilder = gameDTOBuilder;
+        this.questionInGameService = questionInGameService;
     }
 
     @Override
@@ -38,6 +43,7 @@ public class GameServiceImpl implements GameService {
         GameDTO gameDTO = convertToGameDTO(game);
         gameRepository.save(gameDTO);
         game.setId(gameDTO.getId());
+        questionInGameService.saveQuestionsInGame(questions, game.getId());
         return game;
     }
 

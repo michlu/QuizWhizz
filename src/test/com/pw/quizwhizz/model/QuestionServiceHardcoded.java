@@ -18,6 +18,11 @@ public class QuestionServiceHardcoded implements QuestionService {
     private Category category = new Category("Category1");
 
     @Override
+    public List<Question> getQuestionsForNewGame(long categoryId) {
+        return null;
+    }
+
+    @Override
     public List<Question> getRandomQuestions(Category category, int number) {
         List<Question> questions = new ArrayList<>();
 
