@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface QuestionService {
     List<Question> getRandomQuestions(Category category, int number);
-    List<Question> get10RandomQuestions(Category category);
     List<Question> findAllByCategory(Category category);
     Question findById(Long Id);
     void deleteById(Long Id);

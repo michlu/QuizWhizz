@@ -5,6 +5,7 @@ import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.PlayerInGame;
 import com.pw.quizwhizz.model.player.PlayerInGameDTO;
+import com.pw.quizwhizz.repository.GameRepository;
 import com.pw.quizwhizz.repository.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.service.PlayerInGameService;
@@ -16,13 +17,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PlayerInGameServiceImpl implements PlayerInGameService {
-    private final PlayerInGameRepository repository;
+    private final PlayerInGameRepository playerInGameRepository;
     private final UserRepository userRepository;
+    private final GameRepository gameRepository;
 
     @Autowired
-    public PlayerInGameServiceImpl(PlayerInGameRepository repository, UserRepository userRepository) {
-        this.repository = repository;
+    public PlayerInGameServiceImpl(PlayerInGameRepository playerInGameRepository, UserRepository userRepository, GameRepository gameRepository) {
+        this.playerInGameRepository = playerInGameRepository;
         this.userRepository = userRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
@@ -46,6 +49,6 @@ public class PlayerInGameServiceImpl implements PlayerInGameService {
 
     @Override
     public void savePlayerInGameDTO(PlayerInGameDTO playerInGameDTO) {
-        repository.save(playerInGameDTO);
+        playerInGameRepository.save(playerInGameDTO);
     }
 }

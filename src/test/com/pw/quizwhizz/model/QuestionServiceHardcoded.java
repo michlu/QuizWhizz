@@ -19,11 +19,6 @@ public class QuestionServiceHardcoded implements QuestionService {
 
     @Override
     public List<Question> getRandomQuestions(Category category, int number) {
-        return null;
-    }
-
-    @Override
-    public List<Question> get10RandomQuestions(Category category) {
         List<Question> questions = new ArrayList<>();
 
         List<Question> allQuestions = createQuestions(category);
@@ -31,8 +26,8 @@ public class QuestionServiceHardcoded implements QuestionService {
 
         Question q;
 
-        if (size >= 10) {
-            for (int i = 0; i < 10; i++) {
+        if (size >= number) {
+            for (int i = 0; i < number; i++) {
                 q = allQuestions.get(random.nextInt(size));
                 if (!questions.contains(q)) {
                     questions.add(q);

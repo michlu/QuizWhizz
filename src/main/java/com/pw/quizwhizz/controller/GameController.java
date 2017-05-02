@@ -43,7 +43,7 @@ public class GameController {
     @RequestMapping ("/start/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Category category = categoryService.findById(Long.parseLong(categoryId));
-        List<Question> questions = questionService.get10RandomQuestions(category);
+        List<Question> questions = questionService.getRandomQuestions(category, 10);
 
         Game game = gameService.createGameWithId(category, questions);
         List<QuestionInGameDTO> questionsInGame = questionInGameService.convertToQuestionsInGame(questions, game.getId());

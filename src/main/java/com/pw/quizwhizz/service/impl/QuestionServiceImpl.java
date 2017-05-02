@@ -19,22 +19,16 @@ import java.util.Random;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    QuestionRepository questionRepository;
-    CategoryRepository categoryRepository;
-    AnswerRepository answerRepository;
-
     private Random random = new Random();
 
+    private final QuestionRepository questionRepository;
+    private final CategoryRepository categoryRepository;
+    private final AnswerRepository answerRepository;
+
     @Autowired
-    public void setQuestionRepository(QuestionRepository questionRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository, AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
-    }
-    @Autowired
-    public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-    }
-    @Autowired
-    public void setAnswerRepository(AnswerRepository answerRepository) {
         this.answerRepository = answerRepository;
     }
 
@@ -53,27 +47,6 @@ public class QuestionServiceImpl implements QuestionService {
                 questions.add(q);
             } else {
                 i--;
-            }
-        }
-        return questions;
-    }
-
-    @Override
-    public List<Question> get10RandomQuestions(Category category) {
-        List<Question> questions = new ArrayList<>();
-
-        List<Question> allQuestions = questionRepository.findAllByCategory(category);
-        int size = allQuestions.size();
-        Question q;
-
-        if (size >= 10) {
-            for (int i = 0; i < 10; i++) {
-                q = allQuestions.get(random.nextInt(size));
-                if (!questions.contains(q)) {
-                    questions.add(q);
-                } else {
-                    i--;
-                }
             }
         }
         return questions;

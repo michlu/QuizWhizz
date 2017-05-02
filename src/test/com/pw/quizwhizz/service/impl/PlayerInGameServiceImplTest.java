@@ -3,6 +3,7 @@ package com.pw.quizwhizz.service.impl;
 import com.pw.quizwhizz.model.Game;
 import com.pw.quizwhizz.model.player.Player;
 import com.pw.quizwhizz.model.PlayerInGame;
+import com.pw.quizwhizz.repository.GameRepository;
 import com.pw.quizwhizz.repository.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.service.PlayerInGameService;
@@ -21,11 +22,14 @@ public class PlayerInGameServiceImplTest {
     private PlayerInGameRepository repository;
     @Mock
     private UserRepository userRepository;
-    private PlayerInGameService service;
+    @Mock
+    private GameRepository gameRepository;
+
+    private PlayerInGameService testedService;
 
     @Before
     public void setup() {
-        service = new PlayerInGameServiceImpl(repository, userRepository);
+        testedService = new PlayerInGameServiceImpl(repository, userRepository, gameRepository);
     }
 
     @Test
@@ -34,7 +38,7 @@ public class PlayerInGameServiceImplTest {
         Player player = new Player("Player");
         Game game = mock(Game.class);
 
-        PlayerInGame playerInGame =  service.convertToPlayerInGame(player, game);
+        PlayerInGame playerInGame =  testedService.convertToPlayerInGame(player, game);
 
         assertThat(playerInGame).isNotNull();
         assertThat(playerInGame.getName()).isEqualTo(player.getName());

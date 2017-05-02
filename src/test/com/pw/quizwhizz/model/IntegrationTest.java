@@ -33,7 +33,7 @@ public class IntegrationTest {
 
         List<Question> questions = mock(List.class);
         when(questions.size()).thenReturn(10);
-        when(service.get10RandomQuestions(testCategory)).thenReturn(questions);
+        when(service.getRandomQuestions(testCategory, 10)).thenReturn(questions);
 
         Game game = new Game(testCategory, questions, gsm);
         PlayerInGame playerOne = new PlayerInGame("Player 1", game);
