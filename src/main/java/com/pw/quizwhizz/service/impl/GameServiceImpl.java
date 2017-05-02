@@ -117,9 +117,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void startGame(PlayerInGame playerInGame) {
-        if(playerInGame.isOwner() == false) {
-            return;
-        }
         playerInGame.startGame();
     }
 
@@ -138,7 +135,7 @@ public class GameServiceImpl implements GameService {
     public PlayerInGame findPlayerInGameByUserAndGame(User user, Game game) {
         PlayerInGameDTO dto = playerInGameRepository.findByGameIdAndUserId(game.getId(), user.getId());
         PlayerInGame playerInGame = new PlayerInGame(user.getFirstName(), game);
-        playerInGame.setOwner(dto.isOwner());
+   //     playerInGame.setOwner(dto.isOwner());
         return playerInGame;
     }
 

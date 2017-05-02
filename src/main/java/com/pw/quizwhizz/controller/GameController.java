@@ -57,7 +57,7 @@ public class GameController {
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         Game game = gameService.findGameById(gameId);
         User currentUser = userService.findByEmail(authentication.getName());
-        PlayerInGame player = gameService.findPlayerInGameById(currentUser.getId());
+        PlayerInGame player = gameService.findPlayerInGameByUserAndGame(currentUser, game);
 
         System.out.println("Players: " + game.getPlayers().size() + " " + game.getPlayers().get(0).getName());
         gameService.startGame(player);
