@@ -1,11 +1,11 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.category.Category;
-import com.pw.quizwhizz.model.question.Question;
-import com.pw.quizwhizz.model.answer.Answer;
-import com.pw.quizwhizz.repository.AnswerRepository;
-import com.pw.quizwhizz.repository.CategoryRepository;
-import com.pw.quizwhizz.repository.QuestionRepository;
+import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.model.game.Question;
+import com.pw.quizwhizz.model.game.Answer;
+import com.pw.quizwhizz.repository.game.AnswerRepository;
+import com.pw.quizwhizz.repository.game.CategoryRepository;
+import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,25 +19,24 @@ import java.util.Random;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    QuestionRepository questionRepository;
-    CategoryRepository categoryRepository;
-    AnswerRepository answerRepository;
-
     private Random random = new Random();
 
+    private final QuestionRepository questionRepository;
+    private final CategoryRepository categoryRepository;
+    private final AnswerRepository answerRepository;
+
     @Autowired
-    public void setQuestionRepository(QuestionRepository questionRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository, AnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
-    }
-    @Autowired
-    public void setCategoryRepository(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-    }
-    @Autowired
-    public void setAnswerRepository(AnswerRepository answerRepository) {
         this.answerRepository = answerRepository;
     }
 
+    @Override
+    public List<Question> getQuestionsForNewGame(long categoryId) {
+        Category category = categoryRepository.findById(categoryId);
+        return getRandomQuestions(category, 10);
+    }
 
     @Override
     public List<Question> getRandomQuestions(Category category, int number) {
@@ -53,27 +52,6 @@ public class QuestionServiceImpl implements QuestionService {
                 questions.add(q);
             } else {
                 i--;
-            }
-        }
-        return questions;
-    }
-
-    @Override
-    public List<Question> get10RandomQuestions(Category category) {
-        List<Question> questions = new ArrayList<>();
-
-        List<Question> allQuestions = questionRepository.findAllByCategory(category);
-        int size = allQuestions.size();
-        Question q;
-
-        if (size >= 10) {
-            for (int i = 0; i < 10; i++) {
-                q = allQuestions.get(random.nextInt(size));
-                if (!questions.contains(q)) {
-                    questions.add(q);
-                } else {
-                    i--;
-                }
             }
         }
         return questions;

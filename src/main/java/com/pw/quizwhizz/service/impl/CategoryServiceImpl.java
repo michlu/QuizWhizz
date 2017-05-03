@@ -1,7 +1,7 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.category.Category;
-import com.pw.quizwhizz.repository.CategoryRepository;
+import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.repository.game.CategoryRepository;
 import com.pw.quizwhizz.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;

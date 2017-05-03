@@ -2,7 +2,7 @@ package com.pw.quizwhizz.model.account;
 
 import com.pw.quizwhizz.annotation.UniqueEmail;
 import com.pw.quizwhizz.annotation.ValidEmail;
-import com.pw.quizwhizz.model.player.Player;
+import com.pw.quizwhizz.model.game.Player;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -20,9 +20,6 @@ public class User {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Embedded
-	private Player player;
 
 	@NotEmpty
 	@Column(name = "first_name", nullable = false)

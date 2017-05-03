@@ -1,14 +1,13 @@
 package com.pw.quizwhizz.repository.impl;
 
-import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.repository.GameRepository;
+import com.pw.quizwhizz.model.game.Game;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class GameRepositoryInMemory implements GameRepository {
+public class GameRepositoryInMemory implements com.pw.quizwhizz.repository.GameRepositoryInMemory {
     private Map<Long, Game> listOfGames = new HashMap<>();
 
 

@@ -1,13 +1,14 @@
 package com.pw.quizwhizz.service;
 
-import com.pw.quizwhizz.model.category.Category;
-import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.model.game.Question;
 
 import java.util.List;
 
 public interface QuestionService {
+    List<Question> getQuestionsForNewGame(long categoryId);
+
     List<Question> getRandomQuestions(Category category, int number);
-    List<Question> get10RandomQuestions(Category category);
     List<Question> findAllByCategory(Category category);
     Question findById(Long Id);
     void deleteById(Long Id);
