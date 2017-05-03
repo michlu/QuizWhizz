@@ -43,13 +43,9 @@ public class GameController {
 
     @RequestMapping("/start/{gameId}")
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
-        User currentUser = userService.findByEmail(authentication.getName());
-        //Player player = gameService.findPlayerByUserAndGame(currentUser, game);
-
-//        System.out.println("Players: " + game.getPlayers().size() + " " + game.getPlayers().get(0).getName());
-//        System.out.println("PlayerInGame: is owner? " + player.isOwner());
-//        System.out.println("State: " + game.getGameStateMachine().getCurrentState());
+        gameService.startGame(game, user);
 
         model.addAttribute("game", game);
         model.addAttribute("players", game.getPlayers());

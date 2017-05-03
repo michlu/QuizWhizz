@@ -76,17 +76,21 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GameDTO> findAll() {
-        return gameRepository.findAll();
-    }
-
-    @Override
-    public GameDTO findById(Long gameId) {
-        return gameRepository.findOne(gameId);
-    }
-
-    @Override
     public Game findGameById(Long gameId) throws IllegalNumberOfQuestionsException {
+        GameDTO gameDTO = gameRepository.findOne(gameId);
+        // TODO:  gameDTO => game
+        return null;
+    }
+
+    @Override
+    public void startGame(Game game, User user) {
+        // TODO:
+    }
+
+    @Override
+    public List<Game> findAll() {
+        List<GameDTO> gamesDTO = gameRepository.findAll();
+        // TODO:  gamesDTO => games
         return null;
     }
 
