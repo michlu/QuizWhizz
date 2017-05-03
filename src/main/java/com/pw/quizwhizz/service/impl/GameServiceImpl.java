@@ -9,10 +9,12 @@ import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.repository.game.GameRepository;
 import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
+import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
     private final QuestionInGameRepository questionInGameRepository;
     private final PlayerInGameRepository playerInGameRepository;
+    private final QuestionRepository questionRepository;
     private final GameStatsRepository gameStatsRepository;
     private final UserRepository userRepository;
     private final UserService userService;
@@ -40,11 +43,12 @@ public class GameServiceImpl implements GameService {
     public GameServiceImpl(GameRepository gameRepository,
                            PlayerInGameRepository playerInGameRepository,
                            QuestionInGameRepository questionInGameRepository,
-                           GameStatsRepository gameStatsRepository,
+                           QuestionRepository questionRepository, GameStatsRepository gameStatsRepository,
                            UserRepository userRepository, UserService userService, GameFactory gameFactory,
                            GameDTOBuilder gameDTOBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
+        this.questionRepository = questionRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.gameFactory = gameFactory;
@@ -78,13 +82,44 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game findGameById(Long gameId) throws IllegalNumberOfQuestionsException {
         GameDTO gameDTO = gameRepository.findOne(gameId);
-        // TODO:  gameDTO => game
-        return null;
+        List<QuestionInGameDTO> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
+        List<Question> questions = convertToQuestions(questionsInGame);
+        Game game = gameFactory.build(gameDTO.getCategory(), questions);
+        game.getGameStateMachine().setCurrentState(gameDTO.getCurrentState());
+        game.setId(gameDTO.getId());
+        if(gameDTO.getStartTime() != null) {
+            game.getGameStateMachine().setStartTime(gameDTO.getStartTime());
+        }
+        return game;
+    }
+
+    private List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
+        List<Question> questions = new ArrayList<>();
+        for (QuestionInGameDTO questionInGame : questionsInGame) {
+            Question question = questionRepository.findById(questionInGame.getId().getGameId());
+            questions.add(question);
+        }
+        return questions;
     }
 
     @Override
+    @Transactional
     public void startGame(Game game, User user) {
-        // TODO:
+        PlayerInGameKey compositeKey = new PlayerInGameKey();
+        compositeKey.setGameId(game.getId());
+        compositeKey.setUserId(user.getId());
+        PlayerInGameDTO playerInGameDTO = playerInGameRepository.findOne(compositeKey);
+        Player player = new Player(user.getFirstName(), game);
+        player.setOwner(playerInGameDTO.isOwner());
+
+        if(player.isOwner()) {
+            player.startGame();
+            System.out.println("Game state: " + game.getGameStateMachine().getCurrentState());
+            System.out.println("Start time: " + game.getGameStateMachine().getStartTime());
+        }
+        GameDTO gameDTO = convertToGameDTO(game);
+        gameDTO.setId(game.getId());
+        gameRepository.saveAndFlush(gameDTO);
     }
 
     @Override

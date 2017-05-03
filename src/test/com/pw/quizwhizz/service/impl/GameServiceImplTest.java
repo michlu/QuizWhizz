@@ -13,6 +13,7 @@ import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.repository.game.GameRepository;
 import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
+import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,8 @@ public class GameServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private QuestionRepository questionRepository;
+    @Mock
     private UserService userService;
     @Mock
     private GameFactory gameFactory;
@@ -50,7 +53,7 @@ public class GameServiceImplTest {
 
     @Before
     public void setup() {
-        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, gameStatsRepository, userRepository, userService, gameFactory, builder);
+        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, questionRepository, gameStatsRepository, userRepository, userService, gameFactory, builder);
     }
 
     @Test

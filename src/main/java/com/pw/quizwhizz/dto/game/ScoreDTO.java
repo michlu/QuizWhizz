@@ -13,10 +13,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "score")
 public class ScoreDTO {
-
     @EmbeddedId
     private ScoreKey id;
-
     @Column
     private int points;
     @Column

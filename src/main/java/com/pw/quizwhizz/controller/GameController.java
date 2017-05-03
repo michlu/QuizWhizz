@@ -27,7 +27,7 @@ public class GameController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping ("/create/{categoryId}")
+    @RequestMapping ("/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
         Game game = gameService.createGame(questions);
@@ -38,10 +38,9 @@ public class GameController {
         model.addAttribute("questions", questions);
 
         return "/start_game";
-        // /game/open
     }
 
-    @RequestMapping("/start/{gameId}")
+    @RequestMapping("/started/{gameId}")
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
@@ -52,6 +51,5 @@ public class GameController {
         model.addAttribute("questions", game.getQuestions());
 
         return "/ongoing_game";
-        // /game/started
     }
 }
