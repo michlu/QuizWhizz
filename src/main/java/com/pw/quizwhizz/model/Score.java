@@ -1,20 +1,32 @@
 package com.pw.quizwhizz.model;
 
+import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.answer.Answer;
 import com.pw.quizwhizz.model.player.Player;
 import lombok.Getter;
 
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Karolina on 14.04.2017.
  */
+@Entity
 @Getter
+@Table(name = "scores")
 public class Score {
-
-    private final Player player;
-    private boolean isHighest;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column (name="user_id")
+    private long user_id;
+    @Column
     private int points;
+    @Column
+    private boolean isHighest;
+
+    @Transient
+    private Player player;
 
     protected Score(Player player) {
         this.player = player;
