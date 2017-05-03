@@ -17,8 +17,8 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" />
 
+    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/game-list.css}">
 </head>
 
 <body>
@@ -43,33 +43,266 @@
 </header>
 
 <!-- Page Content -->
-<div class="container">
 
-
+    <!-- LISTA KATEGORII -->
     <div class="container">
-        <div class="page-header">
-            <h1 class="text-center">Rozpocznij grę...</h1>
-        </div>
-        <p class="lead text-center"></p>
 
         <div class="container">
+            <div class="page-header">
+                <h1 class="text-center">Rozpocznij grę...</h1>
+            </div>
+            <p class="lead text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua.</p>
+
+            <div class="container">
 
 
-            <div class="row stylish-panel">
+                <div class="row stylish-panel">
 
-                <div class="col-md-4" th:each="category,iterationStatus  : ${categories}">
-                    <div>
-                        <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
-                        <h2 th:text="${category.name}"></h2>
-                        <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
-                        <a href="#" th:href="@{'/game/open/'+${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
+                    <div class="col-sm-6 col-md-4" th:each="category,iterationStatus  : ${categories}">
+                        <div>
+                            <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
+                            <h2 th:text="${category.name}"></h2>
+                            <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
+                            <a href="#" th:href="@{'/game/getstarted/'+${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+        </div>
+    </div>
+
+<!-- LISTA AKTYWYNYCH GIER -->
+<div class="dark-background">
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1 class="text-center dark-background-text">...lub dołącz do gry</h1>
+        </div>
+
+        <p class="lead text-center dark-background-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua.</p>
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_laboratory.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Laboratorium <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>Games Josling</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+            </div>
+        </div>
+
+        <!-- =========== TEST -->
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_sport.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Sport <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>Games Josling</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+            </div>
+        </div>
+
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_laboratory.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Laboratorium <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_2.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>Tonald Drump</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>1</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+            </div>
+        </div>
+
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_history.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Historia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>Games Josling</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>4</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+            </div>
+        </div>
+
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_biology.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Biologia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_default.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Trwa <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>User</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>6</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+            </div>
+        </div>
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+            <div class="clearfix background">
+                <img src="#" th:src="@{/resources/images/category_geography.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category">
+                    Geografia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                </div>
+                <div class="avatar">
+                    <img src="#" th:src="@{/resources/images/profile_2.png}" /> <!-- obrazek zalozyciela gry -->
+                </div>
+            </div>
+            <div class="info">
+                <div class="status">
+                    Trwa <!-- czy gra sie zaczela th:text="${}" -->
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                </div>
+                <div class="desc">
+                    <table class="table borderless">
+                        <tbody>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Owner</small></p></td>
+                            <td><span>Tonald Drump</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                        </tr>
+                        <tr>
+                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
+                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bottom">
+                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
             </div>
         </div>
 
     </div>
+
 </div>
+
 
 <div class="container">
     <div class="page-header">
@@ -103,6 +336,7 @@
     </table>
 
 </div>
+
 
 <hr class="featurette-divider">
 <!-- Footer -->

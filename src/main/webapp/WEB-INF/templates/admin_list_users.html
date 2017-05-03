@@ -55,7 +55,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="user, iterationStatus : ${users}">
-                        <td><img src="#" th:src="@{${user.urlImage}}" class="img-circle" width="50"></td>
+                        <td><a href="#" th:href="@{'/user/'+${user.id}}"><img src="#" th:src="@{${user.urlImage}}" class="img-circle" width="50"></a></td>
                         <td th:text="${iterationStatus.count}">1</td>
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.firstName}"></td>
