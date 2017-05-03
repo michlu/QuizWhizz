@@ -60,6 +60,8 @@ public class GameController {
 
         System.out.println("Players: " + game.getPlayers().size() + " " + game.getPlayers().get(0).getName());
         System.out.println("PlayerInGame: is owner? " + player.isOwner());
+        System.out.println("State: " + game.getGameStateMachine().getCurrentState());
+
         model.addAttribute("game", game);
         model.addAttribute("players", game.getPlayers());
         model.addAttribute("questions", game.getQuestions());
