@@ -1,15 +1,18 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.Game;
-import com.pw.quizwhizz.model.GameStateMachine;
-import com.pw.quizwhizz.model.game.GameDTOBuilder;
+import com.pw.quizwhizz.model.game.Game;
+import com.pw.quizwhizz.model.game.GameStateMachine;
+import com.pw.quizwhizz.dto.game.GameDTOBuilder;
 import com.pw.quizwhizz.model.game.GameFactory;
-import com.pw.quizwhizz.model.category.Category;
-import com.pw.quizwhizz.model.game.GameDTO;
+import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.dto.game.GameDTO;
 import com.pw.quizwhizz.model.game.GameState;
-import com.pw.quizwhizz.model.question.Question;
+import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.repository.*;
+import com.pw.quizwhizz.repository.game.GameRepository;
+import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
+import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
 import com.pw.quizwhizz.service.UserService;
 import org.junit.Before;
 import org.junit.Test;

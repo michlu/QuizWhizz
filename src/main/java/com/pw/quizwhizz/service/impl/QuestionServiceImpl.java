@@ -1,11 +1,11 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.category.Category;
-import com.pw.quizwhizz.model.question.Question;
-import com.pw.quizwhizz.model.answer.Answer;
-import com.pw.quizwhizz.repository.AnswerRepository;
-import com.pw.quizwhizz.repository.CategoryRepository;
-import com.pw.quizwhizz.repository.QuestionRepository;
+import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.model.game.Question;
+import com.pw.quizwhizz.model.game.Answer;
+import com.pw.quizwhizz.repository.game.AnswerRepository;
+import com.pw.quizwhizz.repository.game.CategoryRepository;
+import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
