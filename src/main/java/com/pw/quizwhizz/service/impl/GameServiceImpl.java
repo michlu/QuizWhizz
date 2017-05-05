@@ -96,7 +96,7 @@ public class GameServiceImpl implements GameService {
     private List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
         List<Question> questions = new ArrayList<>();
         for (QuestionInGameDTO questionInGame : questionsInGame) {
-            Question question = questionRepository.findById(questionInGame.getId().getGameId());
+            Question question = questionRepository.findById(questionInGame.getId().getQuestionId());
             questions.add(question);
         }
         return questions;
@@ -104,7 +104,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public void startGame(Game game, User user) {
+    public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
         PlayerInGameKey compositeKey = new PlayerInGameKey();
         compositeKey.setGameId(game.getId());
         compositeKey.setUserId(user.getId());

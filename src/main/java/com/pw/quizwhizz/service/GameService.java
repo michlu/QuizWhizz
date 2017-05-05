@@ -14,7 +14,7 @@ public interface GameService {
     Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException;
     void addOwnerToGame(Game game, User user);
     Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
-    void startGame(Game game, User user);
+    void startGame(Game game, User user) throws IllegalNumberOfQuestionsException;
 
     List<Game> findAll();
 }

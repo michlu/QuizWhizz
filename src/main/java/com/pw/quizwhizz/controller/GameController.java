@@ -7,6 +7,7 @@ import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,7 @@ public class GameController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping ("/open/{categoryId}")
+    @RequestMapping (value = "/open/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
         Game game = gameService.createGame(questions);
@@ -37,10 +38,10 @@ public class GameController {
         model.addAttribute("game", game);
         model.addAttribute("questions", questions);
 
-        return "/start_game";
+        return "start_game";
     }
 
-    @RequestMapping("/started/{gameId}")
+    @RequestMapping(value = "/{categoryId}/started/{gameId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
@@ -50,7 +51,7 @@ public class GameController {
         model.addAttribute("players", game.getPlayers());
         model.addAttribute("questions", game.getQuestions());
 
-        return "/ongoing_game";
+        return "ongoing_game";
     }
 
     /* TODO:
