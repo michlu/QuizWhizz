@@ -11,22 +11,10 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-@Entity
-@Table(name = "question")
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "category")
+    private long id;
     private Category category;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "question")
     private List<Answer> answers;
 
     public Question(String question, Category category, List<Answer> answers) {

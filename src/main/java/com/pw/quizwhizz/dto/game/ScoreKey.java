@@ -16,6 +16,7 @@ import java.io.Serializable;
 public class ScoreKey implements Serializable {
     @Column(name = "game_id", nullable = false)
     private long gameId;
+
     @Column(name = "user_id", nullable = false)
     private long userId;
 }

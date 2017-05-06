@@ -113,13 +113,13 @@ public class ScoreTest {
 
     private Answer correctAnswer() {
         Answer correctAnswer = mock(Answer.class);
-        when(correctAnswer.isCorrect()).thenReturn(true);
+        when(correctAnswer.getIsCorrect()).thenReturn(true);
         return correctAnswer;
     }
 
     private Answer incorrectAnswer() {
         Answer incorrectAnswer = mock(Answer.class);
-        when(incorrectAnswer.isCorrect()).thenReturn(false);
+        when(incorrectAnswer.getIsCorrect()).thenReturn(false);
         return incorrectAnswer;
     }
 }

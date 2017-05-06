@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.dto;
 
+import com.pw.quizwhizz.dto.game.CategoryDTO;
 import com.pw.quizwhizz.model.game.Category;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class GameStatsDTO {
 
     @OneToOne
     @JoinColumn(name = "category_id")
-    Category category;
+    CategoryDTO category;
 
 
 //    List<User> users;

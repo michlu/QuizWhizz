@@ -20,7 +20,7 @@ public class GameDTO {
     // Game_id niepotrzebne: gra dostanie id z GameDTO po zapisaniu do bazy
     @OneToOne
     @JoinColumn(name = "category_id")
-    Category category;
+    CategoryDTO category;
 
     @Enumerated
     @Column(name = "current_state")

@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class PlayerInGameKey implements Serializable{
     @Column(name = "user_id", nullable = false)
     private long userId;
+
     @Column(name = "game_id", nullable = false)
     private long gameId;
 }

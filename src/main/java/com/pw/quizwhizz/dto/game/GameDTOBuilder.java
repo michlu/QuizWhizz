@@ -13,7 +13,7 @@ import java.time.Instant;
 @Getter
 @Component
 public class GameDTOBuilder {
-   private Category category;
+   private CategoryDTO category;
    private GameState gameState;
    private Instant startTime;
 
@@ -21,7 +21,7 @@ public class GameDTOBuilder {
        return new GameDTO(this);
     }
 
-    public GameDTOBuilder withCategory(Category category){
+    public GameDTOBuilder withCategory(CategoryDTO category){
         this.category = category;
         return this;
     }
