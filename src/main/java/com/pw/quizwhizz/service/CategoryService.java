@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.service;
 
+import com.pw.quizwhizz.dto.game.CategoryDTO;
 import com.pw.quizwhizz.model.game.Category;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,10 +12,10 @@ public interface CategoryService {
     void addCategory(Category category);
     Category findById(Long l);
     Category findByName(String categoryName);
+    CategoryDTO findCategoryDTOById(long id);
     void deleteById(Long Id);
     void updateCategoryById(Long Id, String name, String description, String urlImage);
     void updateCategory(Category category);
     void addCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException;
-
     void updateCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException;
 }

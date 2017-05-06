@@ -15,8 +15,10 @@ import javax.persistence.*;
 public class ScoreDTO {
     @EmbeddedId
     private ScoreKey id;
+
     @Column
     private int points;
+
     @Column
     private boolean isHighest;
 }

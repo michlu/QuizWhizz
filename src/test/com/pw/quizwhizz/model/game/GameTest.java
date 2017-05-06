@@ -192,7 +192,7 @@ public class GameTest {
 
     private List<Answer> givenMockedListOfOneCorrectAnswer() {
         Answer correctAnswer = mock(Answer.class);
-        when(correctAnswer.isCorrect()).thenReturn(true);
+        when(correctAnswer.getIsCorrect()).thenReturn(true);
 
         List<Answer> answersOfP1 = mock(List.class);
         when(answersOfP1.size()).thenReturn(1);

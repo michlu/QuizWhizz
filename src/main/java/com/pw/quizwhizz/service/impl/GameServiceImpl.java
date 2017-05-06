@@ -6,11 +6,10 @@ import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.repository.*;
-import com.pw.quizwhizz.repository.game.GameRepository;
-import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
-import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
-import com.pw.quizwhizz.repository.game.QuestionRepository;
+import com.pw.quizwhizz.repository.game.*;
+import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
+import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,13 +28,10 @@ import java.util.List;
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
-    private final QuestionInGameRepository questionInGameRepository;
     private final PlayerInGameRepository playerInGameRepository;
-    private final QuestionRepository questionRepository;
-    private final GameStatsRepository gameStatsRepository;
-    private final UserRepository userRepository;
-    private final UserService userService;
-
+    private final QuestionInGameRepository questionInGameRepository;
+    private final QuestionService questionService;
+    private final CategoryService categoryService;
     private final GameFactory gameFactory;
     private final GameDTOBuilder gameDTOBuilder;
 
@@ -43,20 +39,20 @@ public class GameServiceImpl implements GameService {
     public GameServiceImpl(GameRepository gameRepository,
                            PlayerInGameRepository playerInGameRepository,
                            QuestionInGameRepository questionInGameRepository,
-                           QuestionRepository questionRepository, GameStatsRepository gameStatsRepository,
-                           UserRepository userRepository, UserService userService, GameFactory gameFactory,
+                           QuestionService questionService,
+                           CategoryService categoryService,
+                           GameFactory gameFactory,
                            GameDTOBuilder gameDTOBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
-        this.questionRepository = questionRepository;
-        this.userRepository = userRepository;
-        this.userService = userService;
+        this.questionService = questionService;
+        this.categoryService = categoryService;
         this.gameFactory = gameFactory;
         this.gameDTOBuilder = gameDTOBuilder;
         this.playerInGameRepository = playerInGameRepository;
-        this.gameStatsRepository = gameStatsRepository;
     }
 
+    @Transactional
     @Override
     public Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException {
         Category category = questions.get(0).getCategory();
@@ -68,6 +64,7 @@ public class GameServiceImpl implements GameService {
         return game;
     }
 
+    @Transactional
     @Override
     public void addOwnerToGame(Game game, User user) {
         PlayerInGameDTO playerInGameDTO = new PlayerInGameDTO();
@@ -84,7 +81,8 @@ public class GameServiceImpl implements GameService {
         GameDTO gameDTO = gameRepository.findOne(gameId);
         List<QuestionInGameDTO> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
         List<Question> questions = convertToQuestions(questionsInGame);
-        Game game = gameFactory.build(gameDTO.getCategory(), questions);
+        Category category = categoryService.findById(gameDTO.getCategory().getId());
+        Game game = gameFactory.build(category, questions);
         game.getGameStateMachine().setCurrentState(gameDTO.getCurrentState());
         game.setId(gameDTO.getId());
         if(gameDTO.getStartTime() != null) {
@@ -96,7 +94,7 @@ public class GameServiceImpl implements GameService {
     private List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
         List<Question> questions = new ArrayList<>();
         for (QuestionInGameDTO questionInGame : questionsInGame) {
-            Question question = questionRepository.findById(questionInGame.getId().getGameId());
+            Question question =  questionService.findById(questionInGame.getId().getQuestionId());
             questions.add(question);
         }
         return questions;
@@ -104,7 +102,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public void startGame(Game game, User user) {
+    public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
         PlayerInGameKey compositeKey = new PlayerInGameKey();
         compositeKey.setGameId(game.getId());
         compositeKey.setUserId(user.getId());
@@ -130,9 +128,9 @@ public class GameServiceImpl implements GameService {
     }
 
     private GameDTO convertToGameDTO(Game game) {
-        Category category = game.getCategory();
         GameState currentState = game.getGameStateMachine().getCurrentState();
-        GameDTO gameDTO = gameDTOBuilder.withCategory(category)
+        CategoryDTO categoryDTO = categoryService.findCategoryDTOById(game.getCategory().getId());
+        GameDTO gameDTO = gameDTOBuilder.withCategory(categoryDTO)
                 .withCurrentState(currentState)
                 .build();
         Instant startTime = game.getGameStateMachine().getStartTime();

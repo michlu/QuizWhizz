@@ -144,7 +144,7 @@ public class AdminController {
     @GetMapping("/listquestions/{categoryId}")
     public String listQuestion(@PathVariable String categoryId, Model model) {
         Category category = categoryService.findById(Long.parseLong(categoryId));
-        model.addAttribute("questions", questionService.findAllByCategory(category));
+        model.addAttribute("questions", questionService.findAllByCategoryId(Long.parseLong(categoryId)));
         model.addAttribute("category", category);
         return "admin_list_questions";
     }
@@ -169,19 +169,33 @@ public class AdminController {
             @RequestParam String inputQuestion,
             @RequestParam String categoryId,
             @RequestParam String inputAnswer1,
-            @RequestParam String answerId1,
             @RequestParam String inputAnswer2,
-            @RequestParam String answerId2,
             @RequestParam String inputAnswer3,
-            @RequestParam String answerId3,
             @RequestParam String inputAnswer4,
-            @RequestParam String answerId4,
             @RequestParam String answerCorrect) {
-        questionService.updateQuestion(inputId, inputQuestion, inputAnswer1, answerId1, inputAnswer2, answerId2, inputAnswer3, answerId3, inputAnswer4, answerId4, answerCorrect);
+        questionService.updateQuestion(inputId, inputQuestion, inputAnswer1, inputAnswer2, inputAnswer3, inputAnswer4, answerCorrect);
 
         return "redirect:/admin/listquestions/" + categoryId;
     }
-
+//
+//    @PostMapping("/question/edit")
+//    public String postQuestionEdit(
+//            @RequestParam String inputId,
+//            @RequestParam String inputQuestion,
+//            @RequestParam String categoryId,
+//            @RequestParam String inputAnswer1,
+//            @RequestParam String answerId1,
+//            @RequestParam String inputAnswer2,
+//            @RequestParam String answerId2,
+//            @RequestParam String inputAnswer3,
+//            @RequestParam String answerId3,
+//            @RequestParam String inputAnswer4,
+//            @RequestParam String answerId4,
+//            @RequestParam String answerCorrect) {
+//        questionService.updateQuestion(inputId, inputQuestion, inputAnswer1, answerId1, inputAnswer2, answerId2, inputAnswer3, answerId3, inputAnswer4, answerId4, answerCorrect);
+//
+//        return "redirect:/admin/listquestions/" + categoryId;
+//    }
     // === Users ===
 
     @GetMapping("/listuser")

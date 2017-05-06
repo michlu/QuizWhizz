@@ -18,6 +18,7 @@ import javax.persistence.Table;
 public class QuestionInGameDTO {
     @EmbeddedId
     private QuestionInGameKey id;
+
     @Column
     private int sequence;
 }

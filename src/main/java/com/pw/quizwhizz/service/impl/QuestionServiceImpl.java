@@ -1,11 +1,14 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.dto.game.QuestionDTO;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Answer;
 import com.pw.quizwhizz.repository.game.AnswerRepository;
 import com.pw.quizwhizz.repository.game.CategoryRepository;
 import com.pw.quizwhizz.repository.game.QuestionRepository;
+import com.pw.quizwhizz.service.AnswerService;
+import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,33 +26,36 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final CategoryRepository categoryRepository;
-    private final AnswerRepository answerRepository;
+    private final CategoryService categoryService;
+    private final AnswerService answerService;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepository, CategoryRepository categoryRepository, AnswerRepository answerRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, AnswerRepository answerRepository, AnswerService answerService, CategoryService categoryService, CategoryRepository categoryRepository) {
         this.questionRepository = questionRepository;
+        this.answerService = answerService;
+        this.categoryService = categoryService;
         this.categoryRepository = categoryRepository;
-        this.answerRepository = answerRepository;
     }
 
+    @Transactional
     @Override
     public List<Question> getQuestionsForNewGame(long categoryId) {
-        Category category = categoryRepository.findById(categoryId);
-        return getRandomQuestions(category, 10);
+        return getRandomQuestionsByCategoryId(categoryId, 10);
     }
 
     @Override
-    public List<Question> getRandomQuestions(Category category, int number) {
+    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) {
         List<Question> questions = new ArrayList<>();
 
-        List<Question> allQuestions = questionRepository.findAllByCategory(category);
+        List<QuestionDTO> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
         int size = allQuestions.size();
-        Question q;
 
         for (int i = 0; i < number; i++) {
-            q = allQuestions.get(random.nextInt(size));
-            if (!questions.contains(q)) {
-                questions.add(q);
+            QuestionDTO questionDTO = allQuestions.get(random.nextInt(size));
+            Question question = convertToQuestion(questionDTO);
+
+            if (!questions.contains(question)) {
+                questions.add(question);
             } else {
                 i--;
             }
@@ -57,29 +63,101 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
-    public List<Question> findAllByCategory(Category category){
-        return questionRepository.findAllByCategory(category);
+    @Override
+    public List<Question> getRandomQuestionsByCategory(Category category, int number) {
+        long id = category.getId();
+        return getRandomQuestionsByCategoryId(id, number);
     }
 
     @Override
-    public Question findById(Long Id) {
-        return questionRepository.findById(Id);
+    public List<Question> findAllByCategoryId(long categoryId){
+        List<Question> questions = new ArrayList<>();
+        List<QuestionDTO> questionsDTO = questionRepository.findAllByCategory_Id(categoryId);
+
+        for (QuestionDTO questionDTO : questionsDTO) {
+            Question question = new Question();
+            question.setId(questionDTO.getId());
+            question.setCategory(categoryService.findById(categoryId));
+            question.setQuestion(questionDTO.getQuestion());
+            question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+            questions.add(question);
+        }
+        return questions;
+    }
+
+    @Override
+    public List<Question> findAllByCategory(Category category){
+        return findAllByCategoryId(category.getId());
     }
 
     @Transactional
     @Override
-    public void deleteById(Long Id) {
-        questionRepository.deleteById(Id);
+    public Question findById(Long id) {
+       QuestionDTO questionDTO = questionRepository.getOne(id);
+        Question question = new Question();
+        question.setId(id);
+        question.setCategory(categoryService.findById(questionDTO.getCategory().getId()));
+        question.setQuestion(questionDTO.getQuestion());
+        question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+        return question;
     }
 
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        questionRepository.deleteById(id);
+    }
+
+    @Transactional
     @Override
     public void addQuestion(String categoryId, String inputQuestion, String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
+        long categoryIdL = Long.parseLong(categoryId);
+        Category category = categoryService.findById(categoryIdL);
         Question question = new Question();
         question.setQuestion(inputQuestion);
-
-        Category category = categoryRepository.findOne(Long.parseLong(categoryId));
         question.setCategory(category);
+        List<Answer> answers = addAnswers(inputAnswer1, inputAnswer2, inputAnswer3, inputAnswer4, answerCorrect);
+        question.setAnswers(answers);
 
+        QuestionDTO questionDTO = new QuestionDTO();
+        assignValuesFromQuestion(question, questionDTO);
+        questionRepository.save(questionDTO);
+        question.setId(questionDTO.getId());
+    }
+
+    @Transactional
+    @Modifying
+    @Override
+    public void updateQuestion(String inputId, String inputQuestion, String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
+        System.out.println(answerCorrect + " " + inputAnswer1 + " " + inputAnswer2 + " " + inputAnswer3 + " " + inputAnswer4);
+
+        long questionId = Long.parseLong(inputId);
+        Question question = findById(questionId);
+        question.setQuestion(inputQuestion);
+        updateAnswersInQuestion(inputAnswer1, inputAnswer2, inputAnswer3, inputAnswer4, answerCorrect, questionId);
+
+        QuestionDTO questionDTO = questionRepository.findOne(questionId);
+        assignValuesFromQuestion(question, questionDTO);
+        questionRepository.saveAndFlush(questionDTO);
+    }
+
+    // TODO: Test = is update correct?
+    private void assignValuesFromQuestion(Question question, QuestionDTO questionDTO) {
+        questionDTO.setCategory(categoryRepository.findOne(question.getCategory().getId()));
+        questionDTO.setAnswers(answerService.saveAsDTO(question.getAnswers()));
+        questionDTO.setQuestion(question.getQuestion());
+    }
+
+    private Question convertToQuestion(QuestionDTO questionDTO) {
+        Question question = new Question();
+        question.setId(questionDTO.getId());
+        question.setCategory(categoryService.findById(questionDTO.getCategory().getId()));
+        question.setQuestion(questionDTO.getQuestion());
+        question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+        return question;
+    }
+
+    private List<Answer> addAnswers(String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
         Answer answer1 = new Answer();
         answer1.setAnswer(inputAnswer1);
         if("correct_1".equals(answerCorrect))
@@ -96,60 +174,35 @@ public class QuestionServiceImpl implements QuestionService {
         answer4.setAnswer(inputAnswer4);
         if("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
+
         List<Answer> answers = new ArrayList<>();
         answers.add(answer1);
         answers.add(answer2);
         answers.add(answer3);
         answers.add(answer4);
-        question.setAnswers(answers);
-        questionRepository.save(question);
+        return answers;
     }
 
-    @Transactional
-    @Modifying
-    @Override
-    public void updateQuestion(String inputId,
-                               String inputQuestion,
-                               String inputAnswer1,
-                               String answerId1,
-                               String inputAnswer2,
-                               String answerId2,
-                               String inputAnswer3,
-                               String answerId3,
-                               String inputAnswer4,
-                               String answerId4,
-                               String answerCorrect) {
-        Question question = questionRepository.findById(Long.parseLong(inputId));
-        question.setQuestion(inputQuestion);
-
-        System.out.println(answerCorrect + " " + inputAnswer1 + " " + inputAnswer2 + " " + inputAnswer3 + " " + inputAnswer4);
-
-        Answer answer1 = answerRepository.findOne(Long.parseLong(answerId1));
+    private void updateAnswersInQuestion(String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect, long questionId) {
+        List<Answer> answers = answerService.getAllByQuestionId(questionId);
+        for (Answer answer : answers) {
+            answer.setCorrect(false);
+        }
+        Answer answer1 = answers.get(0);
         answer1.setAnswer(inputAnswer1);
-        answer1.setCorrect(false);
-        if("correct_1".equals(answerCorrect))
+        if ("correct_1".equals(answerCorrect))
             answer1.setCorrect(true);
-        Answer answer2 = answerRepository.findOne(Long.parseLong(answerId2));
+        Answer answer2 = answers.get(1);
         answer2.setAnswer(inputAnswer2);
-        answer2.setCorrect(false);
-        if("correct_2".equals(answerCorrect))
+        if ("correct_2".equals(answerCorrect))
             answer2.setCorrect(true);
-        Answer answer3 = answerRepository.findOne(Long.parseLong(answerId3));
+        Answer answer3 = answers.get(2);
         answer3.setAnswer(inputAnswer3);
-        answer3.setCorrect(false);
-        if("correct_3".equals(answerCorrect))
+        if ("correct_3".equals(answerCorrect))
             answer3.setCorrect(true);
-        Answer answer4 = answerRepository.findOne(Long.parseLong(answerId4));
+        Answer answer4 = answers.get(3);
         answer4.setAnswer(inputAnswer4);
-        answer4.setCorrect(false);
-        if("correct_4".equals(answerCorrect))
+        if ("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
-
-        answerRepository.save(answer1);
-        answerRepository.save(answer2);
-        answerRepository.save(answer3);
-        answerRepository.save(answer4);
-
-        questionRepository.save(question);
     }
 }

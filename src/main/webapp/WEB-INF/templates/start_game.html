@@ -15,6 +15,11 @@
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
+    <script th:src="@{/scripts/game.js}"></script>
 
     <title>Quiz Whizz</title>
 
@@ -42,15 +47,13 @@
         </div>
     </div>
 
-    <a href="#" th:href="@{'/game/started/'+${game.getId()}}" class="btn btn-primary btn-lg btn-block">Start</a>
+    <a href="#" th:href="@{'/game/'+${game.category.getId()}+'/start/'+${game.getId()}}" class="btn btn-primary btn-lg btn-block">Start</a>
 
 </div>
 <footer>
     <!-- import footer -->
     <div th:replace="fragments/footer :: footer"></div>
 </footer>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
 </body>
 
 </html>

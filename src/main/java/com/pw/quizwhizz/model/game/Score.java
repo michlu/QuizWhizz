@@ -24,7 +24,7 @@ public class Score {
     protected void evaluateAnswers(List<Answer> submittedAnswers) {
         for (int i = 0; i < submittedAnswers.size(); i++) {
             Answer answer = submittedAnswers.get(i);
-            if (answer.isCorrect()) {
+            if (answer.getIsCorrect()) {
                 points += 10;
             }
         }

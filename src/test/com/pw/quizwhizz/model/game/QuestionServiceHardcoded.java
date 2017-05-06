@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.model.game;
 
+import com.pw.quizwhizz.dto.game.CategoryDTO;
 import com.pw.quizwhizz.model.game.Answer;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
@@ -23,7 +24,17 @@ public class QuestionServiceHardcoded implements QuestionService {
     }
 
     @Override
-    public List<Question> getRandomQuestions(Category category, int number) {
+    public List<Question> findAllByCategoryId(long categoryId) {
+        return null;
+    }
+
+    @Override
+    public List<Question> findAllByCategory(Category categoryDTO) {
+        return null;
+    }
+
+    @Override
+    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) {
         List<Question> questions = new ArrayList<>();
 
         List<Question> allQuestions = createQuestions(category);
@@ -45,8 +56,9 @@ public class QuestionServiceHardcoded implements QuestionService {
     }
 
     @Override
-    public List<Question> findAllByCategory(Category category) {
-        return null;
+    public List<Question> getRandomQuestionsByCategory(Category category, int number) {
+        long id = category.getId();
+        return getRandomQuestionsByCategoryId(id, number);
     }
 
     @Override
@@ -65,7 +77,7 @@ public class QuestionServiceHardcoded implements QuestionService {
     }
 
     @Override
-    public void updateQuestion(String inputId, String inputQuestion, String inputAnswer1, String answerId1, String inputAnswer2, String answerId2, String inputAnswer3, String answerId3, String inputAnswer4, String answerId4, String answerCorrect) {
+    public void updateQuestion(String inputId, String inputQuestion, String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
 
     }
 
