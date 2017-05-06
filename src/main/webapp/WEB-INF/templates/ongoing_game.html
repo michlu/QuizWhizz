@@ -18,54 +18,50 @@
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
     <script th:src="@{/scripts/game.js}"></script>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+            crossorigin="anonymous"></script>
+    <script th:src="@{/scripts/game.js}"></script>
 
 </head>
 
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- import navbar -->
-        <div th:replace="fragments/navbar :: navbar"></div>
-    </div>
-</nav>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- import navbar -->
+            <div th:replace="fragments/navbar :: navbar"></div>
+        </div>
+    </nav>
 
-<div class="container" th:each="question,iterationStatus  : ${questions}">
-<div>
     <div class="page-header">
+        <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
         <h1 class="lead text-center">Wybierz poprawną odpowiedź</h1>
     </div>
 
-    <div class="progress">
-        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" th:attr="aria-valuenow=${iterationStatus.count * 10}" aria-valuemin="0" aria-valuemax="100" th:style="'width:' + ${iterationStatus.count * 10} + '%'" th:text="${iterationStatus.count * 10 + '%'}">
+    <div class="container" th:each="question, questionsIteration  : ${questions}">
+        <div th:id="'question-' + ${questionsIteration.count}" style="display: none">
+            <div class="progress">
+                <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
+                     th:attr="aria-valuenow=${questionsIteration.count * 10}" aria-valuemin="0" aria-valuemax="100"
+                     th:style="'width:' + ${questionsIteration.count * 10} + '%'"
+                     th:text="${questionsIteration.count * 10 + '%'}">
+                </div>
+            </div>
+
+            <div>
+                <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1>
+            </div>
+
+            <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
+                <a href="#!" class="btn btn-primary btn-block" th:text="${answer.getAnswer()}" th:onclick="'submitSingleAnswer(' + ${answer.getId()} + ')'" ></a>
+            </div>
         </div>
-</div>
-
-    <div class="container">
-        <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1>
     </div>
-</div>
-
-<div class="container answers">
-        <a href="#" class="btn btn-primary btn-block" th:text="${question.getAnswers().get(0).getAnswer()}"></a>
-        <a href="#" class="btn btn-primary btn-block" th:text="${question.getAnswers().get(1).getAnswer()}"></a>
-        <a href="#" class="btn btn-primary btn-block" th:text="${question.getAnswers().get(2).getAnswer()}"></a>
-        <a href="#" class="btn btn-primary btn-block" th:text="${question.getAnswers().get(3).getAnswer()}"></a>
-</div>
-</div>
-<br/>
-<br/>
-<div>
-    Pytania w grze:
-
-
-</div>
-
-<footer>
-    <!-- import footer -->
-    <div th:replace="fragments/footer :: footer"></div>
-</footer>
+    <footer>
+        <!-- import footer -->
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
 </body>
 
 </html>
