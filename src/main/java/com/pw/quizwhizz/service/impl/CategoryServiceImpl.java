@@ -75,7 +75,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     @Override
     public void addCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException {
-
         String fileNameWithExtension = "category_" + category.getName().toLowerCase().replace(' ', '_') + "." + file.getOriginalFilename().split("\\.")[1];
         byte[] bytes = file.getBytes();
         category.setUrlImage("/resources/images/" + fileNameWithExtension);
