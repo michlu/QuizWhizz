@@ -32,29 +32,31 @@ public class GameController {
 
     @RequestMapping (value = "/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
-        List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
-        Game game = gameService.createGame(questions);
-        User user = userService.findByEmail(authentication.getName());
-        gameService.addOwnerToGame(game, user);
+        try {
+            List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
+            Game game = gameService.createGame(questions);
+            User user = userService.findByEmail(authentication.getName());
+            gameService.addOwnerToGame(game, user);
 
-        model.addAttribute("game", game);
-        model.addAttribute("questions", questions);
-
-        return "start_game";
+            model.addAttribute("game", game);
+            model.addAttribute("questions", questions);
+            return "start_game";
+        } catch (IllegalArgumentException e) {
+            System.out.println("Niewystarczajaca liczba pytan w kategorii.");
+            return "redirect:/";
+        }
     }
 
     @RequestMapping(value = "/{categoryId}/start/{gameId}")
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
-        gameService.startGame(game, user);
 
-        //TODO: If game == null -> start_game
+        gameService.startGame(game, user);
 
         model.addAttribute("game", game);
         model.addAttribute("players", game.getPlayers());
         model.addAttribute("questions", game.getQuestions());
-
         return "ongoing_game";
     }
 
