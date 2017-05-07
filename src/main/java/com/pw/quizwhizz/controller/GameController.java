@@ -7,6 +7,7 @@ import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.service.*;
+import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -35,7 +36,7 @@ public class GameController {
         List<Question> questions;
         try {
             questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
-        } catch (IllegalNumberOfQuestionsException e) {
+        } catch (NoQuestionsInDBException e) {
             return "redirect:/";
         }
 

@@ -11,6 +11,7 @@ import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.AnswerService;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.QuestionService;
+import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -40,19 +41,19 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public List<Question> getQuestionsForNewGame(long categoryId) throws IllegalNumberOfQuestionsException {
+    public List<Question> getQuestionsForNewGame(long categoryId) throws NoQuestionsInDBException {
         return getRandomQuestionsByCategoryId(categoryId, 10);
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException {
+    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws NoQuestionsInDBException {
         List<Question> questions = new ArrayList<>();
 
         List<QuestionDTO> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
         int size = allQuestions.size();
 
         if (size == 0){
-            throw new IllegalNumberOfQuestionsException();
+            throw new NoQuestionsInDBException();
         }
 
         for (int i = 0; i < number; i++) {
@@ -69,7 +70,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategory(Category category, int number) throws IllegalNumberOfQuestionsException {
+    public List<Question> getRandomQuestionsByCategory(Category category, int number) throws NoQuestionsInDBException {
         long id = category.getId();
         return getRandomQuestionsByCategoryId(id, number);
     }

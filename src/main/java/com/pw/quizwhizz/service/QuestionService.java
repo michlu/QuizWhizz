@@ -4,13 +4,14 @@ import com.pw.quizwhizz.dto.game.CategoryDTO;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
+import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 
 import java.util.List;
 
 public interface QuestionService {
-    List<Question> getQuestionsForNewGame(long categoryId) throws IllegalNumberOfQuestionsException;
-    List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException;
-    List<Question> getRandomQuestionsByCategory(Category category, int number) throws IllegalNumberOfQuestionsException;
+    List<Question> getQuestionsForNewGame(long categoryId) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
+    List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
+    List<Question> getRandomQuestionsByCategory(Category category, int number) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
     List<Question> findAllByCategoryId(long categoryId);
     List<Question> findAllByCategory(Category category);
 
