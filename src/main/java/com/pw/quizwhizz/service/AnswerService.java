@@ -8,10 +8,9 @@ import java.util.List;
 
 public interface AnswerService {
     Answer findById(long id);
-
     List<Answer> getAllByQuestionId(long questionId);
     List<AnswerDTO> saveAsDTO(List<Answer> answers);
-
+    List<Answer> findAnswersByIds(List<Long> answerIds);
     @Transactional
     void updateAsDTO(List<Answer> answers);
 }

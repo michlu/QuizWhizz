@@ -2,6 +2,7 @@ package com.pw.quizwhizz.service;
 
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.game.Game;
 import com.pw.quizwhizz.model.game.Question;
 
@@ -15,6 +16,6 @@ public interface GameService {
     void addOwnerToGame(Game game, User user);
     Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
     void startGame(Game game, User user) throws IllegalNumberOfQuestionsException;
-
     List<Game> findAll();
+    void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException;
 }

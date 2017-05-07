@@ -57,6 +57,17 @@ public class AnswerServiceImpl implements AnswerService{
         return answersDTO;
     }
 
+    @Override
+    public List<Answer> findAnswersByIds(List<Long> answerIds) {
+        List<Answer> answers = new ArrayList<>();
+
+        for(Long id : answerIds) {
+            Answer answer = findById(id);
+            answers.add(answer);
+        }
+        return answers;
+    }
+
     @Transactional
     @Override
     public void updateAsDTO(List<Answer> answers) {

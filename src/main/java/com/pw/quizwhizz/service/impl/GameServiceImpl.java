@@ -3,14 +3,11 @@ package com.pw.quizwhizz.service.impl;
 import com.pw.quizwhizz.dto.game.*;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.*;
-import com.pw.quizwhizz.repository.*;
 import com.pw.quizwhizz.repository.game.*;
-import com.pw.quizwhizz.service.CategoryService;
-import com.pw.quizwhizz.service.GameService;
-import com.pw.quizwhizz.service.QuestionService;
-import com.pw.quizwhizz.service.UserService;
+import com.pw.quizwhizz.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +29,8 @@ public class GameServiceImpl implements GameService {
     private final QuestionInGameRepository questionInGameRepository;
     private final QuestionService questionService;
     private final CategoryService categoryService;
+    private final AnswerService answerService;
+    private final PlayerService playerService;
     private final GameFactory gameFactory;
     private final GameDTOBuilder gameDTOBuilder;
 
@@ -41,12 +40,14 @@ public class GameServiceImpl implements GameService {
                            QuestionInGameRepository questionInGameRepository,
                            QuestionService questionService,
                            CategoryService categoryService,
-                           GameFactory gameFactory,
+                           AnswerService answerService, PlayerService playerService, GameFactory gameFactory,
                            GameDTOBuilder gameDTOBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
         this.questionService = questionService;
         this.categoryService = categoryService;
+        this.answerService = answerService;
+        this.playerService = playerService;
         this.gameFactory = gameFactory;
         this.gameDTOBuilder = gameDTOBuilder;
         this.playerInGameRepository = playerInGameRepository;
@@ -125,6 +126,23 @@ public class GameServiceImpl implements GameService {
         List<GameDTO> gamesDTO = gameRepository.findAll();
         // TODO:  gamesDTO => games
         return null;
+    }
+
+    @Override
+    public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException {
+        PlayerInGameKey compositeKey = new PlayerInGameKey();
+        compositeKey.setGameId(game.getId());
+        compositeKey.setUserId(user.getId());
+        PlayerInGameDTO playerInGameDTO = playerInGameRepository.findOne(compositeKey);
+        Player player = playerService.findByIdAndGame(user.getId(), game);
+        player.setOwner(playerInGameDTO.isOwner());
+        List<Answer> answers = answerService.findAnswersByIds(answerIds);
+        player.submitAnswers(answers);
+        System.out.println("Xp: " + player.getXp());
+        System.out.println("Games played: " + player.getGamesPlayed());
+        playerService.updateAsDTO(player);
+
+        //add score
     }
 
     private GameDTO convertToGameDTO(Game game) {
