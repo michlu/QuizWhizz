@@ -57,6 +57,20 @@ public class AnswerServiceImpl implements AnswerService{
         return answersDTO;
     }
 
+    @Transactional
+    @Override
+    public void updateAsDTO(List<Answer> answers) {
+        List<AnswerDTO> answersDTO = new ArrayList<>();
+        for (Answer answer : answers) {
+            AnswerDTO answerDTO = new AnswerDTO();
+            answerDTO.setAnswer(answer.getAnswer());
+            answerDTO.setCorrect(answer.getIsCorrect());
+            answerDTO.setId(answer.getId());
+            answerRepository.saveAndFlush(answerDTO);
+            answersDTO.add(answerDTO);
+        }
+    }
+
     private Answer convertToAnswer(AnswerDTO answerDTO) {
         Answer answer = new Answer();
         answer.setId(answerDTO.getId());

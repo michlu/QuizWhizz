@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.dto.game.AnswerDTO;
 import com.pw.quizwhizz.dto.game.QuestionDTO;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Category;
@@ -126,11 +127,14 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnswers(answers);
 
         QuestionDTO questionDTO = new QuestionDTO();
+        List<AnswerDTO> answersDTO = answerService.saveAsDTO(answers);
         assignValuesFromQuestion(question, questionDTO);
+        questionDTO.setAnswers(answersDTO);
         questionRepository.save(questionDTO);
         question.setId(questionDTO.getId());
     }
 
+    //TODO: Test if correct (esp. doubled values in DB)
     @Transactional
     @Modifying
     @Override
@@ -147,10 +151,8 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.saveAndFlush(questionDTO);
     }
 
-    // TODO: Test = is update correct?
     private void assignValuesFromQuestion(Question question, QuestionDTO questionDTO) {
         questionDTO.setCategory(categoryRepository.findOne(question.getCategory().getId()));
-        questionDTO.setAnswers(answerService.saveAsDTO(question.getAnswers()));
         questionDTO.setQuestion(question.getQuestion());
     }
 
@@ -210,5 +212,7 @@ public class QuestionServiceImpl implements QuestionService {
         answer4.setAnswer(inputAnswer4);
         if ("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
+
+        answerService.updateAsDTO(answers);
     }
 }
