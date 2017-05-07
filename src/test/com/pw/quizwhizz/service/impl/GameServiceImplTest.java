@@ -12,10 +12,7 @@ import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.repository.game.GameRepository;
 import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
-import com.pw.quizwhizz.service.AnswerService;
-import com.pw.quizwhizz.service.CategoryService;
-import com.pw.quizwhizz.service.PlayerService;
-import com.pw.quizwhizz.service.QuestionService;
+import com.pw.quizwhizz.service.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +39,8 @@ public class GameServiceImplTest {
     @Mock
     private PlayerService playerService;
     @Mock
+    private ScoreService scoreService;
+    @Mock
     private GameFactory gameFactory;
     @Mock
     private GameDTOBuilder builder;
@@ -54,7 +53,7 @@ public class GameServiceImplTest {
 
     @Before
     public void setup() {
-        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, questionService, categoryService, answerService, playerService, gameFactory, builder);
+        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, questionService, categoryService, answerService, playerService, scoreService, gameFactory, builder);
     }
 
     @Test

@@ -60,7 +60,6 @@ public class Game {
         if (players.contains(player)) {
             return;
         }
-
         players.add(player);
     }
 

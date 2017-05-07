@@ -80,15 +80,11 @@ public class GameController {
             }
         gameService.submitAnswers(game, user, answerIds);
         }
-
         return "submit_answers";
     }
 
     /* TODO:
     - player: join
-    - player: submit answers -->
-        -> game -> score: evaluate answers (protected)
     - game: getScores
-    - player: check incrementGamesPlayed() + addXp()
      */
 }

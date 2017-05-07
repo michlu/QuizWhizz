@@ -31,6 +31,7 @@ public class GameServiceImpl implements GameService {
     private final CategoryService categoryService;
     private final AnswerService answerService;
     private final PlayerService playerService;
+    private final ScoreService scoreService;
     private final GameFactory gameFactory;
     private final GameDTOBuilder gameDTOBuilder;
 
@@ -40,7 +41,7 @@ public class GameServiceImpl implements GameService {
                            QuestionInGameRepository questionInGameRepository,
                            QuestionService questionService,
                            CategoryService categoryService,
-                           AnswerService answerService, PlayerService playerService, GameFactory gameFactory,
+                           AnswerService answerService, PlayerService playerService, ScoreService scoreService, GameFactory gameFactory,
                            GameDTOBuilder gameDTOBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
@@ -48,6 +49,7 @@ public class GameServiceImpl implements GameService {
         this.categoryService = categoryService;
         this.answerService = answerService;
         this.playerService = playerService;
+        this.scoreService = scoreService;
         this.gameFactory = gameFactory;
         this.gameDTOBuilder = gameDTOBuilder;
         this.playerInGameRepository = playerInGameRepository;
@@ -104,10 +106,7 @@ public class GameServiceImpl implements GameService {
     @Override
     @Transactional
     public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
-        PlayerInGameKey compositeKey = new PlayerInGameKey();
-        compositeKey.setGameId(game.getId());
-        compositeKey.setUserId(user.getId());
-        PlayerInGameDTO playerInGameDTO = playerInGameRepository.findOne(compositeKey);
+        PlayerInGameDTO playerInGameDTO = getPlayerInGameDTO(game, user);
         Player player = new Player(user.getFirstName(), game);
         player.setOwner(playerInGameDTO.isOwner());
 
@@ -122,27 +121,35 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> findAll() {
-        List<GameDTO> gamesDTO = gameRepository.findAll();
-        // TODO:  gamesDTO => games
-        return null;
-    }
-
-    @Override
     public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException {
-        PlayerInGameKey compositeKey = new PlayerInGameKey();
-        compositeKey.setGameId(game.getId());
-        compositeKey.setUserId(user.getId());
-        PlayerInGameDTO playerInGameDTO = playerInGameRepository.findOne(compositeKey);
+        PlayerInGameDTO playerInGameDTO = getPlayerInGameDTO(game, user);
         Player player = playerService.findByIdAndGame(user.getId(), game);
         player.setOwner(playerInGameDTO.isOwner());
         List<Answer> answers = answerService.findAnswersByIds(answerIds);
         player.submitAnswers(answers);
-        System.out.println("Xp: " + player.getXp());
-        System.out.println("Games played: " + player.getGamesPlayed());
+        updateGameDTO(game);
         playerService.updateAsDTO(player);
 
-        //add score
+        //TODO: add score
+        //TODO: update the game when the state changes
+        //TODO: check scores and determine which one is the highest when GameState == CLOSED
+    }
+
+    @Override
+    public List<Game> findAll() {
+        List<GameDTO> gamesDTO = gameRepository.findAll();
+        for(GameDTO gameDTO : gamesDTO) {
+            Category category = categoryService.findById(gameDTO.getCategory().getId());
+            //TODO: get questions, state etc. and build with the factory
+        }
+        return null;
+    }
+
+    private PlayerInGameDTO getPlayerInGameDTO(Game game, User user) {
+        PlayerInGameKey compositeKey = new PlayerInGameKey();
+        compositeKey.setGameId(game.getId());
+        compositeKey.setUserId(user.getId());
+        return playerInGameRepository.findOne(compositeKey);
     }
 
     private GameDTO convertToGameDTO(Game game) {
@@ -157,15 +164,6 @@ public class GameServiceImpl implements GameService {
         }
         return gameDTO;
     }
-
-//    @Override
-//    public Player findPlayerByUserAndGame(User user, Game game) {
-//        PlayerInGameKey compositeKey = new PlayerInGameKey();
-//        compositeKey.setUserId(user.getId());
-//        compositeKey.setGameId(game.getId());
-//        PlayerInGameDTO dto = playerInGameRepository.findOne(compositeKey);
-//        return new Player(user.getFirstName(), game);
-//    }
 
     private void saveQuestionsInGame(List<Question> questions, Long gameId) {
         for (QuestionInGameDTO question : convertToQuestionsInGame(questions, gameId)) {
@@ -184,10 +182,14 @@ public class GameServiceImpl implements GameService {
             compositeKey.setQuestionId(question.getId());
             questionInGame.setId(compositeKey);
             questionInGame.setSequence(i);
-
             questionsInGame.add(questionInGame);
         }
-
         return questionsInGame;
+    }
+
+    private void updateGameDTO(Game game) {
+        GameDTO gameDTO = gameRepository.findOne(game.getId());
+        gameDTO.setCurrentState(game.getGameStateMachine().getCurrentState());
+        gameRepository.saveAndFlush(gameDTO);
     }
 }
