@@ -1,6 +1,7 @@
 package com.pw.quizwhizz.service.impl;
 
 import com.pw.quizwhizz.dto.game.QuestionDTO;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Answer;
@@ -39,16 +40,20 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public List<Question> getQuestionsForNewGame(long categoryId) {
+    public List<Question> getQuestionsForNewGame(long categoryId) throws IllegalNumberOfQuestionsException {
         return getRandomQuestionsByCategoryId(categoryId, 10);
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) {
+    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException {
         List<Question> questions = new ArrayList<>();
 
         List<QuestionDTO> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
         int size = allQuestions.size();
+
+        if (size == 0){
+            throw new IllegalNumberOfQuestionsException();
+        }
 
         for (int i = 0; i < number; i++) {
             QuestionDTO questionDTO = allQuestions.get(random.nextInt(size));
@@ -64,7 +69,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategory(Category category, int number) {
+    public List<Question> getRandomQuestionsByCategory(Category category, int number) throws IllegalNumberOfQuestionsException {
         long id = category.getId();
         return getRandomQuestionsByCategoryId(id, number);
     }

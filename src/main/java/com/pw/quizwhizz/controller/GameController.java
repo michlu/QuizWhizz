@@ -32,19 +32,20 @@ public class GameController {
 
     @RequestMapping (value = "/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        List<Question> questions;
         try {
-            List<Question> questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
-            Game game = gameService.createGame(questions);
-            User user = userService.findByEmail(authentication.getName());
-            gameService.addOwnerToGame(game, user);
-
-            model.addAttribute("game", game);
-            model.addAttribute("questions", questions);
-            return "start_game";
-        } catch (IllegalArgumentException e) {
-            System.out.println("Niewystarczajaca liczba pytan w kategorii.");
+            questions = questionService.getQuestionsForNewGame(Long.parseLong(categoryId));
+        } catch (IllegalNumberOfQuestionsException e) {
             return "redirect:/";
         }
+
+        Game game = gameService.createGame(questions);
+        User user = userService.findByEmail(authentication.getName());
+        gameService.addOwnerToGame(game, user);
+
+        model.addAttribute("game", game);
+        model.addAttribute("questions", questions);
+        return "start_game";
     }
 
     @RequestMapping(value = "/{categoryId}/start/{gameId}")
@@ -60,13 +61,20 @@ public class GameController {
         return "ongoing_game";
     }
 
+    @RequestMapping(value = "/{gameId}/submitAnswers")
+    public String submitAnswers(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        return "game_open";
+    }
+
     @RequestMapping(value = "/{gameId}/submitAnswers/{answers}")
     public String submitAnswers(@PathVariable Long gameId, @PathVariable String answers, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
 
-        for (String answerId : answers.split(",")) {
-            System.out.println(answerId);
+        if (answers != null || answers != "") {
+            for (String answerId : answers.split(",")) {
+                System.out.println(answerId);
+            }
         }
 
 
