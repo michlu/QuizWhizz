@@ -23,12 +23,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/game")
 public class GameController {
+    final private GameService gameService;
+    final private UserService userService;
+    final private QuestionService questionService;
+
     @Autowired
-    private GameService gameService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private QuestionService questionService;
+    public GameController(GameService gameService, UserService userService, QuestionService questionService) {
+        this.gameService = gameService;
+        this.userService = userService;
+        this.questionService = questionService;
+    }
 
     @RequestMapping (value = "/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
