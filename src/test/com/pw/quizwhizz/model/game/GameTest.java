@@ -21,7 +21,6 @@ import java.util.List;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class GameTest {
-
     private Category category;
     private List<Question> questions;
     private GameStateMachine gameStateMachine;
@@ -32,7 +31,6 @@ public class GameTest {
     private List<Score> scores;
     private List<Answer> answersOfP1;
     private List<Answer> answersOfP2;
-
 
     @Test
     public void publicConstructorTest() throws IllegalNumberOfQuestionsException {

@@ -1,6 +1,5 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
@@ -23,21 +22,14 @@ import java.util.List;
 @Service
 public class
 UserServiceImpl implements UserService {
-
-	private UserRepository userRepository;
-	private RoleRepository roleRepository;
-	private PasswordEncoder passwordEncoder;
+	final private UserRepository userRepository;
+	final private RoleRepository roleRepository;
+	final private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public void setUserRepository(UserRepository userRepository) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
-	}
-	@Autowired
-	public void setRoleRepository(RoleRepository roleRepository) {
 		this.roleRepository = roleRepository;
-	}
-	@Autowired
-	public void setPasswordEncoder(PasswordEncoder passwordEncoder){
 		this.passwordEncoder = passwordEncoder;
 	}
 

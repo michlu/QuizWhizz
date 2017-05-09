@@ -18,16 +18,13 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
     private UserService userService;
     private CategoryService categoryService;
     private QuestionService questionService;
     private RoleService roleService;
-
 
     @Autowired
     public void setQuestionService(QuestionService questionService) {
@@ -46,14 +43,12 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-
     @GetMapping("/adminadd")
     public String getAddCategoryQuestion(Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("categories", categoryService.findAll());
         return "admin_add";
     }
-
 
     @PostMapping("/addcategory")
     public String addCategory(
@@ -83,7 +78,6 @@ public class AdminController {
             return "redirect:adminadd";
         }
     }
-
 
     @PostMapping(value = "/addquestion", produces = "text/plain;charset=UTF-8")
     public String addQuestion(
@@ -237,5 +231,4 @@ public class AdminController {
             userService.removeRoleUser(userId, roles);
         return "redirect:/admin/user/edit/"+userId;
     }
-
 }
