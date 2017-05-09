@@ -1,16 +1,15 @@
 package com.pw.quizwhizz.repository.game;
 
-import com.pw.quizwhizz.dto.game.QuestionInGameDTO;
-import com.pw.quizwhizz.dto.game.QuestionInGameKey;
+import com.pw.quizwhizz.entity.game.QuestionInGameEntity;
+import com.pw.quizwhizz.entity.game.QuestionInGameKey;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface QuestionInGameRepository extends JpaRepository<QuestionInGameDTO, QuestionInGameKey> {
+public interface QuestionInGameRepository extends JpaRepository<QuestionInGameEntity, QuestionInGameKey> {
 
-    List<QuestionInGameDTO> findAllById_GameId(Long id);
+    List<QuestionInGameEntity> findAllById_GameId(Long id);
 
 }

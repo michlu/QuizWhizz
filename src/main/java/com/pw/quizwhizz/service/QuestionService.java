@@ -1,6 +1,5 @@
 package com.pw.quizwhizz.service;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;

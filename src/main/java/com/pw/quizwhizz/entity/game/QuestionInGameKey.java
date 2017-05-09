@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.dto.game;
+package com.pw.quizwhizz.entity.game;
 
 import lombok.Data;
 

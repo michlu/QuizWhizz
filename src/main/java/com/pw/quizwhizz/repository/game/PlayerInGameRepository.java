@@ -1,12 +1,10 @@
 package com.pw.quizwhizz.repository.game;
 
-import com.pw.quizwhizz.dto.game.PlayerInGameDTO;
-import com.pw.quizwhizz.dto.game.PlayerInGameKey;
+import com.pw.quizwhizz.entity.game.PlayerInGameEntity;
+import com.pw.quizwhizz.entity.game.PlayerInGameKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface PlayerInGameRepository extends JpaRepository<PlayerInGameDTO, PlayerInGameKey> {
+public interface PlayerInGameRepository extends JpaRepository<PlayerInGameEntity, PlayerInGameKey> {
 }

@@ -1,6 +1,5 @@
-package com.pw.quizwhizz.dto.game;
+package com.pw.quizwhizz.entity.game;
 
-import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.GameState;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +11,15 @@ import java.time.Instant;
 @Entity
 @NoArgsConstructor
 @Table(name = "game")
-public class GameDTO {
+public class GameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    // Game_id niepotrzebne: gra dostanie id z GameDTO po zapisaniu do bazy
+    // Game_id niepotrzebne: gra dostanie id z GameEntity po zapisaniu do bazy
     @OneToOne
     @JoinColumn(name = "category_id")
-    CategoryDTO category;
+    CategoryEntity category;
 
     @Enumerated
     @Column(name = "current_state")
@@ -30,11 +29,11 @@ public class GameDTO {
     @Column(name = "start_time")
     Instant startTime;          // podobnie: po startcie wycigniemy z GSM
 
-    public GameDTO(GameDTOBuilder builder) {
+    public GameEntity(GameEntityBuilder builder) {
         this.category = builder.getCategory();
         this.currentState = builder.getGameState();
         this.startTime = builder.getStartTime();
     }
-    // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameDTO
+    // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameEntity
 
 }

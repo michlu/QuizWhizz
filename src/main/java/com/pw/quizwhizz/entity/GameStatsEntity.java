@@ -1,7 +1,6 @@
-package com.pw.quizwhizz.dto;
+package com.pw.quizwhizz.entity;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
-import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.entity.game.CategoryEntity;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,7 +9,7 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "game_stats")
-public class GameStatsDTO {
+public class GameStatsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -20,7 +19,7 @@ public class GameStatsDTO {
 
     @OneToOne
     @JoinColumn(name = "category_id")
-    CategoryDTO category;
+    CategoryEntity category;
 
 
 //    List<User> users;

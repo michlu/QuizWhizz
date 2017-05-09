@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
+import com.pw.quizwhizz.entity.game.CategoryEntity;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.repository.game.CategoryRepository;
 import com.pw.quizwhizz.service.CategoryService;
@@ -29,10 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAll() {
-        List<CategoryDTO> categoriesDTO = categoryRepository.findAll();
+        List<CategoryEntity> categoriesEntity = categoryRepository.findAll();
         List<Category> categories = new ArrayList<>();
-        for (CategoryDTO categoryDTO : categoriesDTO) {
-            Category category = convertToCategory(categoryDTO);
+        for (CategoryEntity categoryEntity : categoriesEntity) {
+            Category category = convertToCategory(categoryEntity);
             categories.add(category);
         }
         return categories;
@@ -40,20 +40,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        CategoryDTO categoryDTO =  categoryRepository.findOne(id);
-        Category category = convertToCategory(categoryDTO);
+        CategoryEntity categoryEntity =  categoryRepository.findOne(id);
+        Category category = convertToCategory(categoryEntity);
         return category;
     }
 
     @Override
     public Category findByName(String categoryName) {
-        CategoryDTO categoryDTO =  categoryRepository.findByName(categoryName);
-        Category category = convertToCategory(categoryDTO);
+        CategoryEntity categoryEntity =  categoryRepository.findByName(categoryName);
+        Category category = convertToCategory(categoryEntity);
         return category;
     }
 
     @Override
-    public CategoryDTO findCategoryDTOById(long id) {
+    public CategoryEntity findCategoryEntityById(long id) {
         return categoryRepository.findOne(id);
     }
 
@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
         if(category.getUrlImage().equals(null) || category.getUrlImage().equals(""))
             category.setUrlImage("/resources/images/category_default.png");
 
-        saveAsCategoryDTO(category);
+        saveAsCategoryEntity(category);
     }
 
     @Transactional
@@ -80,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUrlImage("/resources/images/" + fileNameWithExtension);
         Path path = Paths.get(saveDirectory + fileNameWithExtension);
         Files.write(path, bytes);
-        saveAsCategoryDTO(category);
+        saveAsCategoryEntity(category);
     }
 
     @Transactional
@@ -93,53 +93,53 @@ public class CategoryServiceImpl implements CategoryService {
         Path path = Paths.get(saveDirectory + fileNameWithExtension);
         Files.write(path, bytes);
 
-        CategoryDTO updatedCategoryDTO = getCategoryDTO(updatedCategory);
-        categoryRepository.saveAndFlush(updatedCategoryDTO);
+        CategoryEntity updatedCategoryEntity = getCategoryEntity(updatedCategory);
+        categoryRepository.saveAndFlush(updatedCategoryEntity);
     }
 
     @Transactional
     @Modifying
     @Override
     public void updateCategory(Category updatedCategory){
-        CategoryDTO updatedCategoryDTO = getCategoryDTO(updatedCategory);
-        categoryRepository.saveAndFlush(updatedCategoryDTO);
+        CategoryEntity updatedCategoryEntity = getCategoryEntity(updatedCategory);
+        categoryRepository.saveAndFlush(updatedCategoryEntity);
     }
 
     @Transactional
     @Modifying
     @Override
     public void updateCategoryById(Long id, String name, String description, String urlImage){
-        CategoryDTO updatedCategoryDTO = categoryRepository.findOne(id);
-        updatedCategoryDTO.setName(name);
-        updatedCategoryDTO.setDescription(description);
-        updatedCategoryDTO.setUrlImage(urlImage);
-        categoryRepository.saveAndFlush(updatedCategoryDTO);
+        CategoryEntity updatedCategoryEntity = categoryRepository.findOne(id);
+        updatedCategoryEntity.setName(name);
+        updatedCategoryEntity.setDescription(description);
+        updatedCategoryEntity.setUrlImage(urlImage);
+        categoryRepository.saveAndFlush(updatedCategoryEntity);
     }
 
-    private CategoryDTO getCategoryDTO(Category updatedCategory) {
-        CategoryDTO updatedCategoryDTO = categoryRepository.findOne(updatedCategory.getId());
-        updatedCategoryDTO.setName(updatedCategory.getName());
-        updatedCategoryDTO.setDescription(updatedCategory.getDescription());
-        updatedCategoryDTO.setUrlImage(updatedCategory.getUrlImage());
-        return updatedCategoryDTO;
+    private CategoryEntity getCategoryEntity(Category updatedCategory) {
+        CategoryEntity updatedCategoryEntity = categoryRepository.findOne(updatedCategory.getId());
+        updatedCategoryEntity.setName(updatedCategory.getName());
+        updatedCategoryEntity.setDescription(updatedCategory.getDescription());
+        updatedCategoryEntity.setUrlImage(updatedCategory.getUrlImage());
+        return updatedCategoryEntity;
     }
 
-    private Category convertToCategory(CategoryDTO categoryDTO) {
+    private Category convertToCategory(CategoryEntity categoryEntity) {
         Category category = new Category();
-        category.setId(categoryDTO.getId());
-        category.setName(categoryDTO.getName());
-        category.setDescription(categoryDTO.getDescription());
-        category.setUrlImage(categoryDTO.getUrlImage());
+        category.setId(categoryEntity.getId());
+        category.setName(categoryEntity.getName());
+        category.setDescription(categoryEntity.getDescription());
+        category.setUrlImage(categoryEntity.getUrlImage());
         return category;
     }
 
-    private void saveAsCategoryDTO(Category category) {
-        CategoryDTO updatedCategoryDTO = new CategoryDTO();
-        updatedCategoryDTO.setName(category.getName());
-        updatedCategoryDTO.setDescription(category.getDescription());
-        updatedCategoryDTO.setUrlImage(category.getUrlImage());
-        CategoryDTO categoryDTO = updatedCategoryDTO;
-        categoryRepository.save(categoryDTO);
-        category.setId(categoryDTO.getId());
+    private void saveAsCategoryEntity(Category category) {
+        CategoryEntity updatedCategoryEntity = new CategoryEntity();
+        updatedCategoryEntity.setName(category.getName());
+        updatedCategoryEntity.setDescription(category.getDescription());
+        updatedCategoryEntity.setUrlImage(category.getUrlImage());
+        CategoryEntity categoryEntity = updatedCategoryEntity;
+        categoryRepository.save(categoryEntity);
+        category.setId(categoryEntity.getId());
     }
 }

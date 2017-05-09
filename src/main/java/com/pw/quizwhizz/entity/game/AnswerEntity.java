@@ -1,4 +1,4 @@
-package com.pw.quizwhizz.dto.game;
+package com.pw.quizwhizz.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "answer")
 @JsonIgnoreProperties
-public class AnswerDTO {
+public class AnswerEntity {
     @Id
     @Column(name = "id_answer")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

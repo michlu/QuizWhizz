@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
+import com.pw.quizwhizz.entity.game.CategoryEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import java.util.List;
