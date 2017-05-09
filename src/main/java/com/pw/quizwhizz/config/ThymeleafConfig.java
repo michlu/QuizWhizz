@@ -73,4 +73,5 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
 }
