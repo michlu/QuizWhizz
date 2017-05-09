@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.dto.game.AnswerDTO;
+import com.pw.quizwhizz.entity.game.AnswerEntity;
 import com.pw.quizwhizz.model.game.Answer;
 import com.pw.quizwhizz.repository.game.AnswerRepository;
 import com.pw.quizwhizz.repository.game.QuestionRepository;
@@ -26,17 +26,17 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public Answer findById(long id) {
-        AnswerDTO answerDTO = answerRepository.findOne(id);
-        Answer answer = convertToAnswer(answerDTO);
+        AnswerEntity answerEntity = answerRepository.findOne(id);
+        Answer answer = convertToAnswer(answerEntity);
         return answer;
     }
 
     @Override
     public List<Answer> getAllByQuestionId(long questionId) {
-        List<AnswerDTO> answersDTO = questionRepository.findOne(questionId).getAnswers();
+        List<AnswerEntity> answersEntity = questionRepository.findOne(questionId).getAnswers();
         List<Answer> answers = new ArrayList<>();
-        for (AnswerDTO answerDTO : answersDTO) {
-            Answer answer = convertToAnswer(answerDTO);
+        for (AnswerEntity answerEntity : answersEntity) {
+            Answer answer = convertToAnswer(answerEntity);
             answers.add(answer);
         }
         return answers;
@@ -44,17 +44,17 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Transactional
     @Override
-    public List<AnswerDTO> saveAsDTO(List<Answer> answers) {
-        List<AnswerDTO> answersDTO = new ArrayList<>();
+    public List<AnswerEntity> saveAsEntity(List<Answer> answers) {
+        List<AnswerEntity> answersEntity = new ArrayList<>();
         for (Answer answer : answers) {
-            AnswerDTO answerDTO = new AnswerDTO();
-            answerDTO.setAnswer(answer.getAnswer());
-            answerDTO.setCorrect(answer.getIsCorrect());
-            answerRepository.save(answerDTO);
-            answer.setId(answerDTO.getId());
-            answersDTO.add(answerDTO);
+            AnswerEntity answerEntity = new AnswerEntity();
+            answerEntity.setAnswer(answer.getAnswer());
+            answerEntity.setCorrect(answer.getIsCorrect());
+            answerRepository.save(answerEntity);
+            answer.setId(answerEntity.getId());
+            answersEntity.add(answerEntity);
         }
-        return answersDTO;
+        return answersEntity;
     }
 
     @Override
@@ -70,23 +70,23 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Transactional
     @Override
-    public void updateAsDTO(List<Answer> answers) {
-        List<AnswerDTO> answersDTO = new ArrayList<>();
+    public void updateAsEntity(List<Answer> answers) {
+        List<AnswerEntity> answersEntity = new ArrayList<>();
         for (Answer answer : answers) {
-            AnswerDTO answerDTO = new AnswerDTO();
-            answerDTO.setAnswer(answer.getAnswer());
-            answerDTO.setCorrect(answer.getIsCorrect());
-            answerDTO.setId(answer.getId());
-            answerRepository.saveAndFlush(answerDTO);
-            answersDTO.add(answerDTO);
+            AnswerEntity answerEntity = new AnswerEntity();
+            answerEntity.setAnswer(answer.getAnswer());
+            answerEntity.setCorrect(answer.getIsCorrect());
+            answerEntity.setId(answer.getId());
+            answerRepository.saveAndFlush(answerEntity);
+            answersEntity.add(answerEntity);
         }
     }
 
-    private Answer convertToAnswer(AnswerDTO answerDTO) {
+    private Answer convertToAnswer(AnswerEntity answerEntity) {
         Answer answer = new Answer();
-        answer.setId(answerDTO.getId());
-        answer.setAnswer(answerDTO.getAnswer());
-        answer.setCorrect(answerDTO.getIsCorrect());
+        answer.setId(answerEntity.getId());
+        answer.setAnswer(answerEntity.getAnswer());
+        answer.setCorrect(answerEntity.getIsCorrect());
         return answer;
     }
 }

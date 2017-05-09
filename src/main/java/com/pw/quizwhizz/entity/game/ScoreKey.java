@@ -1,11 +1,10 @@
-package com.pw.quizwhizz.dto.game;
+package com.pw.quizwhizz.entity.game;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 /**

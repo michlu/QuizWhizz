@@ -2,10 +2,10 @@ package com.pw.quizwhizz.service.impl;
 
 import com.pw.quizwhizz.model.game.Game;
 import com.pw.quizwhizz.model.game.GameStateMachine;
-import com.pw.quizwhizz.dto.game.GameDTOBuilder;
+import com.pw.quizwhizz.entity.game.GameEntityBuilder;
 import com.pw.quizwhizz.model.game.GameFactory;
 import com.pw.quizwhizz.model.game.Category;
-import com.pw.quizwhizz.dto.game.GameDTO;
+import com.pw.quizwhizz.entity.game.GameEntity;
 import com.pw.quizwhizz.model.game.GameState;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
@@ -43,7 +43,7 @@ public class GameServiceImplTest {
     @Mock
     private GameFactory gameFactory;
     @Mock
-    private GameDTOBuilder builder;
+    private GameEntityBuilder builder;
 
     private GameServiceImpl gameService;
     private Question question1;
@@ -57,26 +57,26 @@ public class GameServiceImplTest {
     }
 
     @Test
-    public void findAllGameDTOS() {
-        List<GameDTO> games = mock(List.class);
+    public void findAllGameEntities() {
+        List<GameEntity> games = mock(List.class);
         when(gameRepository.findAll()).thenReturn(games);
 
         assertThat(games).isNotNull();
     }
 
 //    @Test
-//    public void givenCategoryAndQuestions_WhenCreateGameIsCalled_ThenGameDTOShouldBeSavedAndGameShouldGetItsId() throws IllegalNumberOfQuestionsException {
+//    public void givenCategoryAndQuestions_WhenCreateGameIsCalled_ThenGameEntityShouldBeSavedAndGameShouldGetItsId() throws IllegalNumberOfQuestionsException {
 //        Category category = mock(Category.class);
 //        GameState state = GameState.OPEN;
 //        List<Question> questions = givenListOfQuestions();
 //        when(questions.get(0).getCategory()).thenReturn(category);
 //
-//        GameDTO gameDTO = mock(GameDTO.class);
+//        GameEntity gameEntity = mock(GameEntity.class);
 //        when(builder.withCategory(any())).thenReturn(builder);
 //        when(builder.withCurrentState(any())).thenReturn(builder);
-//        when(builder.build()).thenReturn(gameDTO);
-//        when(gameDTO.getCategory()).thenReturn(category);
-//        when(gameDTO.getCurrentState()).thenReturn(state);
+//        when(builder.build()).thenReturn(gameEntity);
+//        when(gameEntity.getCategory()).thenReturn(category);
+//        when(gameEntity.getCurrentState()).thenReturn(state);
 //
 //          Null pointer przy konwersji - gra == null!
 //        Game game = gameService.createGame(questions);

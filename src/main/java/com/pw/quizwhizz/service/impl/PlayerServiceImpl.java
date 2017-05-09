@@ -1,10 +1,8 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.dto.game.PlayerDTO;
-import com.pw.quizwhizz.dto.game.PlayerInGameDTO;
+import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.game.Game;
 import com.pw.quizwhizz.model.game.Player;
-import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
 import com.pw.quizwhizz.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +20,25 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player findByIdAndGame(Long id, Game game) {
-        PlayerDTO playerDTO = playerRepository.findOne(id);
-        Player player = new Player(playerDTO.getName(), game);
+        PlayerEntity playerEntity = playerRepository.findOne(id);
+        Player player = new Player(playerEntity.getName(), game);
         player.setId(id);
-        if(playerDTO.getGamesPlayed() != null) {
-            player.setGamesPlayed(playerDTO.getGamesPlayed());
+        if(playerEntity.getGamesPlayed() != null) {
+            player.setGamesPlayed(playerEntity.getGamesPlayed());
         }
-        if(playerDTO.getXp() != null) {
-            player.setXp(playerDTO.getXp());
+        if(playerEntity.getXp() != null) {
+            player.setXp(playerEntity.getXp());
         }
         return player;
     }
 
     @Transactional
     @Override
-    public void updateAsDTO(Player player) {
-        PlayerDTO playerDTO = playerRepository.findOne(player.getId());
-        playerDTO.setGamesPlayed(player.getGamesPlayed());
-        playerDTO. setXp(player.getXp());
-        playerRepository.saveAndFlush(playerDTO);
+    public void updateEntity(Player player) {
+        PlayerEntity playerEntity = playerRepository.findOne(player.getId());
+        playerEntity.setGamesPlayed(player.getGamesPlayed());
+        playerEntity. setXp(player.getXp());
+        playerRepository.saveAndFlush(playerEntity);
     }
 
 }

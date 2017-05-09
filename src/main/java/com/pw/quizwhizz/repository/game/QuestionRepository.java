@@ -1,17 +1,16 @@
 package com.pw.quizwhizz.repository.game;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
-import com.pw.quizwhizz.dto.game.QuestionDTO;
-import com.pw.quizwhizz.model.game.Category;
+import com.pw.quizwhizz.entity.game.CategoryEntity;
+import com.pw.quizwhizz.entity.game.QuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface QuestionRepository extends JpaRepository<QuestionDTO, Long> {
+public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> {
     void deleteById(Long id);
-    List<QuestionDTO> findAllByCategory_Id(Long categoryId);
-    List<QuestionDTO> findAllByCategory(CategoryDTO categoryDTO);
+    List<QuestionEntity> findAllByCategory_Id(Long categoryId);
+    List<QuestionEntity> findAllByCategory(CategoryEntity categoryEntity);
 }
 

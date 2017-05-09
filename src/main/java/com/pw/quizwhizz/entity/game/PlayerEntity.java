@@ -1,7 +1,6 @@
-package com.pw.quizwhizz.dto.game;
+package com.pw.quizwhizz.entity.game;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "user")
-public class PlayerDTO {
+public class PlayerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
