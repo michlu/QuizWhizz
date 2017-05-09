@@ -22,5 +22,4 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected String[] getServletMappings() {
         return new String[]{"/"}; // adres URL ktory ma byc obslugiwany przez springa
     }
-
 }

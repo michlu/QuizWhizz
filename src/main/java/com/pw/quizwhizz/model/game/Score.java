@@ -17,7 +17,7 @@ public class Score {
     private int points;
     private boolean isHighest;
 
-    protected Score(Player player) {
+    public Score(Player player) {
         this.player = player;
     }
 

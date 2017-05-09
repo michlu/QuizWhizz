@@ -20,9 +20,9 @@ public class PlayerDTO {
     private String name;
 
     @Column(name = "player_xp")
-    private int xp;
+    private Integer xp;
 
     @Column(name = "games_played")
-    private int gamesPlayed;
+    private Integer gamesPlayed;
 
 }

@@ -1,6 +1,8 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.dto.game.AnswerDTO;
 import com.pw.quizwhizz.dto.game.QuestionDTO;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Answer;
@@ -10,6 +12,7 @@ import com.pw.quizwhizz.repository.game.QuestionRepository;
 import com.pw.quizwhizz.service.AnswerService;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.QuestionService;
+import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
@@ -39,16 +42,20 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Transactional
     @Override
-    public List<Question> getQuestionsForNewGame(long categoryId) {
+    public List<Question> getQuestionsForNewGame(long categoryId) throws NoQuestionsInDBException {
         return getRandomQuestionsByCategoryId(categoryId, 10);
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) {
+    public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws NoQuestionsInDBException {
         List<Question> questions = new ArrayList<>();
 
         List<QuestionDTO> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
         int size = allQuestions.size();
+
+        if (size == 0){
+            throw new NoQuestionsInDBException();
+        }
 
         for (int i = 0; i < number; i++) {
             QuestionDTO questionDTO = allQuestions.get(random.nextInt(size));
@@ -64,7 +71,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<Question> getRandomQuestionsByCategory(Category category, int number) {
+    public List<Question> getRandomQuestionsByCategory(Category category, int number) throws NoQuestionsInDBException {
         long id = category.getId();
         return getRandomQuestionsByCategoryId(id, number);
     }
@@ -120,11 +127,14 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnswers(answers);
 
         QuestionDTO questionDTO = new QuestionDTO();
+        List<AnswerDTO> answersDTO = answerService.saveAsDTO(answers);
         assignValuesFromQuestion(question, questionDTO);
+        questionDTO.setAnswers(answersDTO);
         questionRepository.save(questionDTO);
         question.setId(questionDTO.getId());
     }
 
+    //TODO: Test if correct (esp. doubled values in DB)
     @Transactional
     @Modifying
     @Override
@@ -141,10 +151,8 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.saveAndFlush(questionDTO);
     }
 
-    // TODO: Test = is update correct?
     private void assignValuesFromQuestion(Question question, QuestionDTO questionDTO) {
         questionDTO.setCategory(categoryRepository.findOne(question.getCategory().getId()));
-        questionDTO.setAnswers(answerService.saveAsDTO(question.getAnswers()));
         questionDTO.setQuestion(question.getQuestion());
     }
 
@@ -204,5 +212,7 @@ public class QuestionServiceImpl implements QuestionService {
         answer4.setAnswer(inputAnswer4);
         if ("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
+
+        answerService.updateAsDTO(answers);
     }
 }

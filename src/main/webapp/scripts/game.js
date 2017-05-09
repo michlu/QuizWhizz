@@ -1,13 +1,17 @@
+$(document).ready(function () {
+        $('#question-1').show();
+    }
+);
 
-$('#question-1').show();
-var intervalId = setInterval(function() { showQuestion(); }, 15000);
+var timeForAnswerInMiliseconds = 15000;
+var intervalId = setInterval(function() { showQuestion(); }, timeForAnswerInMiliseconds);
 var submittedAnswer = '';
 
 function submitSingleAnswer(answerId) {
     submittedAnswer += answerId + ',';
     showQuestion();
     clearInterval(intervalId);
-    intervalId = setInterval(function() { showQuestion(); }, 15000);
+    intervalId = setInterval(function() { showQuestion(); }, timeForAnswerInMiliseconds);
 }
 
 function sendAnswers() {
@@ -16,7 +20,6 @@ function sendAnswers() {
 }
 
 var currentQuestion = 1;
-
 function showQuestion() {
     currentQuestion++;
     $('#question-' + (currentQuestion - 1)).hide();
@@ -25,6 +28,6 @@ function showQuestion() {
 
     if(currentQuestion == 10) {
         clearInterval(intervalId);
-        setTimeout(function() { sendAnswers(); }, 10000)
+        setTimeout(function() { sendAnswers(); }, timeForAnswerInMiliseconds)
     }
 }

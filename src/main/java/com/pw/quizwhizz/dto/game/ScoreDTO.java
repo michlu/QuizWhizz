@@ -5,9 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-/**
- * Created by karol on 03.05.2017.
- */
 @Getter
 @Setter
 @Entity
@@ -15,10 +12,8 @@ import javax.persistence.*;
 public class ScoreDTO {
     @EmbeddedId
     private ScoreKey id;
-
     @Column
-    private int points;
-
+    private Integer points;
     @Column
     private boolean isHighest;
 }

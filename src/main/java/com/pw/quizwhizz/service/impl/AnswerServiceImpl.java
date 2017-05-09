@@ -57,6 +57,31 @@ public class AnswerServiceImpl implements AnswerService{
         return answersDTO;
     }
 
+    @Override
+    public List<Answer> findAnswersByIds(List<Long> answerIds) {
+        List<Answer> answers = new ArrayList<>();
+
+        for(Long id : answerIds) {
+            Answer answer = findById(id);
+            answers.add(answer);
+        }
+        return answers;
+    }
+
+    @Transactional
+    @Override
+    public void updateAsDTO(List<Answer> answers) {
+        List<AnswerDTO> answersDTO = new ArrayList<>();
+        for (Answer answer : answers) {
+            AnswerDTO answerDTO = new AnswerDTO();
+            answerDTO.setAnswer(answer.getAnswer());
+            answerDTO.setCorrect(answer.getIsCorrect());
+            answerDTO.setId(answer.getId());
+            answerRepository.saveAndFlush(answerDTO);
+            answersDTO.add(answerDTO);
+        }
+    }
+
     private Answer convertToAnswer(AnswerDTO answerDTO) {
         Answer answer = new Answer();
         answer.setId(answerDTO.getId());

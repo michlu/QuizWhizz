@@ -5,6 +5,7 @@ import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.service.QuestionService;
+import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 import com.pw.quizwhizz.service.impl.QuestionServiceImpl;
 import org.junit.Test;
 
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class IntegrationTest {
 
     @Test
-    public void GivenSeveralPlayers_WhenEveryoneSubmitsTheirAnswers_ThenWinnerIsDeterminedAndGivenBonus() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public void GivenSeveralPlayers_WhenEveryoneSubmitsTheirAnswers_ThenWinnerIsDeterminedAndGivenBonus() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException, NoQuestionsInDBException {
         // First API call (Get categories)
 
         // Second API call (Create a game)

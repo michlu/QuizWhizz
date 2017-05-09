@@ -15,7 +15,6 @@ import java.util.List;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class Player {
-
     private String name;
     private long id;
     private int xp;
@@ -36,7 +35,6 @@ public class Player {
         } else {
             this.isOwner = false;
         }
-
         game.addPlayer(this);
     }
 
@@ -49,7 +47,6 @@ public class Player {
         if (answers == null) {
             return;
         }
-
         game.evaluateAnswers(this, answers);
     }
 
