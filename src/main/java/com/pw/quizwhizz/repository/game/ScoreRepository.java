@@ -1,8 +1,7 @@
 package com.pw.quizwhizz.repository.game;
 
-import com.pw.quizwhizz.dto.game.QuestionDTO;
-import com.pw.quizwhizz.dto.game.ScoreKey;
-import com.pw.quizwhizz.model.game.Question;
+import com.pw.quizwhizz.entity.game.QuestionEntity;
+import com.pw.quizwhizz.entity.game.ScoreKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * Created by karol on 03.05.2017.
  */
 @Repository
-public interface ScoreRepository extends JpaRepository<QuestionDTO, ScoreKey> {
+public interface ScoreRepository extends JpaRepository<QuestionEntity, ScoreKey> {
 }

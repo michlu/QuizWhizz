@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.dto.game.CategoryDTO;
+import com.pw.quizwhizz.entity.game.CategoryEntity;
 import com.pw.quizwhizz.model.game.Answer;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
@@ -29,7 +29,7 @@ public class QuestionServiceHardcoded implements QuestionService {
     }
 
     @Override
-    public List<Question> findAllByCategory(Category categoryDTO) {
+    public List<Question> findAllByCategory(Category categoryEntity) {
         return null;
     }
 

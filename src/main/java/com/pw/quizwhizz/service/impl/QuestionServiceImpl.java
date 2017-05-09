@@ -1,8 +1,7 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.dto.game.AnswerDTO;
-import com.pw.quizwhizz.dto.game.QuestionDTO;
-import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.entity.game.AnswerEntity;
+import com.pw.quizwhizz.entity.game.QuestionEntity;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Answer;
@@ -50,7 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws NoQuestionsInDBException {
         List<Question> questions = new ArrayList<>();
 
-        List<QuestionDTO> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
+        List<QuestionEntity> allQuestions = questionRepository.findAllByCategory_Id(categoryId);
         int size = allQuestions.size();
 
         if (size == 0){
@@ -58,8 +57,8 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
         for (int i = 0; i < number; i++) {
-            QuestionDTO questionDTO = allQuestions.get(random.nextInt(size));
-            Question question = convertToQuestion(questionDTO);
+            QuestionEntity questionEntity = allQuestions.get(random.nextInt(size));
+            Question question = convertToQuestion(questionEntity);
 
             if (!questions.contains(question)) {
                 questions.add(question);
@@ -79,14 +78,14 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<Question> findAllByCategoryId(long categoryId){
         List<Question> questions = new ArrayList<>();
-        List<QuestionDTO> questionsDTO = questionRepository.findAllByCategory_Id(categoryId);
+        List<QuestionEntity> questionsEntity = questionRepository.findAllByCategory_Id(categoryId);
 
-        for (QuestionDTO questionDTO : questionsDTO) {
+        for (QuestionEntity questionEntity : questionsEntity) {
             Question question = new Question();
-            question.setId(questionDTO.getId());
+            question.setId(questionEntity.getId());
             question.setCategory(categoryService.findById(categoryId));
-            question.setQuestion(questionDTO.getQuestion());
-            question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+            question.setQuestion(questionEntity.getQuestion());
+            question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
             questions.add(question);
         }
         return questions;
@@ -100,12 +99,12 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional
     @Override
     public Question findById(Long id) {
-       QuestionDTO questionDTO = questionRepository.getOne(id);
+       QuestionEntity questionEntity = questionRepository.getOne(id);
         Question question = new Question();
         question.setId(id);
-        question.setCategory(categoryService.findById(questionDTO.getCategory().getId()));
-        question.setQuestion(questionDTO.getQuestion());
-        question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+        question.setCategory(categoryService.findById(questionEntity.getCategory().getId()));
+        question.setQuestion(questionEntity.getQuestion());
+        question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
         return question;
     }
 
@@ -126,12 +125,12 @@ public class QuestionServiceImpl implements QuestionService {
         List<Answer> answers = addAnswers(inputAnswer1, inputAnswer2, inputAnswer3, inputAnswer4, answerCorrect);
         question.setAnswers(answers);
 
-        QuestionDTO questionDTO = new QuestionDTO();
-        List<AnswerDTO> answersDTO = answerService.saveAsDTO(answers);
-        assignValuesFromQuestion(question, questionDTO);
-        questionDTO.setAnswers(answersDTO);
-        questionRepository.save(questionDTO);
-        question.setId(questionDTO.getId());
+        QuestionEntity questionEntity = new QuestionEntity();
+        List<AnswerEntity> answersEntity = answerService.saveAsEntity(answers);
+        assignValuesFromQuestion(question, questionEntity);
+        questionEntity.setAnswers(answersEntity);
+        questionRepository.save(questionEntity);
+        question.setId(questionEntity.getId());
     }
 
     //TODO: Test if correct (esp. doubled values in DB)
@@ -146,22 +145,22 @@ public class QuestionServiceImpl implements QuestionService {
         question.setQuestion(inputQuestion);
         updateAnswersInQuestion(inputAnswer1, inputAnswer2, inputAnswer3, inputAnswer4, answerCorrect, questionId);
 
-        QuestionDTO questionDTO = questionRepository.findOne(questionId);
-        assignValuesFromQuestion(question, questionDTO);
-        questionRepository.saveAndFlush(questionDTO);
+        QuestionEntity questionEntity = questionRepository.findOne(questionId);
+        assignValuesFromQuestion(question, questionEntity);
+        questionRepository.saveAndFlush(questionEntity);
     }
 
-    private void assignValuesFromQuestion(Question question, QuestionDTO questionDTO) {
-        questionDTO.setCategory(categoryRepository.findOne(question.getCategory().getId()));
-        questionDTO.setQuestion(question.getQuestion());
+    private void assignValuesFromQuestion(Question question, QuestionEntity questionEntity) {
+        questionEntity.setCategory(categoryRepository.findOne(question.getCategory().getId()));
+        questionEntity.setQuestion(question.getQuestion());
     }
 
-    private Question convertToQuestion(QuestionDTO questionDTO) {
+    private Question convertToQuestion(QuestionEntity questionEntity) {
         Question question = new Question();
-        question.setId(questionDTO.getId());
-        question.setCategory(categoryService.findById(questionDTO.getCategory().getId()));
-        question.setQuestion(questionDTO.getQuestion());
-        question.setAnswers(answerService.getAllByQuestionId(questionDTO.getId()));
+        question.setId(questionEntity.getId());
+        question.setCategory(categoryService.findById(questionEntity.getCategory().getId()));
+        question.setQuestion(questionEntity.getQuestion());
+        question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
         return question;
     }
 
@@ -213,6 +212,6 @@ public class QuestionServiceImpl implements QuestionService {
         if ("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
 
-        answerService.updateAsDTO(answers);
+        answerService.updateAsEntity(answers);
     }
 }

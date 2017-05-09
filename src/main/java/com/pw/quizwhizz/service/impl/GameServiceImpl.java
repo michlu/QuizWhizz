@@ -1,6 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.dto.game.*;
+import com.pw.quizwhizz.entity.game.*;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
@@ -33,7 +33,7 @@ public class GameServiceImpl implements GameService {
     private final PlayerService playerService;
     private final ScoreService scoreService;
     private final GameFactory gameFactory;
-    private final GameDTOBuilder gameDTOBuilder;
+    private final GameEntityBuilder gameEntityBuilder;
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository,
@@ -42,7 +42,7 @@ public class GameServiceImpl implements GameService {
                            QuestionService questionService,
                            CategoryService categoryService,
                            AnswerService answerService, PlayerService playerService, ScoreService scoreService, GameFactory gameFactory,
-                           GameDTOBuilder gameDTOBuilder) {
+                           GameEntityBuilder gameEntityBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
         this.questionService = questionService;
@@ -51,7 +51,7 @@ public class GameServiceImpl implements GameService {
         this.playerService = playerService;
         this.scoreService = scoreService;
         this.gameFactory = gameFactory;
-        this.gameDTOBuilder = gameDTOBuilder;
+        this.gameEntityBuilder = gameEntityBuilder;
         this.playerInGameRepository = playerInGameRepository;
     }
 
@@ -60,9 +60,9 @@ public class GameServiceImpl implements GameService {
     public Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException {
         Category category = questions.get(0).getCategory();
         Game game = gameFactory.build(category, questions);
-        GameDTO gameDTO = convertToGameDTO(game);
-        gameRepository.save(gameDTO);
-        game.setId(gameDTO.getId());
+        GameEntity gameEntity = convertToGameEntity(game);
+        gameRepository.save(gameEntity);
+        game.setId(gameEntity.getId());
         saveQuestionsInGame(questions, game.getId());
         return game;
     }
@@ -70,33 +70,33 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public void addOwnerToGame(Game game, User user) {
-        PlayerInGameDTO playerInGameDTO = new PlayerInGameDTO();
+        PlayerInGameEntity playerInGameEntity = new PlayerInGameEntity();
         PlayerInGameKey compositeKey = new PlayerInGameKey();
         compositeKey.setGameId(game.getId());
         compositeKey.setUserId(user.getId());
-        playerInGameDTO.setId(compositeKey);
-        playerInGameDTO.setOwner(true);
-        playerInGameRepository.save(playerInGameDTO);
+        playerInGameEntity.setId(compositeKey);
+        playerInGameEntity.setOwner(true);
+        playerInGameRepository.save(playerInGameEntity);
     }
 
     @Override
     public Game findGameById(Long gameId) throws IllegalNumberOfQuestionsException {
-        GameDTO gameDTO = gameRepository.findOne(gameId);
-        List<QuestionInGameDTO> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
+        GameEntity gameEntity = gameRepository.findOne(gameId);
+        List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
         List<Question> questions = convertToQuestions(questionsInGame);
-        Category category = categoryService.findById(gameDTO.getCategory().getId());
+        Category category = categoryService.findById(gameEntity.getCategory().getId());
         Game game = gameFactory.build(category, questions);
-        game.getGameStateMachine().setCurrentState(gameDTO.getCurrentState());
-        game.setId(gameDTO.getId());
-        if(gameDTO.getStartTime() != null) {
-            game.getGameStateMachine().setStartTime(gameDTO.getStartTime());
+        game.getGameStateMachine().setCurrentState(gameEntity.getCurrentState());
+        game.setId(gameEntity.getId());
+        if(gameEntity.getStartTime() != null) {
+            game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
         }
         return game;
     }
 
-    private List<Question> convertToQuestions(List<QuestionInGameDTO> questionsInGame) {
+    private List<Question> convertToQuestions(List<QuestionInGameEntity> questionsInGame) {
         List<Question> questions = new ArrayList<>();
-        for (QuestionInGameDTO questionInGame : questionsInGame) {
+        for (QuestionInGameEntity questionInGame : questionsInGame) {
             Question question =  questionService.findById(questionInGame.getId().getQuestionId());
             questions.add(question);
         }
@@ -106,29 +106,29 @@ public class GameServiceImpl implements GameService {
     @Override
     @Transactional
     public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
-        PlayerInGameDTO playerInGameDTO = getPlayerInGameDTO(game, user);
+        PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = new Player(user.getFirstName(), game);
-        player.setOwner(playerInGameDTO.isOwner());
+        player.setOwner(playerInGameEntity.isOwner());
 
         if(player.isOwner()) {
             player.startGame();
             System.out.println("Game state: " + game.getGameStateMachine().getCurrentState());
             System.out.println("Start time: " + game.getGameStateMachine().getStartTime());
         }
-        GameDTO gameDTO = convertToGameDTO(game);
-        gameDTO.setId(game.getId());
-        gameRepository.saveAndFlush(gameDTO);
+        GameEntity gameEntity = convertToGameEntity(game);
+        gameEntity.setId(game.getId());
+        gameRepository.saveAndFlush(gameEntity);
     }
 
     @Override
     public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException {
-        PlayerInGameDTO playerInGameDTO = getPlayerInGameDTO(game, user);
+        PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = playerService.findByIdAndGame(user.getId(), game);
-        player.setOwner(playerInGameDTO.isOwner());
+        player.setOwner(playerInGameEntity.isOwner());
         List<Answer> answers = answerService.findAnswersByIds(answerIds);
         player.submitAnswers(answers);
-        updateGameDTO(game);
-        playerService.updateAsDTO(player);
+        updateGameEntity(game);
+        playerService.updateEntity(player);
 
         //TODO: add score
         //TODO: update the game when the state changes
@@ -137,46 +137,46 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public List<Game> findAll() {
-        List<GameDTO> gamesDTO = gameRepository.findAll();
-        for(GameDTO gameDTO : gamesDTO) {
-            Category category = categoryService.findById(gameDTO.getCategory().getId());
+        List<GameEntity> gamesEntity = gameRepository.findAll();
+        for(GameEntity gameEntity : gamesEntity) {
+            Category category = categoryService.findById(gameEntity.getCategory().getId());
             //TODO: get questions, state etc. and build with the factory
         }
         return null;
     }
 
-    private PlayerInGameDTO getPlayerInGameDTO(Game game, User user) {
+    private PlayerInGameEntity getPlayerInGameEntity(Game game, User user) {
         PlayerInGameKey compositeKey = new PlayerInGameKey();
         compositeKey.setGameId(game.getId());
         compositeKey.setUserId(user.getId());
         return playerInGameRepository.findOne(compositeKey);
     }
 
-    private GameDTO convertToGameDTO(Game game) {
+    private GameEntity convertToGameEntity(Game game) {
         GameState currentState = game.getGameStateMachine().getCurrentState();
-        CategoryDTO categoryDTO = categoryService.findCategoryDTOById(game.getCategory().getId());
-        GameDTO gameDTO = gameDTOBuilder.withCategory(categoryDTO)
+        CategoryEntity categoryEntity = categoryService.findCategoryEntityById(game.getCategory().getId());
+        GameEntity gameEntity = gameEntityBuilder.withCategory(categoryEntity)
                 .withCurrentState(currentState)
                 .build();
         Instant startTime = game.getGameStateMachine().getStartTime();
         if(startTime != null) {
-            gameDTO.setStartTime(startTime);
+            gameEntity.setStartTime(startTime);
         }
-        return gameDTO;
+        return gameEntity;
     }
 
     private void saveQuestionsInGame(List<Question> questions, Long gameId) {
-        for (QuestionInGameDTO question : convertToQuestionsInGame(questions, gameId)) {
+        for (QuestionInGameEntity question : convertToQuestionsInGame(questions, gameId)) {
             questionInGameRepository.save(question);
         }
     }
 
-    private List<QuestionInGameDTO> convertToQuestionsInGame(List<Question> questions, Long gameId) {
-        List<QuestionInGameDTO> questionsInGame = new ArrayList<>();
+    private List<QuestionInGameEntity> convertToQuestionsInGame(List<Question> questions, Long gameId) {
+        List<QuestionInGameEntity> questionsInGame = new ArrayList<>();
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
-            QuestionInGameDTO questionInGame = new QuestionInGameDTO();
+            QuestionInGameEntity questionInGame = new QuestionInGameEntity();
             QuestionInGameKey compositeKey = new QuestionInGameKey();
             compositeKey.setGameId(gameId);
             compositeKey.setQuestionId(question.getId());
@@ -187,9 +187,9 @@ public class GameServiceImpl implements GameService {
         return questionsInGame;
     }
 
-    private void updateGameDTO(Game game) {
-        GameDTO gameDTO = gameRepository.findOne(game.getId());
-        gameDTO.setCurrentState(game.getGameStateMachine().getCurrentState());
-        gameRepository.saveAndFlush(gameDTO);
+    private void updateGameEntity(Game game) {
+        GameEntity gameEntity = gameRepository.findOne(game.getId());
+        gameEntity.setCurrentState(game.getGameStateMachine().getCurrentState());
+        gameRepository.saveAndFlush(gameEntity);
     }
 }
