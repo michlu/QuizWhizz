@@ -13,6 +13,10 @@ import com.pw.quizwhizz.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+//TODO: Test
 @Service
 public class ScoreServiceImpl implements ScoreService {
     private final ScoreRepository scoreRepository;
@@ -34,16 +38,7 @@ public class ScoreServiceImpl implements ScoreService {
         ScoreEntity scoreEntity = scoreRepository.findOne(key);
         Player player = playerService.findByIdAndGame(userId, game);
 
-        Score score = scoreBuilder
-                .withPlayer(player)
-                .withGameId(game.getId())
-                .build();
-        if (scoreEntity.getPoints() != null) {
-            score.setPoints(scoreEntity.getPoints());
-        }
-        if (scoreEntity.getIsHighest() != null) {
-            score.setHighest(scoreEntity.getIsHighest());
-        }
+        Score score = buildScore(scoreEntity, player);
         return score;
     }
 
@@ -59,4 +54,43 @@ public class ScoreServiceImpl implements ScoreService {
         scoreRepository.save(scoreEntity);
     }
 
+    //TODO: Test
+    @Override
+    public List<Score> getScoresByGame(Game game) throws IllegalNumberOfQuestionsException {
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(game.getId());
+        List<Score> scores = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Player player = playerService.findByIdAndGame(scoreEntity.getId().getUserId(), game);
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Score> getScoresByPlayer(Player player) {
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
+        List<Score> scores = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
+    }
+
+    private Score buildScore(ScoreEntity scoreEntity, Player player) {
+        Score score = scoreBuilder
+                .withPlayer(player)
+                .withGameId(scoreEntity.getId().getGameId())
+                .build();
+        if (scoreEntity.getPoints() != null) {
+            score.setPoints(scoreEntity.getPoints());
+        }
+        if (scoreEntity.getIsHighest() != null) {
+            score.setHighest(scoreEntity.getIsHighest());
+        }
+        return score;
+    }
 }
