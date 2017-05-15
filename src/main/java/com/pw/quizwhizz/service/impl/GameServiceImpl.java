@@ -120,8 +120,9 @@ public class GameServiceImpl implements GameService {
         gameRepository.saveAndFlush(gameEntity);
     }
 
+    @Transactional
     @Override
-    public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException {
+    public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = playerService.findByIdAndGame(user.getId(), game);
         player.setOwner(playerInGameEntity.isOwner());
@@ -130,7 +131,13 @@ public class GameServiceImpl implements GameService {
         updateGameEntity(game);
         playerService.updateEntity(player);
 
-        //TODO: add score
+        Score score = game.getScores().stream()
+                .filter(s -> s.getPlayer().equals(player))
+                .findFirst()
+                .orElse(null);
+        score.setGameId(game.getId());
+        scoreService.saveAsScoreEntity(score);
+
         //TODO: update the game when the state changes
         //TODO: check scores and determine which one is the highest when GameState == CLOSED
     }

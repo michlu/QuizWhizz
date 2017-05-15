@@ -1,9 +1,11 @@
 package com.pw.quizwhizz.service.impl;
 
 import com.pw.quizwhizz.entity.game.PlayerEntity;
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.game.Game;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
+import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findByIdAndGame(Long id, Game game) {
+    public Player findByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
         PlayerEntity playerEntity = playerRepository.findOne(id);
         Player player = new Player(playerEntity.getName(), game);
         player.setId(id);

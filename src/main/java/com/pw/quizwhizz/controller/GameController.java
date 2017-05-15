@@ -89,6 +89,6 @@ public class GameController {
 
     /* TODO:
     - player: join
-    - game: getScores
+    - game: checkScores
      */
 }

@@ -17,5 +17,5 @@ public interface GameService {
     Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
     void startGame(Game game, User user) throws IllegalNumberOfQuestionsException;
     List<Game> findAll();
-    void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException;
+    void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
 }

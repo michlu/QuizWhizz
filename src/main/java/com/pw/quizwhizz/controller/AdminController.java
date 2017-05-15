@@ -21,27 +21,19 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private UserService userService;
-    private CategoryService categoryService;
-    private QuestionService questionService;
-    private RoleService roleService;
+    private final UserService userService;
+    private final CategoryService categoryService;
+    private final QuestionService questionService;
+    private final RoleService roleService;
 
     @Autowired
-    public void setQuestionService(QuestionService questionService) {
-        this.questionService = questionService;
-    }
-    @Autowired
-    public void setCategoryService(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
-    @Autowired
-    public void setUserService(UserService userService) {
+    public AdminController(UserService userService, CategoryService categoryService, QuestionService questionService, RoleService roleService) {
         this.userService = userService;
-    }
-    @Autowired
-    public void setRoleService(RoleService roleService) {
+        this.categoryService = categoryService;
+        this.questionService = questionService;
         this.roleService = roleService;
     }
+
 
     @GetMapping("/adminadd")
     public String getAddCategoryQuestion(Model model) {

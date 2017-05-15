@@ -53,7 +53,7 @@ public class IntegrationTest {
 
         when(gsm.gameIsClosed()).thenReturn(true);
         // Ninth, Tenth, Eleventh API call (Each player wants to see the scores)
-        List<Score> scores = game.getScores();
+        List<Score> scores = game.checkScores();
 
         Player actualWinner = scores.stream()
                 .sorted(Comparator.comparingInt(Score::getPoints).reversed())
