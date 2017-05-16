@@ -67,12 +67,18 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public void addOwnerToGame(Game game, User user) {
-        PlayerInGameEntity playerInGameEntity = new PlayerInGameEntity();
-        PlayerInGameKey compositeKey = new PlayerInGameKey();
-        compositeKey.setGameId(game.getId());
-        compositeKey.setUserId(user.getId());
-        playerInGameEntity.setId(compositeKey);
+        PlayerInGameEntity playerInGameEntity = createPlayerInGameEntityWithCompositeKey(game, user);
         playerInGameEntity.setOwner(true);
+        playerInGameRepository.save(playerInGameEntity);
+    }
+
+    @Override
+    public void addPlayerToGame(Game game, User user) {
+        Player player = new Player(user.getFirstName());
+        player.setGame(game);
+
+        PlayerInGameEntity playerInGameEntity = createPlayerInGameEntityWithCompositeKey(game, user);
+        playerInGameEntity.setOwner(player.isOwner());
         playerInGameRepository.save(playerInGameEntity);
     }
 
@@ -138,6 +144,8 @@ public class GameServiceImpl implements GameService {
         //TODO: update the game when the state changes
         //TODO: check scores and determine which one is the highest when GameState == CLOSED
     }
+
+    //TODO: test
 
     @Override
     public Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException {
@@ -208,6 +216,15 @@ public class GameServiceImpl implements GameService {
         compositeKey.setGameId(game.getId());
         compositeKey.setUserId(user.getId());
         return playerInGameRepository.findOne(compositeKey);
+    }
+
+    private PlayerInGameEntity createPlayerInGameEntityWithCompositeKey(Game game, User user) {
+        PlayerInGameEntity playerInGameEntity = new PlayerInGameEntity();
+        PlayerInGameKey compositeKey = new PlayerInGameKey();
+        compositeKey.setGameId(game.getId());
+        compositeKey.setUserId(user.getId());
+        playerInGameEntity.setId(compositeKey);
+        return playerInGameEntity;
     }
 
     private GameEntity convertToGameEntity(Game game) {

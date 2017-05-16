@@ -30,4 +30,6 @@ public interface GameService {
 
     List<Game> findAll();
     void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
+
+    void addPlayerToGame(Game game, User user);
 }
