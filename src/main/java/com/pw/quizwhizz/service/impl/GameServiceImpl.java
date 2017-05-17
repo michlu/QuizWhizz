@@ -185,7 +185,7 @@ public class GameServiceImpl implements GameService {
         }
         return scores;
     }
-    
+
     @Override
     public List<Game> findAll() throws IllegalNumberOfQuestionsException {
         List<Game> games = new ArrayList<>();

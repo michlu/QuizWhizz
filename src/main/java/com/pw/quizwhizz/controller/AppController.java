@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.controller;
 
+import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class AppController {
     }
 
     @RequestMapping("/")
-    public String home(Model model) {
+    public String home(Model model) throws IllegalNumberOfQuestionsException {
         model.addAttribute("categories", categoryService.findAll());
         model.addAttribute("games", gameService.findAll());
         return "index";
