@@ -21,7 +21,6 @@ import java.util.List;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class GameTest {
-
     private Category category;
     private List<Question> questions;
     private GameStateMachine gameStateMachine;
@@ -32,7 +31,6 @@ public class GameTest {
     private List<Score> scores;
     private List<Answer> answersOfP1;
     private List<Answer> answersOfP2;
-
 
     @Test
     public void publicConstructorTest() throws IllegalNumberOfQuestionsException {
@@ -67,13 +65,13 @@ public class GameTest {
     }
 
     @Test
-    public void givenCategoryQuestionsAndNotClosedGameStatus_WhenGetScoresIsCalled_ThenScoresAreNotNull() throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public void givenCategoryQuestionsAndNotClosedGameStatus_WhenCheckScoresIsCalled_ThenScoresAreNotNull() throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
         givenMockedCategoryQuestionsAndGameStateMachine();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenGameStateIsClosed();
 
-        scores = game.getScores();
+        scores = game.checkScores();
 
         Java6Assertions.assertThat(game.getCategory()).isEqualTo(category);
         Java6Assertions.assertThat(game.getQuestions()).isEqualTo(questions);
@@ -88,7 +86,7 @@ public class GameTest {
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenGameStateIsNotClosed();
 
-        assertThatThrownBy(() -> game.getScores()).isInstanceOf(ScoreCannotBeRetrievedBeforeGameIsClosedException.class);
+        assertThatThrownBy(() -> game.checkScores()).isInstanceOf(ScoreCannotBeRetrievedBeforeGameIsClosedException.class);
     }
 
     @Test
@@ -118,7 +116,7 @@ public class GameTest {
         game.evaluateAnswers(player1, answersOfP1);
 
         givenGameStateIsClosed();
-        assertThat(game.getScores().size()).isEqualTo(1);
+        assertThat(game.checkScores().size()).isEqualTo(1);
 
     }
 
@@ -140,7 +138,7 @@ public class GameTest {
 
         givenGameStateIsClosed();
 
-        scores = game.getScores();
+        scores = game.checkScores();
 
         verify(gameStateMachine, atLeast(2)).determineCurrentState();
         verify(gameStateMachine, times(1)).start();

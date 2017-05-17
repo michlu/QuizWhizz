@@ -23,6 +23,7 @@ public class Game {
     private final GameStateMachine gameStateMachine;
     private List<Player> players = new ArrayList<>();
     private List<Score> scores = new ArrayList<>();
+    private ScoreBuilder scoreBuilder = new ScoreBuilder();
 
     // Production code constructor
     public Game(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
@@ -42,7 +43,7 @@ public class Game {
         this.gameStateMachine = gameStateMachine;
     }
 
-    public List<Score> getScores() throws ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public List<Score> checkScores() throws ScoreCannotBeRetrievedBeforeGameIsClosedException {
         gameStateMachine.determineCurrentState();
 
         if (!gameStateMachine.gameIsClosed()) {
@@ -78,7 +79,7 @@ public class Game {
             return;
         }
 
-        Score score = new Score(player);
+        Score score = scoreBuilder.withPlayer(player).build();
         score.evaluateAnswers(submittedAnswers);
         scores.add(score);
     }

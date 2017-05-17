@@ -23,12 +23,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/game")
 public class GameController {
+    final private GameService gameService;
+    final private UserService userService;
+    final private QuestionService questionService;
+
     @Autowired
-    private GameService gameService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private QuestionService questionService;
+    public GameController(GameService gameService, UserService userService, QuestionService questionService) {
+        this.gameService = gameService;
+        this.userService = userService;
+        this.questionService = questionService;
+    }
 
     @RequestMapping (value = "/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
@@ -83,8 +87,19 @@ public class GameController {
         return "submit_answers";
     }
 
+    @RequestMapping(value = "join/{gameId}")
+    public String joinGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        User user = userService.findByEmail(authentication.getName());
+        Game game = gameService.findGameById(gameId);
+
+        gameService.addPlayerToGame(game, user);
+        model.addAttribute("game", game);
+        return "started_game";
+    }
     /* TODO:
-    - player: join
-    - game: getScores
+    - player: join -> script to check if the game has been started
+    - waiting for a game to start -> script to determine how many players there are
+    - game: checkScores - if status==closed - ok
+                        - if not closed == wait for all results
      */
 }

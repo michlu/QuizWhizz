@@ -15,5 +15,5 @@ public class ScoreEntity {
     @Column
     private Integer points;
     @Column
-    private boolean isHighest;
+    private Boolean isHighest;
 }

@@ -16,11 +16,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Karolina on 02.05.2017.
- */
-
-// TODO: Update'owanie zasobow
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -31,9 +26,10 @@ public class GameServiceImpl implements GameService {
     private final CategoryService categoryService;
     private final AnswerService answerService;
     private final PlayerService playerService;
-    private final ScoreService scoreService;
     private final GameFactory gameFactory;
     private final GameEntityBuilder gameEntityBuilder;
+    private final ScoreRepository scoreRepository;
+    private final ScoreBuilder scoreBuilder;
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository,
@@ -41,18 +37,19 @@ public class GameServiceImpl implements GameService {
                            QuestionInGameRepository questionInGameRepository,
                            QuestionService questionService,
                            CategoryService categoryService,
-                           AnswerService answerService, PlayerService playerService, ScoreService scoreService, GameFactory gameFactory,
-                           GameEntityBuilder gameEntityBuilder) {
+                           AnswerService answerService, PlayerService playerService, GameFactory gameFactory,
+                           GameEntityBuilder gameEntityBuilder, ScoreRepository scoreRepository, ScoreBuilder scoreBuilder) {
         this.gameRepository = gameRepository;
         this.questionInGameRepository = questionInGameRepository;
         this.questionService = questionService;
         this.categoryService = categoryService;
         this.answerService = answerService;
         this.playerService = playerService;
-        this.scoreService = scoreService;
         this.gameFactory = gameFactory;
         this.gameEntityBuilder = gameEntityBuilder;
         this.playerInGameRepository = playerInGameRepository;
+        this.scoreRepository = scoreRepository;
+        this.scoreBuilder = scoreBuilder;
     }
 
     @Transactional
@@ -70,12 +67,18 @@ public class GameServiceImpl implements GameService {
     @Transactional
     @Override
     public void addOwnerToGame(Game game, User user) {
-        PlayerInGameEntity playerInGameEntity = new PlayerInGameEntity();
-        PlayerInGameKey compositeKey = new PlayerInGameKey();
-        compositeKey.setGameId(game.getId());
-        compositeKey.setUserId(user.getId());
-        playerInGameEntity.setId(compositeKey);
+        PlayerInGameEntity playerInGameEntity = createPlayerInGameEntityWithCompositeKey(game, user);
         playerInGameEntity.setOwner(true);
+        playerInGameRepository.save(playerInGameEntity);
+    }
+
+    @Override
+    public void addPlayerToGame(Game game, User user) {
+        Player player = new Player(user.getFirstName());
+        player.setGame(game);
+
+        PlayerInGameEntity playerInGameEntity = createPlayerInGameEntityWithCompositeKey(game, user);
+        playerInGameEntity.setOwner(player.isOwner());
         playerInGameRepository.save(playerInGameEntity);
     }
 
@@ -88,7 +91,7 @@ public class GameServiceImpl implements GameService {
         Game game = gameFactory.build(category, questions);
         game.getGameStateMachine().setCurrentState(gameEntity.getCurrentState());
         game.setId(gameEntity.getId());
-        if(gameEntity.getStartTime() != null) {
+        if (gameEntity.getStartTime() != null) {
             game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
         }
         return game;
@@ -97,7 +100,7 @@ public class GameServiceImpl implements GameService {
     private List<Question> convertToQuestions(List<QuestionInGameEntity> questionsInGame) {
         List<Question> questions = new ArrayList<>();
         for (QuestionInGameEntity questionInGame : questionsInGame) {
-            Question question =  questionService.findById(questionInGame.getId().getQuestionId());
+            Question question = questionService.findById(questionInGame.getId().getQuestionId());
             questions.add(question);
         }
         return questions;
@@ -110,7 +113,7 @@ public class GameServiceImpl implements GameService {
         Player player = new Player(user.getFirstName(), game);
         player.setOwner(playerInGameEntity.isOwner());
 
-        if(player.isOwner()) {
+        if (player.isOwner()) {
             player.startGame();
             System.out.println("Game state: " + game.getGameStateMachine().getCurrentState());
             System.out.println("Start time: " + game.getGameStateMachine().getStartTime());
@@ -120,8 +123,9 @@ public class GameServiceImpl implements GameService {
         gameRepository.saveAndFlush(gameEntity);
     }
 
+    @Transactional
     @Override
-    public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException {
+    public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = playerService.findByIdAndGame(user.getId(), game);
         player.setOwner(playerInGameEntity.isOwner());
@@ -130,15 +134,77 @@ public class GameServiceImpl implements GameService {
         updateGameEntity(game);
         playerService.updateEntity(player);
 
-        //TODO: add score
+        Score score = game.getScores().stream()
+                .filter(s -> s.getPlayer().equals(player))
+                .findFirst()
+                .orElse(null);
+        score.setGameId(game.getId());
+        saveAsScoreEntity(score);
+
         //TODO: update the game when the state changes
         //TODO: check scores and determine which one is the highest when GameState == CLOSED
     }
 
+    //TODO: test
+
+    @Override
+    public Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException {
+        ScoreKey key = new ScoreKey();
+        key.setGameId(gameId);
+        key.setUserId(userId);
+        ScoreEntity scoreEntity = scoreRepository.findOne(key);
+        Game game = findGameById(gameId);
+        Player player = playerService.findByIdAndGame(userId, game);
+
+        Score score = buildScore(scoreEntity, player);
+        return score;
+    }
+
+    @Transactional
+    @Override
+    public void saveAsScoreEntity(Score score) {
+        ScoreKey key = new ScoreKey();
+        key.setUserId(score.getPlayer().getId());
+        key.setGameId(score.getGameId());
+        ScoreEntity scoreEntity = new ScoreEntity();
+        scoreEntity.setId(key);
+        scoreEntity.setPoints(score.getPoints());
+        scoreEntity.setIsHighest(score.isHighest());
+        scoreRepository.save(scoreEntity);
+    }
+
+    //TODO: Test
+    @Override
+    public List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException {
+        Game game = findGameById(gameId);
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(gameId);
+        List<Score> scores = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Player player = playerService.findByIdAndGame(scoreEntity.getId().getUserId(), game);
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Score> getScoresByPlayer(Player player) {
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
+        List<Score> scores = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
+    }
+
+
     @Override
     public List<Game> findAll() {
         List<GameEntity> gamesEntity = gameRepository.findAll();
-        for(GameEntity gameEntity : gamesEntity) {
+        for (GameEntity gameEntity : gamesEntity) {
             Category category = categoryService.findById(gameEntity.getCategory().getId());
             //TODO: get questions, state etc. and build with the factory
         }
@@ -152,6 +218,15 @@ public class GameServiceImpl implements GameService {
         return playerInGameRepository.findOne(compositeKey);
     }
 
+    private PlayerInGameEntity createPlayerInGameEntityWithCompositeKey(Game game, User user) {
+        PlayerInGameEntity playerInGameEntity = new PlayerInGameEntity();
+        PlayerInGameKey compositeKey = new PlayerInGameKey();
+        compositeKey.setGameId(game.getId());
+        compositeKey.setUserId(user.getId());
+        playerInGameEntity.setId(compositeKey);
+        return playerInGameEntity;
+    }
+
     private GameEntity convertToGameEntity(Game game) {
         GameState currentState = game.getGameStateMachine().getCurrentState();
         CategoryEntity categoryEntity = categoryService.findCategoryEntityById(game.getCategory().getId());
@@ -159,7 +234,7 @@ public class GameServiceImpl implements GameService {
                 .withCurrentState(currentState)
                 .build();
         Instant startTime = game.getGameStateMachine().getStartTime();
-        if(startTime != null) {
+        if (startTime != null) {
             gameEntity.setStartTime(startTime);
         }
         return gameEntity;
@@ -191,5 +266,19 @@ public class GameServiceImpl implements GameService {
         GameEntity gameEntity = gameRepository.findOne(game.getId());
         gameEntity.setCurrentState(game.getGameStateMachine().getCurrentState());
         gameRepository.saveAndFlush(gameEntity);
+    }
+
+    private Score buildScore(ScoreEntity scoreEntity, Player player) {
+        Score score = scoreBuilder
+                .withPlayer(player)
+                .withGameId(scoreEntity.getId().getGameId())
+                .build();
+        if (scoreEntity.getPoints() != null) {
+            score.setPoints(scoreEntity.getPoints());
+        }
+        if (scoreEntity.getIsHighest() != null) {
+            score.setHighest(scoreEntity.getIsHighest());
+        }
+        return score;
     }
 }
