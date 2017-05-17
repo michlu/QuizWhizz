@@ -16,20 +16,14 @@ import java.util.List;
 public interface GameService {
     Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException;
     void addOwnerToGame(Game game, User user);
-    Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
+    void addPlayerToGame(Game game, User user);
     void startGame(Game game, User user) throws IllegalNumberOfQuestionsException;
-
-    Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
+    void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
+    Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
 
     void saveAsScoreEntity(Score score);
-
-    //TODO: Test
+    Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
     List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException;
-
     List<Score> getScoresByPlayer(Player player);
-
-    List<Game> findAll();
-    void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
-
-    void addPlayerToGame(Game game, User user);
+    List<Game> findAll() throws IllegalNumberOfQuestionsException;
 }

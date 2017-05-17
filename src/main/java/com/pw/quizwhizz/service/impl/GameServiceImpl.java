@@ -88,22 +88,8 @@ public class GameServiceImpl implements GameService {
         List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
         List<Question> questions = convertToQuestions(questionsInGame);
         Category category = categoryService.findById(gameEntity.getCategory().getId());
-        Game game = gameFactory.build(category, questions);
-        game.getGameStateMachine().setCurrentState(gameEntity.getCurrentState());
-        game.setId(gameEntity.getId());
-        if (gameEntity.getStartTime() != null) {
-            game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
-        }
+        Game game = buildGame(gameEntity, category, questions);
         return game;
-    }
-
-    private List<Question> convertToQuestions(List<QuestionInGameEntity> questionsInGame) {
-        List<Question> questions = new ArrayList<>();
-        for (QuestionInGameEntity questionInGame : questionsInGame) {
-            Question question = questionService.findById(questionInGame.getId().getQuestionId());
-            questions.add(question);
-        }
-        return questions;
     }
 
     @Override
@@ -199,16 +185,38 @@ public class GameServiceImpl implements GameService {
         }
         return scores;
     }
-
-
+    
     @Override
-    public List<Game> findAll() {
+    public List<Game> findAll() throws IllegalNumberOfQuestionsException {
+        List<Game> games = new ArrayList<>();
         List<GameEntity> gamesEntity = gameRepository.findAll();
         for (GameEntity gameEntity : gamesEntity) {
             Category category = categoryService.findById(gameEntity.getCategory().getId());
-            //TODO: get questions, state etc. and build with the factory
+            List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameEntity.getId());
+            List<Question> questions = convertToQuestions(questionsInGame);
+            Game game = buildGame(gameEntity, category, questions);
+            games.add(game);
         }
-        return null;
+        return games;
+    }
+
+    private Game buildGame(GameEntity gameEntity, Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
+        Game game = gameFactory.build(category, questions);
+        game.getGameStateMachine().setCurrentState(gameEntity.getCurrentState());
+        game.setId(gameEntity.getId());
+        if (gameEntity.getStartTime() != null) {
+            game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+        }
+        return game;
+    }
+
+    private List<Question> convertToQuestions(List<QuestionInGameEntity> questionsInGame) {
+        List<Question> questions = new ArrayList<>();
+        for (QuestionInGameEntity questionInGame : questionsInGame) {
+            Question question = questionService.findById(questionInGame.getId().getQuestionId());
+            questions.add(question);
+        }
+        return questions;
     }
 
     private PlayerInGameEntity getPlayerInGameEntity(Game game, User user) {
