@@ -1,17 +1,13 @@
 package com.pw.quizwhizz.service.impl;
 
-import com.pw.quizwhizz.model.game.Game;
-import com.pw.quizwhizz.model.game.GameStateMachine;
+import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.entity.game.GameEntityBuilder;
-import com.pw.quizwhizz.model.game.GameFactory;
-import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.entity.game.GameEntity;
-import com.pw.quizwhizz.model.game.GameState;
-import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.repository.game.GameRepository;
 import com.pw.quizwhizz.repository.game.PlayerInGameRepository;
 import com.pw.quizwhizz.repository.game.QuestionInGameRepository;
+import com.pw.quizwhizz.repository.game.ScoreRepository;
 import com.pw.quizwhizz.service.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +35,13 @@ public class GameServiceImplTest {
     @Mock
     private PlayerService playerService;
     @Mock
-    private ScoreService scoreService;
-    @Mock
     private GameFactory gameFactory;
     @Mock
-    private GameEntityBuilder builder;
+    private GameEntityBuilder gameEntityBuilder;
+    @Mock
+    private ScoreRepository scoreRepository;
+    @Mock
+    private ScoreBuilder scoreBuilder;
 
     private GameServiceImpl gameService;
     private Question question1;
@@ -53,7 +51,7 @@ public class GameServiceImplTest {
 
     @Before
     public void setup() {
-        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, questionService, categoryService, answerService, playerService, scoreService, gameFactory, builder);
+        gameService = new GameServiceImpl(gameRepository, playerInGameRepository, questionInGameRepository, questionService, categoryService, answerService, playerService, gameFactory, gameEntityBuilder, scoreRepository, scoreBuilder);
     }
 
     @Test
@@ -72,9 +70,9 @@ public class GameServiceImplTest {
 //        when(questions.get(0).getCategory()).thenReturn(category);
 //
 //        GameEntity gameEntity = mock(GameEntity.class);
-//        when(builder.withCategory(any())).thenReturn(builder);
-//        when(builder.withCurrentState(any())).thenReturn(builder);
-//        when(builder.build()).thenReturn(gameEntity);
+//        when(gameEntityBuilder.withCategory(any())).thenReturn(gameEntityBuilder);
+//        when(gameEntityBuilder.withCurrentState(any())).thenReturn(gameEntityBuilder);
+//        when(gameEntityBuilder.build()).thenReturn(gameEntity);
 //        when(gameEntity.getCategory()).thenReturn(category);
 //        when(gameEntity.getCurrentState()).thenReturn(state);
 //
