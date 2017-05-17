@@ -7,11 +7,13 @@ import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.RoleService;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -34,6 +36,13 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver getCommonsMultipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(20971520);   // 20MB
+        multipartResolver.setMaxInMemorySize(1048576);  // 1MB
+        return multipartResolver;
+    }
 
     @GetMapping("/adminadd")
     public String getAddCategoryQuestion(Model model) {

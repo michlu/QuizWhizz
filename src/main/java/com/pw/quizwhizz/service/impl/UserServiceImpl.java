@@ -20,8 +20,7 @@ import java.util.List;
 
 
 @Service
-public class
-UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 	final private UserRepository userRepository;
 	final private RoleRepository roleRepository;
 	final private PasswordEncoder passwordEncoder;
