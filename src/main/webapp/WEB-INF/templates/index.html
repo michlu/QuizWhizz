@@ -84,21 +84,20 @@
 
         <p class="lead text-center dark-background-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.</p>
-        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
+
+        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
-                <img src="#" th:src="@{/resources/images/category_laboratory.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
-                <div class="category">
-                    Laboratorium <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                <img src="#" th:src="${game.category.getUrlImage()}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <div class="category" th:text="${game.category.getName()}"><!-- nazwa kategori rozgrywanej gry th:text="${}" -->
                 </div>
                 <div class="avatar">
                     <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
                 </div>
             </div>
             <div class="info">
-                <div class="status">
-                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
-                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
+                <div class="status" th:text="${game.gameStateMachine.getCurrentState()}">
                 </div>
+                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
                 <div class="desc">
                     <table class="table borderless">
                         <tbody>
@@ -120,42 +119,6 @@
         </div>
 
         <!-- =========== TEST -->
-
-        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
-            <div class="clearfix background">
-                <img src="#" th:src="@{/resources/images/category_sport.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
-                <div class="category">
-                    Sport <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
-                </div>
-                <div class="avatar">
-                    <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
-                </div>
-            </div>
-            <div class="info">
-                <div class="status">
-                    Otwarta <!-- czy gra sie zaczela th:text="${}" -->
-                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
-                </div>
-                <div class="desc">
-                    <table class="table borderless">
-                        <tbody>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Owner</small></p></td>
-                            <td><span>Games Josling</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
-                        </tr>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
-                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="bottom">
-                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
-            </div>
-        </div>
-
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
