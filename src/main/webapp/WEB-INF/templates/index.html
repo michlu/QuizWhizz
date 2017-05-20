@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+                <a th:href="@{'/game/' + ${game.getId()} + '/joinOpened'}"class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
             </div>
         </div>
 

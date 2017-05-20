@@ -15,6 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,7 @@ public class GameController {
         this.questionService = questionService;
     }
 
-    @RequestMapping (value = "/open/{categoryId}")
+    @RequestMapping(value = "/open/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         List<Question> questions;
         try {
@@ -47,8 +50,17 @@ public class GameController {
         User user = userService.findByEmail(authentication.getName());
         gameService.addOwnerToGame(game, user);
 
-        model.addAttribute("game", game);
-        model.addAttribute("questions", questions);
+        fillModelForOpenGamePage(model, game, true);
+        return "open_game";
+    }
+
+    @RequestMapping(value = "/{gameId}/joinOpened")
+    public String joinOpenedGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        User user = userService.findByEmail(authentication.getName());
+        Game game = gameService.findGameById(gameId);
+
+        gameService.addPlayerToGame(game, user);
+        fillModelForOpenGamePage(model, game, false);
         return "open_game";
     }
 
@@ -59,9 +71,23 @@ public class GameController {
 
         gameService.startGame(game, user);
 
-        model.addAttribute("game", game);
-        model.addAttribute("players", game.getPlayers());
-        model.addAttribute("questions", game.getQuestions());
+        fillModelForStartedGamePage(model, game);
+        return "started_game";
+    }
+
+    @RequestMapping(value = "/{gameId}/isGameStarted", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String isGameStarted(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+        boolean isStarted = gameService.isGameStarted(gameId);
+
+        return "{ \"isStarted\": " + isStarted + " }";
+    }
+
+    @RequestMapping(value = "/{gameId}/joinStarted")
+    public String joinStartedGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        Game game = gameService.findGameById(gameId);
+
+        fillModelForStartedGamePage(model, game);
         return "started_game";
     }
 
@@ -82,20 +108,23 @@ public class GameController {
                 long id = Long.parseLong(answerId);
                 answerIds.add(id);
             }
-        gameService.submitAnswers(game, user, answerIds);
+            gameService.submitAnswers(game, user, answerIds);
         }
         return "submit_answers";
     }
 
-    @RequestMapping(value = "join/{gameId}")
-    public String joinGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
-        User user = userService.findByEmail(authentication.getName());
-        Game game = gameService.findGameById(gameId);
-
-        gameService.addPlayerToGame(game, user);
+    private void fillModelForOpenGamePage(Model model, Game game, boolean isOwner) {
         model.addAttribute("game", game);
-        return "started_game";
+        model.addAttribute("players", game.getPlayers());
+        model.addAttribute("isOwner", isOwner);
     }
+
+    private void fillModelForStartedGamePage(Model model, Game game) {
+        model.addAttribute("game", game);
+        model.addAttribute("players", game.getPlayers());
+        model.addAttribute("questions", game.getQuestions());
+    }
+
     /* TODO:
     - player: join -> script to check if the game has been started
     - waiting for a game to start -> script to determine how many players there are

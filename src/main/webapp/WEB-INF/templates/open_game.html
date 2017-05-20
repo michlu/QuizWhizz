@@ -10,19 +10,14 @@
     <meta name="author" content="">
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
     <!-- Custom CSS -->
-    <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
-    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/css/mdb.min.css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
-    <script th:src="@{/scripts/game.js}"></script>
+    <link rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/scripts/open_game.js}"></script>
 
     <title>Quiz Whizz</title>
-
 </head>
 
 <body>
@@ -35,20 +30,19 @@
     </div>
 </nav>
 
+<div id="game-id" style="display: none" th:text="${game.getId()}"></div>
+
 <div class="container">
 
     <div>
-        <img class="animated rubberBand" id="picture1" src="#" th:src="@{/resources/images/rugby.jpg}">
+        <img id="rugby-picture" src="#" th:src="@{/resources/images/rugby.jpg}">
     </div>
 
-    <div class="container">
-        <div class="page-header">
-            <h1 class="text-center animated pulse infinite">Czekam na graczy...</h1>
-        </div>
+    <h1 class="text-center">Czekam na graczy...</h1>
+
+    <div th:hidden="${!isOwner}">
+        <a href="#" th:href="@{'/game/'+${game.category.getId()}+'/start/'+${game.getId()}}" class="btn btn-primary btn-lg btn-block">Start</a>
     </div>
-
-    <a href="#" th:href="@{'/game/'+${game.category.getId()}+'/start/'+${game.getId()}}" class="btn btn-primary btn-lg btn-block">Start</a>
-
 </div>
 <footer>
     <!-- import footer -->

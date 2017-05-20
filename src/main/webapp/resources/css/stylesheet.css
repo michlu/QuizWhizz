@@ -55,16 +55,8 @@
     text-align: center;
 }
 
-#picture1 {
+#rugby-picture {
     margin-top: 50px;
     height: 200px;
     width: auto;
-}
-
-#picture2 {
-    height: 200px;
-    width: auto;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
 }
