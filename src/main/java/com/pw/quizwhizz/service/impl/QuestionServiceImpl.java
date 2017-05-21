@@ -85,7 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
             question.setId(questionEntity.getId());
             question.setCategory(categoryService.findById(categoryId));
             question.setQuestion(questionEntity.getQuestion());
-            question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
+            question.setAnswers(answerService.getAnswersByQuestionId(questionEntity.getId()));
             questions.add(question);
         }
         return questions;
@@ -104,7 +104,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setId(id);
         question.setCategory(categoryService.findById(questionEntity.getCategory().getId()));
         question.setQuestion(questionEntity.getQuestion());
-        question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
+        question.setAnswers(answerService.getAnswersByQuestionId(questionEntity.getId()));
         return question;
     }
 
@@ -126,7 +126,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setAnswers(answers);
 
         QuestionEntity questionEntity = new QuestionEntity();
-        List<AnswerEntity> answersEntity = answerService.saveAsEntity(answers);
+        List<AnswerEntity> answersEntity = answerService.saveAnswers(answers);
         assignValuesFromQuestion(question, questionEntity);
         questionEntity.setAnswers(answersEntity);
         questionRepository.save(questionEntity);
@@ -160,7 +160,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setId(questionEntity.getId());
         question.setCategory(categoryService.findById(questionEntity.getCategory().getId()));
         question.setQuestion(questionEntity.getQuestion());
-        question.setAnswers(answerService.getAllByQuestionId(questionEntity.getId()));
+        question.setAnswers(answerService.getAnswersByQuestionId(questionEntity.getId()));
         return question;
     }
 
@@ -191,7 +191,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private void updateAnswersInQuestion(String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect, long questionId) {
-        List<Answer> answers = answerService.getAllByQuestionId(questionId);
+        List<Answer> answers = answerService.getAnswersByQuestionId(questionId);
         for (Answer answer : answers) {
             answer.setCorrect(false);
         }
@@ -212,6 +212,6 @@ public class QuestionServiceImpl implements QuestionService {
         if ("correct_4".equals(answerCorrect))
             answer4.setCorrect(true);
 
-        answerService.updateAsEntity(answers);
+        answerService.updateAnswers(answers);
     }
 }

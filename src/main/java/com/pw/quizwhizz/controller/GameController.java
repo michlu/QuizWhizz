@@ -61,7 +61,9 @@ public class GameController {
         Game game = gameService.findGameById(gameId);
 
         gameService.addPlayerToGame(game, user);
-        fillModelForOpenGamePage(model, game, false);
+        boolean isOwner = gameService.isPlayerGameOwner(user.getId(), gameId);
+
+        fillModelForOpenGamePage(model, game, isOwner);
         return "open_game";
     }
 
