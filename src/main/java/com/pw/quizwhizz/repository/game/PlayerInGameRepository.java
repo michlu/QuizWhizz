@@ -5,6 +5,9 @@ import com.pw.quizwhizz.entity.game.PlayerInGameKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface PlayerInGameRepository extends JpaRepository<PlayerInGameEntity, PlayerInGameKey> {
+    List<PlayerInGameEntity> findAllById_GameId(Long gameId);
 }

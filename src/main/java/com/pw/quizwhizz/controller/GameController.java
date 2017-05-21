@@ -4,6 +4,7 @@ import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.game.Game;
+import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.QuestionService;
@@ -75,11 +76,19 @@ public class GameController {
         return "started_game";
     }
 
-    @RequestMapping(value = "/{gameId}/getPlayers", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{gameId}/getNamesOfPlayers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getGamePlayers(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+    public String getNamesOfPlayers(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+        List<String> names = gameService.getNamesOfPlayersInGame(gameId);
 
-        return "[{ \"name\" : \"Doktor Lubicz\" }, { \"name\" : \"Jozin z Bazin\" }]";
+        String playersJson = "[";
+        for (String name : names) {
+            playersJson += "{ \"name\" : \"" + name + "\" }, ";
+        }
+        playersJson = playersJson.replaceAll(", $", "");
+        playersJson += "]";
+
+        return playersJson;
     }
 
     @RequestMapping(value = "/{gameId}/isStarted", method = RequestMethod.GET, produces = "application/json")

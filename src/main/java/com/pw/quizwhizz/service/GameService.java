@@ -24,9 +24,11 @@ public interface GameService {
     void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
     Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
 
-    void saveAsScoreEntity(Score score);
+    void saveScore(Score score);
     Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
     List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException;
     List<Score> getScoresByPlayer(Player player);
     List<Game> findAll() throws IllegalNumberOfQuestionsException;
+
+    List<String> getNamesOfPlayersInGame(Long gameId);
 }

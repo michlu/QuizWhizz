@@ -25,7 +25,7 @@ public class GameServiceImpl implements GameService {
     private final QuestionService questionService;
     private final CategoryService categoryService;
     private final AnswerService answerService;
-    private final PlayerService playerService;
+    private final PlayerRepository playerRepository;
     private final GameFactory gameFactory;
     private final GameEntityBuilder gameEntityBuilder;
     private final ScoreRepository scoreRepository;
@@ -34,17 +34,17 @@ public class GameServiceImpl implements GameService {
     @Autowired
     public GameServiceImpl(GameRepository gameRepository,
                            PlayerInGameRepository playerInGameRepository,
-                           QuestionInGameRepository questionInGameRepository,
+                           PlayerRepository playerRepository, ScoreRepository scoreRepository, QuestionInGameRepository questionInGameRepository,
                            QuestionService questionService,
                            CategoryService categoryService,
-                           AnswerService answerService, PlayerService playerService, GameFactory gameFactory,
-                           GameEntityBuilder gameEntityBuilder, ScoreRepository scoreRepository, ScoreBuilder scoreBuilder) {
+                           AnswerService answerService, GameFactory gameFactory,
+                           GameEntityBuilder gameEntityBuilder, ScoreBuilder scoreBuilder) {
         this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
         this.questionInGameRepository = questionInGameRepository;
         this.questionService = questionService;
         this.categoryService = categoryService;
         this.answerService = answerService;
-        this.playerService = playerService;
         this.gameFactory = gameFactory;
         this.gameEntityBuilder = gameEntityBuilder;
         this.playerInGameRepository = playerInGameRepository;
@@ -121,19 +121,19 @@ public class GameServiceImpl implements GameService {
     @Override
     public void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
-        Player player = playerService.findByIdAndGame(user.getId(), game);
+        Player player = findPlayerByIdAndGame(user.getId(), game);
         player.setOwner(playerInGameEntity.isOwner());
         List<Answer> answers = answerService.findAnswersByIds(answerIds);
         player.submitAnswers(answers);
         updateGameEntity(game);
-        playerService.updateEntity(player);
+        updatePlayer(player);
 
         Score score = game.getScores().stream()
                 .filter(s -> s.getPlayer().equals(player))
                 .findFirst()
                 .orElse(null);
         score.setGameId(game.getId());
-        saveAsScoreEntity(score);
+        saveScore(score);
 
         //TODO: update the game when the state changes
         //TODO: check scores and determine which one is the highest when GameState == CLOSED
@@ -148,7 +148,7 @@ public class GameServiceImpl implements GameService {
         key.setUserId(userId);
         ScoreEntity scoreEntity = scoreRepository.findOne(key);
         Game game = findGameById(gameId);
-        Player player = playerService.findByIdAndGame(userId, game);
+        Player player = findPlayerByIdAndGame(userId, game);
 
         Score score = buildScore(scoreEntity, player);
         return score;
@@ -156,7 +156,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void saveAsScoreEntity(Score score) {
+    public void saveScore(Score score) {
         ScoreKey key = new ScoreKey();
         key.setUserId(score.getPlayer().getId());
         key.setGameId(score.getGameId());
@@ -175,7 +175,7 @@ public class GameServiceImpl implements GameService {
         List<Score> scores = new ArrayList<>();
 
         for (ScoreEntity scoreEntity : scoreEntityList) {
-            Player player = playerService.findByIdAndGame(scoreEntity.getId().getUserId(), game);
+            Player player = findPlayerByIdAndGame(scoreEntity.getId().getUserId(), game);
             Score score = buildScore(scoreEntity, player);
             scores.add(score);
         }
@@ -206,6 +206,46 @@ public class GameServiceImpl implements GameService {
             games.add(game);
         }
         return games;
+    }
+
+    @Override
+    public List<String> getNamesOfPlayersInGame(Long gameId) {
+        List<PlayerInGameEntity> playerInGameEntities = playerInGameRepository.findAllById_GameId(gameId);
+        List<Long> playerIds = new ArrayList<>();
+
+        for (PlayerInGameEntity playerInGameEntity : playerInGameEntities) {
+            long playerId = playerInGameEntity.getId().getUserId();
+            playerIds.add(playerId);
+        }
+        List<PlayerEntity> playerEntities = playerRepository.findAll(playerIds);
+
+        List<String> playerNames = new ArrayList<>();
+        for (PlayerEntity playerEntity : playerEntities) {
+            playerNames.add(playerEntity.getName());
+        }
+
+        return playerNames;
+    }
+
+    private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
+        PlayerEntity playerEntity = playerRepository.findOne(id);
+        Player player = new Player(playerEntity.getName(), game);
+        player.setId(id);
+        if(playerEntity.getGamesPlayed() != null) {
+            player.setGamesPlayed(playerEntity.getGamesPlayed());
+        }
+        if(playerEntity.getXp() != null) {
+            player.setXp(playerEntity.getXp());
+        }
+        return player;
+    }
+
+    @Transactional
+    private void updatePlayer(Player player) {
+        PlayerEntity playerEntity = playerRepository.findOne(player.getId());
+        playerEntity.setGamesPlayed(player.getGamesPlayed());
+        playerEntity. setXp(player.getXp());
+        playerRepository.saveAndFlush(playerEntity);
     }
 
     private Game buildGame(GameEntity gameEntity, Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
