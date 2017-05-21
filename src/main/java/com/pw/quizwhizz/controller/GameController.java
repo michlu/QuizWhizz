@@ -37,7 +37,7 @@ public class GameController {
         this.questionService = questionService;
     }
 
-    @RequestMapping(value = "/open/{categoryId}")
+    @RequestMapping(value = "/open/forCategory/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         List<Question> questions;
         try {
@@ -64,7 +64,7 @@ public class GameController {
         return "open_game";
     }
 
-    @RequestMapping(value = "/{categoryId}/start/{gameId}")
+    @RequestMapping(value = "/{gameId}/start")
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
         Game game = gameService.findGameById(gameId);
@@ -75,12 +75,19 @@ public class GameController {
         return "started_game";
     }
 
-    @RequestMapping(value = "/{gameId}/isGameStarted", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/{gameId}/getPlayers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String getGamePlayers(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+
+        return "[{ \"name\" : \"Doktor Lubicz\" }, { \"name\" : \"Jozin z Bazin\" }]";
+    }
+
+    @RequestMapping(value = "/{gameId}/isStarted", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String isGameStarted(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
         boolean isStarted = gameService.isGameStarted(gameId);
 
-        return "{ \"isStarted\": " + isStarted + " }";
+        return "{ \"isStarted\" : " + isStarted + " }";
     }
 
     @RequestMapping(value = "/{gameId}/joinStarted")

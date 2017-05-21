@@ -38,10 +38,11 @@
         <img id="rugby-picture" src="#" th:src="@{/resources/images/rugby.jpg}">
     </div>
 
-    <h1 class="text-center">Czekam na graczy...</h1>
+    <h1 class="text-center">Obecni gracze:</h1>
+    <div id="players-container"></div>
 
     <div th:hidden="${!isOwner}">
-        <a href="#" th:href="@{'/game/'+${game.category.getId()}+'/start/'+${game.getId()}}" class="btn btn-primary btn-lg btn-block">Start</a>
+        <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-primary btn-lg btn-block">Start</a>
     </div>
 </div>
 <footer>
