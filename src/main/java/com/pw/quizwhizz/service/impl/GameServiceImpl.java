@@ -94,6 +94,14 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
+    public boolean isGameStarted(Long gameId) {
+        GameEntity game = gameRepository.getOne(gameId);
+
+        return game.getCurrentState() == GameState.STARTED;
+    }
+
+    @Override
+    @Transactional
     public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = new Player(user.getFirstName(), game);

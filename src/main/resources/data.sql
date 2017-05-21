@@ -5,7 +5,8 @@ VALUES
   (1,'michlu@o2.pl','Games Josling','$2a$10$nWPT.sl.oljfWR5zu.BSwuOw67CsDM2XqjQ8P0rhjpXUr1MgEWf62','2017-04-10', '/resources/images/profile_1.png'),
   (2,'asd@asd.pl','Tonald Drump','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-14', '/resources/images/profile_2.png'),
   (3,'dsa@dsa.pl','User','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-19', '/resources/images/profile_default.png'),
-  (4, 'karolajnaa@gmail.com','karo', '12345', '2017-05-01','/resources/images/profile_default.png');
+  (4, 'karolajnaa@gmail.com','karo', '12345', '2017-05-01','/resources/images/profile_default.png'),
+  (5, 'test@test.com', 'test01', '12345', '2017-05-01','/resources/images/profile_default.png');
 
 INSERT INTO `user_role` (`user_id`,`role_id`) VALUES
   (1,1),

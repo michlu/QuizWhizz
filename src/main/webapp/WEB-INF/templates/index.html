@@ -64,7 +64,7 @@
                             <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
                             <h2 th:text="${category.name}"></h2>
                             <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
-                            <a href="#" th:href="@{'/game/open/'+${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
+                            <a href="#" th:href="@{'/game/open/forCategory/'+${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+                <a th:href="@{'/game/' + ${game.getId()} + '/joinOpened'}"class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
             </div>
         </div>
 
