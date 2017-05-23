@@ -19,7 +19,7 @@ $(document).ready(function () {
     }
 
     function getGamePlayers() {
-        const getPlayersUrl = window.location.origin + "/game/" + gameId + "/getPlayers";
+        const getPlayersUrl = window.location.origin + "/game/" + gameId + "/getNamesOfPlayers";
 
         $.get(getPlayersUrl, function (responseData) {
 

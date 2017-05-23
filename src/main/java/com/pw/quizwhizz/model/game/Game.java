@@ -21,6 +21,7 @@ public class Game {
     private final Category category;
     private final List<Question> questions;
     private final GameStateMachine gameStateMachine;
+    @Setter
     private List<Player> players = new ArrayList<>();
     private List<Score> scores = new ArrayList<>();
     private ScoreBuilder scoreBuilder = new ScoreBuilder();

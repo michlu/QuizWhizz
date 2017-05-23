@@ -1,12 +1,17 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.game.GameDTO;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class AppController {
@@ -22,7 +27,7 @@ public class AppController {
     @RequestMapping("/")
     public String home(Model model) throws IllegalNumberOfQuestionsException {
         model.addAttribute("categories", categoryService.findAll());
-        model.addAttribute("games", gameService.findAll());
+        model.addAttribute("games", gameService.getAllOpenGames());
         return "index";
     }
 }

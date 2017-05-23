@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AnswerService {
     Answer findById(long id);
-    List<Answer> getAllByQuestionId(long questionId);
-    List<AnswerEntity> saveAsEntity(List<Answer> answers);
+    List<Answer> getAnswersByQuestionId(long questionId);
+    List<AnswerEntity> saveAnswers(List<Answer> answers);
     List<Answer> findAnswersByIds(List<Long> answerIds);
     @Transactional
-    void updateAsEntity(List<Answer> answers);
+    void updateAnswers(List<Answer> answers);
 }

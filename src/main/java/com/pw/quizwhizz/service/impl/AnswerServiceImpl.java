@@ -32,7 +32,7 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public List<Answer> getAllByQuestionId(long questionId) {
+    public List<Answer> getAnswersByQuestionId(long questionId) {
         List<AnswerEntity> answersEntity = questionRepository.findOne(questionId).getAnswers();
         List<Answer> answers = new ArrayList<>();
         for (AnswerEntity answerEntity : answersEntity) {
@@ -44,7 +44,7 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Transactional
     @Override
-    public List<AnswerEntity> saveAsEntity(List<Answer> answers) {
+    public List<AnswerEntity> saveAnswers(List<Answer> answers) {
         List<AnswerEntity> answersEntity = new ArrayList<>();
         for (Answer answer : answers) {
             AnswerEntity answerEntity = new AnswerEntity();
@@ -70,7 +70,7 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Transactional
     @Override
-    public void updateAsEntity(List<Answer> answers) {
+    public void updateAnswers(List<Answer> answers) {
         List<AnswerEntity> answersEntity = new ArrayList<>();
         for (Answer answer : answers) {
             AnswerEntity answerEntity = new AnswerEntity();
