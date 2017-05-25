@@ -3,6 +3,7 @@ package com.pw.quizwhizz.service;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface GameService {
 
     void saveScore(Score score);
     Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
-    List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException;
+    List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
     List<Score> getScoresByPlayer(Player player);
     List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException;
     List<String> getNamesOfPlayersInGame(Long gameId);

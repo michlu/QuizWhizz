@@ -4,6 +4,7 @@ import com.pw.quizwhizz.entity.game.*;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.repository.game.*;
@@ -92,165 +93,170 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-        @Override
-        public Game findGameById (Long gameId) throws IllegalNumberOfQuestionsException {
-            GameEntity gameEntity = gameRepository.findOne(gameId);
-            List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
-            List<Question> questions = convertToQuestions(questionsInGame);
-            Category category = categoryService.findById(gameEntity.getCategory().getId());
-            Game game = buildGame(gameEntity, category, questions);
-            return game;
+    @Override
+    public Game findGameById (Long gameId) throws IllegalNumberOfQuestionsException {
+        GameEntity gameEntity = gameRepository.findOne(gameId);
+        List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
+        List<Question> questions = convertToQuestions(questionsInGame);
+        Category category = categoryService.findById(gameEntity.getCategory().getId());
+        Game game = buildGame(gameEntity, category, questions);
+        return game;
+    }
+
+    @Override
+    @Transactional
+    public boolean isGameStarted (Long gameId){
+        GameEntity game = gameRepository.getOne(gameId);
+
+        return game.getCurrentState() == GameState.STARTED;
+    }
+
+    @Override
+    @Transactional
+    public void startGame (Game game, User user) throws IllegalNumberOfQuestionsException {
+        PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
+        Player player = new Player(user.getFirstName(), game);
+        player.setOwner(playerInGameEntity.isOwner());
+
+        if (player.isOwner()) {
+            player.startGame();
+            System.out.println("Game state: " + game.getGameStateMachine().getCurrentState());
+            System.out.println("Start time: " + game.getGameStateMachine().getStartTime());
         }
+        GameEntity gameEntity = convertToGameEntity(game);
+        gameEntity.setId(game.getId());
+        gameRepository.saveAndFlush(gameEntity);
+    }
 
-        @Override
-        @Transactional
-        public boolean isGameStarted (Long gameId){
-            GameEntity game = gameRepository.getOne(gameId);
+    @Transactional
+    @Override
+    public void submitAnswers (Game game, User user, List < Long > answerIds) throws
+            IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
+        PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
+        Player player = findPlayerByIdAndGame(user.getId(), game);
+        player.setOwner(playerInGameEntity.isOwner());
+        List<Answer> answers = answerService.findAnswersByIds(answerIds);
+        player.submitAnswers(answers);
+        updateGame(game);
+        updatePlayer(player);
 
-            return game.getCurrentState() == GameState.STARTED;
-        }
+        Score score = game.getScores().stream()
+                .filter(s -> s.getPlayer().equals(player))
+                .findFirst()
+                .orElse(null);
+        score.setGameId(game.getId());
+        saveScore(score);
+    }
 
-        @Override
-        @Transactional
-        public void startGame (Game game, User user) throws IllegalNumberOfQuestionsException {
-            PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
-            Player player = new Player(user.getFirstName(), game);
-            player.setOwner(playerInGameEntity.isOwner());
+    //TODO: test
+    // TODO: update the game when the state changes
+    // TODO: check scores and determine which one is the highest when GameState == CLOSED
 
-            if (player.isOwner()) {
-                player.startGame();
-                System.out.println("Game state: " + game.getGameStateMachine().getCurrentState());
-                System.out.println("Start time: " + game.getGameStateMachine().getStartTime());
-            }
-            GameEntity gameEntity = convertToGameEntity(game);
-            gameEntity.setId(game.getId());
-            gameRepository.saveAndFlush(gameEntity);
-        }
+    @Override
+    public Score findScoreByUserAndGame ( long userId, long gameId) throws IllegalNumberOfQuestionsException {
+        ScoreKey key = new ScoreKey();
+        key.setGameId(gameId);
+        key.setUserId(userId);
+        ScoreEntity scoreEntity = scoreRepository.findOne(key);
+        Game game = findGameById(gameId);
+        Player player = findPlayerByIdAndGame(userId, game);
 
-        @Transactional
-        @Override
-        public void submitAnswers (Game game, User user, List < Long > answerIds) throws
-        IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
-            PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
-            Player player = findPlayerByIdAndGame(user.getId(), game);
-            player.setOwner(playerInGameEntity.isOwner());
-            List<Answer> answers = answerService.findAnswersByIds(answerIds);
-            player.submitAnswers(answers);
-            updateGame(game);
-            updatePlayer(player);
+        Score score = buildScore(scoreEntity, player);
+        return score;
+    }
 
-            Score score = game.getScores().stream()
-                    .filter(s -> s.getPlayer().equals(player))
-                    .findFirst()
-                    .orElse(null);
-            score.setGameId(game.getId());
-            saveScore(score);
+    @Transactional
+    @Override
+    public void saveScore (Score score) {
+        ScoreKey key = getScoreKey(score);
+        ScoreEntity scoreEntity = new ScoreEntity();
+        scoreEntity.setId(key);
+        scoreEntity.setPoints(score.getPoints());
+        scoreEntity.setIsHighest(score.isHighest());
+        scoreRepository.save(scoreEntity);
+    }
 
-            //TODO: update the game when the state changes
-            //TODO: check scores and determine which one is the highest when GameState == CLOSED
-        }
 
-        //TODO: test
+    @Override
+    public List<Score> getScoresByGameId ( long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+        Game game = findGameById(gameId);
+        updateGame(game);
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(gameId);
+        List<Score> scores = new ArrayList<>();
 
-        @Override
-        public Score findScoreByUserAndGame ( long userId, long gameId) throws IllegalNumberOfQuestionsException {
-            ScoreKey key = new ScoreKey();
-            key.setGameId(gameId);
-            key.setUserId(userId);
-            ScoreEntity scoreEntity = scoreRepository.findOne(key);
-            Game game = findGameById(gameId);
-            Player player = findPlayerByIdAndGame(userId, game);
-
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Player player = findPlayerByIdAndGame(scoreEntity.getId().getUserId(), game);
             Score score = buildScore(scoreEntity, player);
-            return score;
+            scores.add(score);
+        }
+        game.setScores(scores);
+        game.checkScores();
+
+        for (Score score : scores) {
+            updateScore(score);
+            updatePlayer(score.getPlayer());
+        }
+        return scores;
+    }
+
+    @Override
+    public List<Score> getScoresByPlayer (Player player){
+        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
+        List<Score> scores = new ArrayList<>();
+
+        for (ScoreEntity scoreEntity : scoreEntityList) {
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
+    }
+
+    @Transactional
+    @Override
+    public List<Game> getAllOpenGames () throws IllegalNumberOfQuestionsException {
+        List<Game> games = new ArrayList<>();
+        List<GameEntity> gameEntities = gameRepository.findAllByCurrentState(GameState.OPEN);
+        for (GameEntity gameEntity : gameEntities) {
+            Category category = categoryService.findById(gameEntity.getCategory().getId());
+            List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameEntity.getId());
+            List<Question> questions = convertToQuestions(questionsInGame);
+            List<PlayerInGameEntity> playersInGame = playerInGameRepository.findAllById_GameId(gameEntity.getId());
+            Game game = buildGame(gameEntity, category, questions);
+            List<Player> players = convertToPlayers(playersInGame, game);
+            game.setPlayers(players);
+            games.add(game);
+        }
+        return games;
+    }
+
+    @Override
+    public List<String> getNamesOfPlayersInGame (Long gameId){
+        List<PlayerInGameEntity> playerInGameEntities = playerInGameRepository.findAllById_GameId(gameId);
+        List<Long> playerIds = new ArrayList<>();
+
+        for (PlayerInGameEntity playerInGameEntity : playerInGameEntities) {
+            long playerId = playerInGameEntity.getId().getUserId();
+            playerIds.add(playerId);
+        }
+        List<PlayerEntity> playerEntities = playerRepository.findAll(playerIds);
+
+        List<String> playerNames = new ArrayList<>();
+        for (PlayerEntity playerEntity : playerEntities) {
+            playerNames.add(playerEntity.getName());
         }
 
-        @Transactional
-        @Override
-        public void saveScore (Score score){
-            ScoreKey key = new ScoreKey();
-            key.setUserId(score.getPlayer().getId());
-            key.setGameId(score.getGameId());
-            ScoreEntity scoreEntity = new ScoreEntity();
-            scoreEntity.setId(key);
-            scoreEntity.setPoints(score.getPoints());
-            scoreEntity.setIsHighest(score.isHighest());
-            scoreRepository.save(scoreEntity);
-        }
+        return playerNames;
+    }
 
-        //TODO: Test
-        @Override
-        public List<Score> getScoresByGameId ( long gameId) throws IllegalNumberOfQuestionsException {
-            Game game = findGameById(gameId);
-            List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(gameId);
-            List<Score> scores = new ArrayList<>();
-
-            for (ScoreEntity scoreEntity : scoreEntityList) {
-                Player player = findPlayerByIdAndGame(scoreEntity.getId().getUserId(), game);
-                Score score = buildScore(scoreEntity, player);
-                scores.add(score);
-            }
-            return scores;
-        }
-
-        @Override
-        public List<Score> getScoresByPlayer (Player player){
-            List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
-            List<Score> scores = new ArrayList<>();
-
-            for (ScoreEntity scoreEntity : scoreEntityList) {
-                Score score = buildScore(scoreEntity, player);
-                scores.add(score);
-            }
-            return scores;
-        }
-
-        @Transactional
-        @Override
-        public List<Game> getAllOpenGames () throws IllegalNumberOfQuestionsException {
-            List<Game> games = new ArrayList<>();
-            List<GameEntity> gameEntities = gameRepository.findAllByCurrentState(GameState.OPEN);
-            for (GameEntity gameEntity : gameEntities) {
-                Category category = categoryService.findById(gameEntity.getCategory().getId());
-                List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameEntity.getId());
-                List<Question> questions = convertToQuestions(questionsInGame);
-                List<PlayerInGameEntity> playersInGame = playerInGameRepository.findAllById_GameId(gameEntity.getId());
-                Game game = buildGame(gameEntity, category, questions);
-                List<Player> players = convertToPlayers(playersInGame, game);
-                game.setPlayers(players);
-                games.add(game);
-            }
-            return games;
-        }
-
-        @Override
-        public List<String> getNamesOfPlayersInGame (Long gameId){
-            List<PlayerInGameEntity> playerInGameEntities = playerInGameRepository.findAllById_GameId(gameId);
-            List<Long> playerIds = new ArrayList<>();
-
-            for (PlayerInGameEntity playerInGameEntity : playerInGameEntities) {
-                long playerId = playerInGameEntity.getId().getUserId();
-                playerIds.add(playerId);
-            }
-            List<PlayerEntity> playerEntities = playerRepository.findAll(playerIds);
-
-            List<String> playerNames = new ArrayList<>();
-            for (PlayerEntity playerEntity : playerEntities) {
-                playerNames.add(playerEntity.getName());
-            }
-
-            return playerNames;
-        }
-
-        @Override
-        public boolean isPlayerGameOwner (Long userId, Long gameId){
-            PlayerInGameKey key = new PlayerInGameKey();
-            key.setGameId(gameId);
-            key.setUserId(userId);
-            PlayerInGameEntity playerInGameEntity = playerInGameRepository.findOne(key);
-            boolean isOwner = playerInGameEntity.isOwner();
-            return isOwner;
-        }
+    @Override
+    public boolean isPlayerGameOwner (Long userId, Long gameId){
+        PlayerInGameKey key = new PlayerInGameKey();
+        key.setGameId(gameId);
+        key.setUserId(userId);
+        PlayerInGameEntity playerInGameEntity = playerInGameRepository.findOne(key);
+        boolean isOwner = playerInGameEntity.isOwner();
+        return isOwner;
+    }
 
     private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
         PlayerEntity playerEntity = playerRepository.findOne(id);
@@ -352,6 +358,7 @@ public class GameServiceImpl implements GameService {
         return questionsInGame;
     }
 
+    //TODO: FIX updating state
     private void updateGame(Game game) {
         GameEntity gameEntity = gameRepository.findOne(game.getId());
         gameEntity.setCurrentState(game.getGameStateMachine().getCurrentState());
@@ -370,5 +377,22 @@ public class GameServiceImpl implements GameService {
             score.setHighest(scoreEntity.getIsHighest());
         }
         return score;
+    }
+    private ScoreKey getScoreKey(Score score) {
+        ScoreKey key = new ScoreKey();
+        key.setUserId(score.getPlayer().getId());
+        key.setGameId(score.getGameId());
+        return key;
+    }
+
+    @Transactional
+    private void updateScore(Score score) {
+        ScoreKey key = new ScoreKey();
+        key.setGameId(score.getGameId());
+        key.setUserId(score.getPlayer().getId());
+        ScoreEntity scoreEntity = scoreRepository.findOne(key);
+        scoreEntity.setPoints(score.getPoints());
+        scoreEntity.setIsHighest(score.isHighest());
+        scoreRepository.saveAndFlush(scoreEntity);
     }
 }
