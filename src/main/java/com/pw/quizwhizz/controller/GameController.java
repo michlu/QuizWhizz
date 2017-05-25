@@ -132,6 +132,9 @@ public class GameController {
         }
         return "submit_answers";
     }
+    // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
+    // pokazac na widoku bonusowe 30 punktow dla zwyciezcy
+    // poprawic zasade wyznaczania zwycezcy - remis??
 
     @RequestMapping(value = "/{gameId}/checkScores")
     public String checkScores(@PathVariable Long gameId, Model model, Authentication authentication) throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
@@ -143,7 +146,6 @@ public class GameController {
         return "check_scores";
     }
 
-    // submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
 
     private void fillModelForOpenGamePage(Model model, Game game, boolean isOwner) {
         model.addAttribute("game", game);

@@ -100,6 +100,8 @@ public class GameServiceImpl implements GameService {
         List<Question> questions = convertToQuestions(questionsInGame);
         Category category = categoryService.findById(gameEntity.getCategory().getId());
         Game game = buildGame(gameEntity, category, questions);
+        game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+        game.getGameStateMachine().setCurrentState(gameEntity.getCurrentState());
         return game;
     }
 
@@ -147,10 +149,6 @@ public class GameServiceImpl implements GameService {
         score.setGameId(game.getId());
         saveScore(score);
     }
-
-    //TODO: test
-    // TODO: update the game when the state changes
-    // TODO: check scores and determine which one is the highest when GameState == CLOSED
 
     @Override
     public Score findScoreByUserAndGame ( long userId, long gameId) throws IllegalNumberOfQuestionsException {
@@ -358,10 +356,13 @@ public class GameServiceImpl implements GameService {
         return questionsInGame;
     }
 
-    //TODO: FIX updating state
     private void updateGame(Game game) {
         GameEntity gameEntity = gameRepository.findOne(game.getId());
-        gameEntity.setCurrentState(game.getGameStateMachine().getCurrentState());
+        if (game.getGameStateMachine().getStartTime() != null) {
+            game.getGameStateMachine().determineCurrentState();
+        }
+        GameState state = game.getGameStateMachine().getCurrentState();
+        gameEntity.setCurrentState(state);
         gameRepository.saveAndFlush(gameEntity);
     }
 

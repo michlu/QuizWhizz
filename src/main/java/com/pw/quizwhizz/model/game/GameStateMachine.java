@@ -25,7 +25,7 @@ public class GameStateMachine {
         this.clock = clock;
     }
 
-    protected void determineCurrentState() {
+    public void determineCurrentState() {
         Instant now = clock.instant();
 
         if (startTime.plusSeconds(timeUntilGameClosureInSeconds).isBefore(now)) {
