@@ -23,6 +23,7 @@ public class Game {
     private final GameStateMachine gameStateMachine;
     @Setter
     private List<Player> players = new ArrayList<>();
+    @Setter
     private List<Score> scores = new ArrayList<>();
     private ScoreBuilder scoreBuilder = new ScoreBuilder();
 

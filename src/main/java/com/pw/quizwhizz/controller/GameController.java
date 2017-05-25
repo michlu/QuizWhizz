@@ -3,9 +3,11 @@ package com.pw.quizwhizz.controller;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
+import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.Game;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.Question;
+import com.pw.quizwhizz.model.game.Score;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.QuestionService;
 import com.pw.quizwhizz.service.UserService;
@@ -130,6 +132,20 @@ public class GameController {
         }
         return "submit_answers";
     }
+    // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
+    // pokazac na widoku bonusowe 30 punktow dla zwyciezcy
+    // poprawic zasade wyznaczania zwycezcy - remis??
+
+    @RequestMapping(value = "/{gameId}/checkScores")
+    public String checkScores(@PathVariable Long gameId, Model model, Authentication authentication) throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
+        User user = userService.findByEmail(authentication.getName());
+
+        List<Score> scores = gameService.getScoresByGameId(gameId);
+
+        model.addAttribute("scores", scores);
+        return "check_scores";
+    }
+
 
     private void fillModelForOpenGamePage(Model model, Game game, boolean isOwner) {
         model.addAttribute("game", game);
@@ -144,8 +160,6 @@ public class GameController {
     }
 
     /* TODO:
-    - player: join -> script to check if the game has been started
-    - waiting for a game to start -> script to determine how many players there are
     - game: checkScores - if status==closed - ok
                         - if not closed == wait for all results
      */

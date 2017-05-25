@@ -32,7 +32,7 @@
 
 <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
 
-<div class="container">
+<div class="container" style="margin-bottom: 200px">
 
     <div>
         <img id="rugby-picture" src="#" th:src="@{/resources/images/rugby.jpg}">
@@ -47,7 +47,7 @@
 </div>
 <footer>
     <!-- import footer -->
-    <div th:replace="fragments/footer :: footer"></div>
+    <div id="footer" th:replace="fragments/footer :: footer"></div>
 </footer>
 </body>
 
