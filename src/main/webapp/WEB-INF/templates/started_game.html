@@ -33,21 +33,21 @@
 
     <div class="page-header">
         <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
-        <h1 class="lead text-center">Wybierz poprawną odpowiedź</h1>
+        <h1 class="lead text-center" id="choose-answer">Wybierz poprawną odpowiedź</h1>
     </div>
 
     <div class="container" th:each="question, questionsIteration  : ${questions}">
-        <div th:id="'question-' + ${questionsIteration.count}" style="display: none">
+        <div th:id="'question-' + ${questionsIteration.count}" style="display: none; margin-bottom: 200px">
             <div class="progress">
                 <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
-                     th:attr="aria-valuenow=${questionsIteration.count * 10}" aria-valuemin="0" aria-valuemax="100"
-                     th:style="'width:' + ${questionsIteration.count * 10} + '%'"
-                     th:text="${questionsIteration.count * 10 + '%'}">
+                     th:attr="aria-valuenow=${questionsIteration.index * 10}" aria-valuemin="0" aria-valuemax="100"
+                     th:style="'width:' + ${questionsIteration.index * 10} + '%'"
+                     th:text="${questionsIteration.index * 10 + '%'}">
                 </div>
             </div>
 
             <div>
-                <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1>
+                <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1><br><br>
             </div>
 
             <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
@@ -57,7 +57,7 @@
     </div>
     <footer>
         <!-- import footer -->
-        <div th:replace="fragments/footer :: footer"></div>
+        <div id="footer" th:replace="fragments/footer :: footer"></div>
     </footer>
 </body>
 

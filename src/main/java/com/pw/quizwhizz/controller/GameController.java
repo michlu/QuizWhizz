@@ -131,6 +131,8 @@ public class GameController {
         return "submit_answers";
     }
 
+    // submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
+
     private void fillModelForOpenGamePage(Model model, Game game, boolean isOwner) {
         model.addAttribute("game", game);
         model.addAttribute("players", game.getPlayers());
@@ -144,8 +146,6 @@ public class GameController {
     }
 
     /* TODO:
-    - player: join -> script to check if the game has been started
-    - waiting for a game to start -> script to determine how many players there are
     - game: checkScores - if status==closed - ok
                         - if not closed == wait for all results
      */
