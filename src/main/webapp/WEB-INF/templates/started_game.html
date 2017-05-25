@@ -33,7 +33,7 @@
 
     <div class="page-header">
         <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
-        <h1 class="lead text-center" id="choose-answer">Wybierz poprawną odpowiedź</h1>
+        <h1 class="lead text-center padding-top">Wybierz poprawną odpowiedź</h1>
     </div>
 
     <div class="container" th:each="question, questionsIteration  : ${questions}">
@@ -47,7 +47,7 @@
             </div>
 
             <div>
-                <h1 class="lead text-center" th:text="${question.getQuestion()}"></h1><br><br>
+                <h1 class="lead text-center padding-top" th:text="${question.getQuestion()}"></h1><br><br>
             </div>
 
             <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
