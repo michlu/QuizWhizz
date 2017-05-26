@@ -17,33 +17,67 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
-    <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{/resources/scripts/started_game.js}"></script>
+
 
 </head>
-<body>
 
-<div class="container">
-        <div class="container">
-            <h2>Scores</h2>
-            <table class="table table-condensed">
-                <thead>
-                <tr>
-                    <th>Imię</th>
-                    <th>Zdobyte punkty</th>
-                </tr>
-                </thead>
-                <tbody th:each="score, scoresIteration  : ${scores}">
-                <tr>
-                    <td th:text="${score.getPlayer().getName()}"></td>
-                    <td th:text="${score.getPoints()}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<body style="background: #3c763d">
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- import navbar -->
+        <div th:replace="fragments/navbar :: navbar"></div>
+    </div>
+</nav>
+
+<div class="container" style="background-color: #FFF">
+
+    <div class="page-header">
+        <h1 class="lead text-center text-uppercase">Wyniki rozgrywki</h1>
+    </div>
+
+    <div>
+        <table class="table table-striped" align="center" valign="middle">
+            <tr th:each="score, iterationStatus : ${scores}">
+                <td width="80" align="center"><h1 class="display-1" th:text="${iterationStatus.count}">1</h1></td>
+                <td align="center">
+                    <img th:if="${score.isHighest()}" src="/resources/gfx/cup_icon.png" class="" width="">
+                    <img src="/resources/images/profile_1.png" class="img-circle" width="70"><!-- <img src="#" th:src="@{${player.user.urlImage}}" class="img-circle" width="70"> -->
+                </td>
+                <td><h1 class="display-1" th:text="${score.getPlayer().getName()}"></h1></td>
+                <td><h1 class="display-1" th:text="${score.getPoints()}"></h1></td>
+                <td>
+                    <div align="center" th:if="${score.isHighest()}"><!-- w divie if sprawdzajacy czy zostal dodany bonus -->
+                        <h1 class="display-3">+ 30 pkt <img src="/resources/gfx/multiplayer.png" class="" width="50"></h1>
+                        <p>bonus za wygrana w grze wielosobowej</p>
+                    </div>
+                </td>
+                <td align="center">
+                    <h1 class="display-3" style="padding-bottom: 10px" th:text="${score.getPlayer().getXp() + ' xp'}"></h1>
+                    <p>suma punktow z rozegranych gier</p>
+                </td>
+            </tr>
+        </table>
     </div>
 
 
+    <hr class="featurette-divider">
+    <!-- Footer -->
+    <footer>
+        <!-- import footer -->
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
+
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
 
 </body>
+
 </html>

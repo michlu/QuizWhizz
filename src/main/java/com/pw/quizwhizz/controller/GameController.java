@@ -5,7 +5,6 @@ import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.Game;
-import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Score;
 import com.pw.quizwhizz.service.GameService;

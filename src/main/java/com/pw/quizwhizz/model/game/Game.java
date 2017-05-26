@@ -52,9 +52,9 @@ public class Game {
             throw new ScoreCannotBeRetrievedBeforeGameIsClosedException();
         }
 
-        if (winnerIsNotDetermined() && scores.size() > 0) {
-            Score winningScore = findWinningScore();
-            winningScore.markAsHighest();
+        if (winnerIsNotDetermined() && scores.size() > 1) {
+            List<Score> winningScores = findHighestScoreOrScores();
+            winningScores.forEach(score -> score.markAsHighest());
         }
         return scores;
     }
@@ -96,8 +96,15 @@ public class Game {
         return scores.stream().filter(score -> score.isHighest()).count() == 0;
     }
 
-    private Score findWinningScore() {
-        return scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
+    private List<Score> findHighestScoreOrScores() {
+        Score highestScore =  scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
+        List<Score> highestScores = new ArrayList<>();
+        scores.forEach(score -> {
+            if (score.getPoints() == highestScore.getPoints()) {
+                highestScores.add(score);
+            }
+        });
+        return highestScores;
     }
 
     private boolean playersScoreIsAlreadyAddedToScores(Player player) {
