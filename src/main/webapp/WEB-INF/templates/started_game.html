@@ -30,9 +30,10 @@
             <div th:replace="fragments/navbar :: navbar"></div>
         </div>
     </nav>
+
     <div class="page-header">
         <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
-        <h1 class="lead text-center padding-top">Wybierz poprawną odpowiedź</h1>
+        <h1 class="lead text-center padding-top" >Wybierz poprawną odpowiedź</h1>
     </div>
 
     <div class="container" th:each="question, questionsIteration  : ${questions}">
@@ -43,16 +44,17 @@
                      th:style="'width:' + ${questionsIteration.index * 10} + '%'"
                      th:text="${questionsIteration.index * 10 + '%'}">
                 </div>
+            </div>
+
             <div>
                 <h1 class="lead text-center padding-top" th:text="${question.getQuestion()}"></h1><br><br>
             </div>
-                <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
-                    <a href="#!" class="btn btn-primary btn-block" th:text="${answer.getAnswer()}" th:onclick="'submitSingleAnswer(' + ${answer.getId()} + ')'" ></a>
-                </div>
+
+            <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
+                <a href="#!" class="btn btn-primary btn-block" th:text="${answer.getAnswer()}" th:onclick="'submitSingleAnswer(' + ${answer.getId()} + ')'" ></a>
             </div>
         </div>
     </div>
-
     <footer>
         <!-- import footer -->
         <div id="footer" th:replace="fragments/footer :: footer"></div>
