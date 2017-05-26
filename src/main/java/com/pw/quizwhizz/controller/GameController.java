@@ -112,6 +112,7 @@ public class GameController {
 
     @RequestMapping(value = "/{gameId}/submitAnswers")
     public String submitAnswers(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+        model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
 
@@ -129,17 +130,24 @@ public class GameController {
             }
             gameService.submitAnswers(game, user, answerIds);
         }
+        model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
     // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
-    // pokazac na widoku bonusowe 30 punktow dla zwyciezcy
-    // poprawic zasade wyznaczania zwycezcy - remis??
+
+    @RequestMapping(value = "/{gameId}/isClosed", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String isGameClosed(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+        boolean isClosed = gameService.isGameClosed(gameId);
+
+        return "{ \"isClosed\" : " + isClosed + " }";
+    }
 
     @RequestMapping(value = "/{gameId}/checkScores")
     public String checkScores(@PathVariable Long gameId, Model model, Authentication authentication) throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
 
-        List<Score> scores = gameService.getScoresByGameId(gameId);
+        List<Score> scores = gameService.checkScores(gameId);
 
         model.addAttribute("scores", scores);
         return "check_scores";

@@ -17,7 +17,8 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
-
+    <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/scripts/submit_answers.js}"></script>
 
 </head>
 
@@ -30,6 +31,8 @@
             <div th:replace="fragments/navbar :: navbar"></div>
         </div>
     </nav>
+    <div id="game-id" style="display: none" th:text="${gameId}"></div>
+
 
     <div class="container">
 

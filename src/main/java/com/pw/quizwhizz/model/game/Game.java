@@ -18,8 +18,8 @@ public class Game {
     @Setter
     private long id;
     static final int appropriateNumberOfQuestions = 10;
-    private final Category category;
-    private final List<Question> questions;
+    private Category category;
+    private List<Question> questions;
     private final GameStateMachine gameStateMachine;
     @Setter
     private List<Player> players = new ArrayList<>();
@@ -36,6 +36,10 @@ public class Game {
         this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
     }
 
+    // Constructor for pulling purposes
+    public Game() {
+        this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
+    }
     // Constructor for testing purposes (a solution to time-related issues)
     protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine) throws IllegalNumberOfQuestionsException {
         validateNumberOfQuestions(questions);

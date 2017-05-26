@@ -173,7 +173,7 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public List<Score> getScoresByGameId ( long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
         Game game = findGameById(gameId);
         updateGame(game);
         List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(gameId);
@@ -253,6 +253,16 @@ public class GameServiceImpl implements GameService {
         PlayerInGameEntity playerInGameEntity = playerInGameRepository.findOne(key);
         boolean isOwner = playerInGameEntity.isOwner();
         return isOwner;
+    }
+
+    @Override
+    public boolean isGameClosed(Long gameId) {
+        GameEntity gameEntity = gameRepository.findOne(gameId);
+        Game game = gameFactory.build();
+        game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+        game.getGameStateMachine().determineCurrentState();
+        GameState state = game.getGameStateMachine().getCurrentState();
+        return state == GameState.CLOSED;
     }
 
     private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
