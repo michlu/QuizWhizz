@@ -24,10 +24,11 @@ public interface GameService {
 
     void saveScore(Score score);
     Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
-    List<Score> getScoresByGameId(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
+    List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
     List<Score> getScoresByPlayer(Player player);
     List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException;
     List<String> getNamesOfPlayersInGame(Long gameId);
 
     boolean isPlayerGameOwner(Long id, Long gameId);
+    boolean isGameClosed(Long gameId);
 }

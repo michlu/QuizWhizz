@@ -1,11 +1,11 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.account.User;
+import java.lang.IllegalStateException;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import com.pw.quizwhizz.model.game.Game;
-import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.Question;
 import com.pw.quizwhizz.model.game.Score;
 import com.pw.quizwhizz.service.GameService;
@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
-
-// TODO: handle all application wide exceptions gracefully
 
 @Controller
 @RequestMapping("/game")
@@ -112,7 +110,8 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{gameId}/submitAnswers")
-    public String submitAnswers(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+    public String submitAnswers(@PathVariable Long gameId, Model model) throws IllegalNumberOfQuestionsException {
+        model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
 
@@ -130,18 +129,28 @@ public class GameController {
             }
             gameService.submitAnswers(game, user, answerIds);
         }
+        model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
     // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
-    // pokazac na widoku bonusowe 30 punktow dla zwyciezcy
-    // poprawic zasade wyznaczania zwycezcy - remis??
+
+    @RequestMapping(value = "/{gameId}/isClosed", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String isGameClosed(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
+        boolean isClosed = gameService.isGameClosed(gameId);
+        return "{ \"isClosed\" : " + isClosed + " }";
+    }
 
     @RequestMapping(value = "/{gameId}/checkScores")
     public String checkScores(@PathVariable Long gameId, Model model, Authentication authentication) throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
+        List<Score> scores;
 
-        List<Score> scores = gameService.getScoresByGameId(gameId);
-
+        try {
+            scores = gameService.checkScores(gameId);
+        } catch (ScoreCannotBeRetrievedBeforeGameIsClosedException e) {
+            return "submit_answers";
+        }
         model.addAttribute("scores", scores);
         return "check_scores";
     }

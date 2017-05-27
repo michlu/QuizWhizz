@@ -18,8 +18,8 @@ public class Game {
     @Setter
     private long id;
     static final int appropriateNumberOfQuestions = 10;
-    private final Category category;
-    private final List<Question> questions;
+    private Category category;
+    private List<Question> questions;
     private final GameStateMachine gameStateMachine;
     @Setter
     private List<Player> players = new ArrayList<>();
@@ -36,6 +36,10 @@ public class Game {
         this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
     }
 
+    // Constructor for pulling purposes
+    public Game() {
+        this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
+    }
     // Constructor for testing purposes (a solution to time-related issues)
     protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine) throws IllegalNumberOfQuestionsException {
         validateNumberOfQuestions(questions);
@@ -52,9 +56,9 @@ public class Game {
             throw new ScoreCannotBeRetrievedBeforeGameIsClosedException();
         }
 
-        if (winnerIsNotDetermined() && scores.size() > 0) {
-            Score winningScore = findWinningScore();
-            winningScore.markAsHighest();
+        if (winnerIsNotDetermined() && scores.size() > 1) {
+            List<Score> winningScores = findHighestScoreOrScores();
+            winningScores.forEach(score -> score.markAsHighest());
         }
         return scores;
     }
@@ -96,8 +100,15 @@ public class Game {
         return scores.stream().filter(score -> score.isHighest()).count() == 0;
     }
 
-    private Score findWinningScore() {
-        return scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
+    private List<Score> findHighestScoreOrScores() {
+        Score highestScore =  scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
+        List<Score> highestScores = new ArrayList<>();
+        scores.forEach(score -> {
+            if (score.getPoints() == highestScore.getPoints()) {
+                highestScores.add(score);
+            }
+        });
+        return highestScores;
     }
 
     private boolean playersScoreIsAlreadyAddedToScores(Player player) {

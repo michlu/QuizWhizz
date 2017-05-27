@@ -13,4 +13,8 @@ public class GameFactory {
     public Game build(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
         return new Game(category, questions);
     }
+
+    public Game build() {
+        return new Game();
+    }
 }

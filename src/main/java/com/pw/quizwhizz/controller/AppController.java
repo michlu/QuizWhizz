@@ -29,6 +29,6 @@ public class AppController {
     // do testow.. wynik gry
     @RequestMapping("/end")
     public String endgame() throws IllegalNumberOfQuestionsException {
-        return "game_end";
+        return "check_scores";
     }
 }

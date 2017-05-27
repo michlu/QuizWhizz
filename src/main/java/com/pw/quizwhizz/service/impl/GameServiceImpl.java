@@ -5,20 +5,17 @@ import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.game.*;
 import com.pw.quizwhizz.repository.game.*;
-import com.pw.quizwhizz.service.*;
+import com.pw.quizwhizz.service.AnswerService;
+import com.pw.quizwhizz.service.CategoryService;
+import com.pw.quizwhizz.service.GameService;
+import com.pw.quizwhizz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -176,7 +173,7 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public List<Score> getScoresByGameId ( long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
         Game game = findGameById(gameId);
         updateGame(game);
         List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_GameId(gameId);
@@ -194,6 +191,8 @@ public class GameServiceImpl implements GameService {
             updateScore(score);
             updatePlayer(score.getPlayer());
         }
+
+        scores.sort(Comparator.comparing(Score::getPoints).reversed());
         return scores;
     }
 
@@ -254,6 +253,16 @@ public class GameServiceImpl implements GameService {
         PlayerInGameEntity playerInGameEntity = playerInGameRepository.findOne(key);
         boolean isOwner = playerInGameEntity.isOwner();
         return isOwner;
+    }
+
+    @Override
+    public boolean isGameClosed(Long gameId) {
+        GameEntity gameEntity = gameRepository.findOne(gameId);
+        Game game = gameFactory.build();
+        game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+        game.getGameStateMachine().determineCurrentState();
+        GameState state = game.getGameStateMachine().getCurrentState();
+        return state == GameState.CLOSED;
     }
 
     private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
