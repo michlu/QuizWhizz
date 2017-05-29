@@ -1,7 +1,6 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.account.User;
-import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,15 +20,13 @@ import java.io.IOException;
 public class UserController {
 
 	final private UserService userService;
-	final private GameService gameService;
 
 	@Autowired
-	public UserController(UserService userService, GameService gameService) {
-		this.userService = userService;
-		this.gameService = gameService;
-	}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-	@GetMapping("/loginform")
+    @GetMapping("/loginform")
 	public String loginForm() {
 		return "login_form";
 	}
@@ -70,7 +67,7 @@ public class UserController {
 		}
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
-        model.addAttribute("player", gameService.findPlayerByUserId(user.getId()));
+        model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
 		return "user_profile";
 	}
 
@@ -82,7 +79,7 @@ public class UserController {
 		User user = userService.findByEmail(authentication.getName());
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
-		model.addAttribute("player", gameService.findPlayerByUserId(user.getId()));
+		model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
 
 		return "user_profile";
 	}

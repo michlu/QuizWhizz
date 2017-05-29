@@ -18,4 +18,5 @@ public interface UserService {
     void removeRoleUser(String userId, String[] roles);
     void update(User user);
     void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException;
+    Player findPlayerByUserId(Long userId);
 }

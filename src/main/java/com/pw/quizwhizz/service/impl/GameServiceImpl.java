@@ -278,19 +278,6 @@ public class GameServiceImpl implements GameService {
         return player;
     }
 
-    public Player findPlayerByUserId(Long userId) {
-        PlayerEntity playerEntity = playerRepository.findOne(userId);
-        Player player = new Player(playerEntity.getName());
-        player.setId(userId);
-        if (playerEntity.getGamesPlayed() != null) {
-            player.setGamesPlayed(playerEntity.getGamesPlayed());
-        }
-        if (playerEntity.getXp() != null) {
-            player.setXp(playerEntity.getXp());
-        }
-        return player;
-    }
-
     @Transactional
     private void updatePlayer(Player player) {
         PlayerEntity playerEntity = playerRepository.findOne(player.getId());
