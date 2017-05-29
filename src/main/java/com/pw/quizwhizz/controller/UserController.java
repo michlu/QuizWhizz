@@ -77,20 +77,21 @@ public class UserController {
 		boolean userCheckHimself = true;
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", userService.findByEmail(authentication.getName()));
+
 		return "user_profile";
 	}
 
 	@PostMapping("/user/editme")
 	public String postUserEditMe(
 			@ModelAttribute User user,
-			@RequestParam MultipartFile file,
 			BindingResult bindResult,
+			@RequestParam MultipartFile file,
 			HttpServletRequest request) {
 		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
 
-		if (bindResult.hasErrors())
-			//TODO HTTP 400
+		if (bindResult.hasErrors()){
 			return "redirect:/user/my";
+		}
 		else {
 			if (!file.isEmpty()) {
 				try {
