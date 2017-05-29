@@ -70,6 +70,7 @@ public class UserController {
 		}
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
+        model.addAttribute("player", gameService.findPlayerByUserId(user.getId()));
 		return "user_profile";
 	}
 
