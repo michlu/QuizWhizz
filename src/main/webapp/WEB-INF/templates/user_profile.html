@@ -86,17 +86,13 @@
                         </tr>
                         <tr>
                             <td>Ilość rozegranych gier:</td>
-                            <td>123</td>
+                            <td th:text="${player.getGamesPlayed()}"></td>
                         </tr>
 
                         <tr>
                         <tr>
                             <td>Punkty zdobyte:</td>
-                            <td>1867</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
+                            <td th:text="${player.getXp()}"></td>
                         </tr>
                         </tbody>
                     </table>

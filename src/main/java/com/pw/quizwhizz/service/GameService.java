@@ -31,4 +31,6 @@ public interface GameService {
 
     boolean isPlayerGameOwner(Long id, Long gameId);
     boolean isGameClosed(Long gameId);
+
+    Player findPlayerByUserId(Long userId);
 }

@@ -1,6 +1,7 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.account.User;
+import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,11 +20,13 @@ import java.io.IOException;
 @Controller
 public class UserController {
 
-	private UserService userService;
-	
+	final private UserService userService;
+	final private GameService gameService;
+
 	@Autowired
-	public void setUserService(UserService userService) {
+	public UserController(UserService userService, GameService gameService) {
 		this.userService = userService;
+		this.gameService = gameService;
 	}
 
 	@GetMapping("/loginform")
@@ -75,8 +78,10 @@ public class UserController {
 			Authentication authentication,
 			Model model) {
 		boolean userCheckHimself = true;
+		User user = userService.findByEmail(authentication.getName());
 		model.addAttribute("userCheckHimself", userCheckHimself);
-		model.addAttribute("user", userService.findByEmail(authentication.getName()));
+		model.addAttribute("user", user);
+		model.addAttribute("player", gameService.findPlayerByUserId(user.getId()));
 
 		return "user_profile";
 	}
