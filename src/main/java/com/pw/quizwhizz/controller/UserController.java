@@ -19,14 +19,14 @@ import java.io.IOException;
 @Controller
 public class UserController {
 
-	private UserService userService;
-	
-	@Autowired
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	final private UserService userService;
 
-	@GetMapping("/loginform")
+	@Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/loginform")
 	public String loginForm() {
 		return "login_form";
 	}
@@ -67,6 +67,7 @@ public class UserController {
 		}
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
+        model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
 		return "user_profile";
 	}
 
@@ -75,22 +76,25 @@ public class UserController {
 			Authentication authentication,
 			Model model) {
 		boolean userCheckHimself = true;
+		User user = userService.findByEmail(authentication.getName());
 		model.addAttribute("userCheckHimself", userCheckHimself);
-		model.addAttribute("user", userService.findByEmail(authentication.getName()));
+		model.addAttribute("user", user);
+		model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
+
 		return "user_profile";
 	}
 
 	@PostMapping("/user/editme")
 	public String postUserEditMe(
 			@ModelAttribute User user,
-			@RequestParam MultipartFile file,
 			BindingResult bindResult,
+			@RequestParam MultipartFile file,
 			HttpServletRequest request) {
 		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
 
-		if (bindResult.hasErrors())
-			//TODO HTTP 400
+		if (bindResult.hasErrors()){
 			return "redirect:/user/my";
+		}
 		else {
 			if (!file.isEmpty()) {
 				try {

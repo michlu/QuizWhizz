@@ -1,10 +1,13 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
+import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
 import com.pw.quizwhizz.repository.UserRepository;
+import com.pw.quizwhizz.repository.game.PlayerRepository;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,12 +27,14 @@ public class UserServiceImpl implements UserService {
 	final private UserRepository userRepository;
 	final private RoleRepository roleRepository;
 	final private PasswordEncoder passwordEncoder;
+	final private PlayerRepository playerRepository;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.playerRepository = playerRepository;
 	}
 
 	public List<User> findAll(){
@@ -131,6 +136,19 @@ public class UserServiceImpl implements UserService {
 		}
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(user);
+	}
+
+	public Player findPlayerByUserId(Long userId) {
+		PlayerEntity playerEntity = playerRepository.findOne(userId);
+		Player player = new Player(playerEntity.getName());
+		player.setId(userId);
+		if (playerEntity.getGamesPlayed() != null) {
+			player.setGamesPlayed(playerEntity.getGamesPlayed());
+		}
+		if (playerEntity.getXp() != null) {
+			player.setXp(playerEntity.getXp());
+		}
+		return player;
 	}
 
 }

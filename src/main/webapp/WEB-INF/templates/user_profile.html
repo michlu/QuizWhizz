@@ -17,10 +17,7 @@
     <!-- Custom CSS -->
     <link href="/css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="/css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
-    <script src="js/checkPass.js" th:src="@{/resources/js/checkPass.js}"></script>
     <link href="/css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/userprofile.css}">
-
-
 
 </head>
 
@@ -89,17 +86,13 @@
                         </tr>
                         <tr>
                             <td>Ilość rozegranych gier:</td>
-                            <td>123</td>
+                            <td th:text="${player.getGamesPlayed()}"></td>
                         </tr>
 
                         <tr>
                         <tr>
                             <td>Punkty zdobyte:</td>
-                            <td>1867</td>
-                        </tr>
-                        <tr>
-                            <td>...</td>
-                            <td>...</td>
+                            <td th:text="${player.getXp()}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -152,10 +145,11 @@
                             </div>
                             <!-- edit form column -->
                             <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-                                <div class="alert alert-info alert-dismissable">
+
+                                <div th:if="${#fields.hasErrors('*')}" class="alert alert-info alert-dismissable">
                                     <a class="panel-close close" data-dismiss="alert">×</a>
                                     <i class="fa fa-coffee"></i>
-                                    <strong>Bład!</strong>. Informacja zwrotna o błedzie dla użytkownika.
+                                    <p th:each="err : ${#fields.allErrors()}" th:text="${err}">...</p>
                                 </div>
                                 <h3>Dane personalne:</h3>
 
@@ -165,27 +159,20 @@
                                 <div class="form-group">
                                         <label class="col-lg-3 control-label">Imie:</label>
                                         <div class="col-lg-8">
-                                            <input th:field="*{firstName}" class="form-control"  type="text">
+                                            <input th:field="*{firstName}" class="form-control"  type="text" minlength="4">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-lg-3 control-label">Email:</label>
                                         <div class="col-lg-8">
-                                            <input th:field="*{email}" class="form-control"  type="text">
+                                            <input th:field="*{email}" class="form-control"  type="email">
                                         </div>
+                                        <div th:errors="*{email}" class="alert alert-danger"></div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-3 control-label">Hasło:</label>
+                                        <label class="col-md-3 control-label">Zmień hasło:</label>
                                         <div class="col-md-8">
-                                            <input class="form-control" type="password" id="inputPassword1">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Powtórz hasło:</label>
-                                        <div class="col-md-8">
-                                            <!-- TODO sprawdzanie poprawnosci pola hasla -->
-                                            <input th:name="password" onkeyup="checkPass(); return false;" class="form-control" type="password" id="inputPassword2">
-                                            <div class="help-block with-errors"><span id="confirmMessage" class="confirmMessage"></span></div>
+                                            <input th:name="password" class="form-control" type="password" minlength="4">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -200,8 +187,6 @@
                             </div>
                             </form>
                         </div>
-
-
 
                 </div>
             </div>
@@ -230,7 +215,7 @@
     $(document).ready(function() {
         $(".btn-pref .btn").click(function () {
             $(".btn-pref .btn").removeClass("btn-primary").addClass("btn-default");
-//                 $(".tab").addClass("active"); // instead of this do the below
+//                 $(".tab").addClass("active");
             $(this).removeClass("btn-default").addClass("btn-primary");
         });
     });
