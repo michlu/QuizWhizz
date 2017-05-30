@@ -64,3 +64,20 @@
     height: 200px;
     width: auto;
 }
+
+.btn-block-answer {
+    margin-bottom: 8px;
+}
+
+.img-profile-picture {
+    width: 70px;
+}
+
+.img-multiplayer-award {
+    width: 50px;
+}
+
+.score-headers > th,
+.score-row > td {
+    text-align: center;
+}

@@ -39,23 +39,36 @@
 
     <div>
         <table class="table table-striped" align="center" valign="middle">
-            <tr th:each="score, iterationStatus : ${scores}">
-                <td width="80" align="center"><h1 class="display-1" th:text="${iterationStatus.count}">1</h1></td>
-                <td align="center">
-                    <img th:if="${score.isHighest()}" src="/resources/gfx/cup_icon.png" class="" width="">
-                    <img src="/resources/images/profile_1.png" class="img-circle" width="70"><!-- <img src="#" th:src="@{${player.user.urlImage}}" class="img-circle" width="70"> -->
-                </td>
-                <td><h1 class="display-1" th:text="${score.getPlayer().getName()}"></h1></td>
-                <td><h1 class="display-1" th:text="${score.getPoints()}"></h1></td>
+            <tr class="score-headers">
+                <th></th>
+                <th></th>
+                <th>Gracz</th>
+                <th>Zdobyte punkty</th>
+                <th></th>
+                <th>Suma punktów z rozegranych gier</th>
+            </tr>
+            <tr class="score-row" th:each="score, iterationStatus : ${scores}">
                 <td>
-                    <div align="center" th:if="${score.isHighest()}"><!-- w divie if sprawdzajacy czy zostal dodany bonus -->
-                        <h1 class="display-3">+ 30 pkt <img src="/resources/gfx/multiplayer.png" class="" width="50"></h1>
+                    <h1 th:text="${iterationStatus.count}">1</h1>
+                </td>
+                <td>
+                    <img th:if="${score.isHighest()}" src="/resources/gfx/cup_icon.png">
+                    <img src="/resources/images/profile_1.png" class="img-circle img-profile-picture">
+                </td>
+                <td>
+                    <h1 th:text="${score.getPlayer().getName()}"></h1>
+                </td>
+                <td>
+                    <h1 th:text="${score.getPoints() + ' pkt'}"></h1>
+                </td>
+                <td>
+                    <div th:if="${score.isHighest()}">
+                        <h1>+ 30 pkt <img src="/resources/gfx/multiplayer.png" class="img-multiplayer-award"></h1>
                         <p>bonus za wygrana w grze wielosobowej</p>
                     </div>
                 </td>
-                <td align="center">
-                    <h1 class="display-3" style="padding-bottom: 10px" th:text="${score.getPlayer().getXp() + ' xp'}"></h1>
-                    <p>suma punktow z rozegranych gier</p>
+                <td>
+                    <h1 th:text="${score.getPlayer().getXp() + ' pkt'}"></h1>
                 </td>
             </tr>
         </table>

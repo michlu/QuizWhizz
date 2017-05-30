@@ -33,6 +33,14 @@
 
     <div class="page-header">
         <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
+        <div>
+            <span>Czas do zakonczenia gry: </span>
+            <span id="game-time-left">150</span>
+        </div>
+        <div>
+            <span>Czas na odpowiedź: </span>
+            <span id="question-time-left">15</span>
+        </div>
         <h1 class="lead text-center text-uppercase padding-top" >Wybierz poprawną odpowiedź</h1>
     </div>
 
@@ -51,7 +59,7 @@
             </div>
 
             <div class="answers" th:each="answer, answersIteration : ${question.getAnswers()}">
-                <a href="#!" class="btn btn-primary btn-block" th:text="${answer.getAnswer()}" th:onclick="'submitSingleAnswer(' + ${answer.getId()} + ')'" ></a>
+                <a href="#!" class="btn btn-primary btn-block btn-block-answer" th:text="${answer.getAnswer()}" th:onclick="'submitSingleAnswer(' + ${answer.getId()} + ')'" ></a>
             </div>
         </div>
     </div>
