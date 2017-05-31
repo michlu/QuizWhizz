@@ -11,12 +11,14 @@ import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
 import com.pw.quizwhizz.repository.impl.UserAllScoresRepository;
 import com.pw.quizwhizz.service.UserService;
+import com.pw.quizwhizz.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
 	final private PasswordEncoder passwordEncoder;
 	final private PlayerRepository playerRepository;
 	final private UserAllScoresRepository userAllScoresRepository;
+
+	@Autowired
+	ImageUtil imageUtil;
 
 	@Autowired
 	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository) {
@@ -114,10 +119,10 @@ public class UserServiceImpl implements UserService {
 	public void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException {
 		User updateUser = userRepository.findById(user.getId());
 		String fileNameWithExtension = "profile_" + user.getId() + "." + file.getOriginalFilename().split("\\.")[1];
-		byte[] bytes = file.getBytes();
+		BufferedImage resizedImage = imageUtil.resizeImage(file.getBytes(), 200, 200);
 		updateUser.setUrlImage("/resources/images/" + fileNameWithExtension);
 		Path path = Paths.get(saveDirectory + fileNameWithExtension);
-		Files.write(path, bytes);
+		Files.write(path, imageUtil.imageToByte(resizedImage));
 
 		if(user.getFirstName()!=null)
 			updateUser.setFirstName(user.getFirstName());
