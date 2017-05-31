@@ -63,11 +63,13 @@ public class UserController {
 		User user = userService.findById(userId);
 		boolean userCheckHimself = false;
 		if(user.getEmail().equals(authentication.getName())){
-			userCheckHimself = true; // czy user sprawdza swoj profil (dodaje opcje edytowania)
+			userCheckHimself = true; // sprawdza czy user odwiedza swoj profil (dodaje opcje edytowania)
 		}
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
         model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
+		model.addAttribute("userAllScores", userService.findAllScoreForUser(user.getId()));
+
 		return "user_profile";
 	}
 
@@ -80,6 +82,7 @@ public class UserController {
 		model.addAttribute("userCheckHimself", userCheckHimself);
 		model.addAttribute("user", user);
 		model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
+		model.addAttribute("userAllScores", userService.findAllScoreForUser(user.getId()));
 
 		return "user_profile";
 	}

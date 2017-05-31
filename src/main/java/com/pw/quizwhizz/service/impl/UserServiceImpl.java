@@ -4,10 +4,12 @@ import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
+import com.pw.quizwhizz.model.dto.UserAllStats;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
+import com.pw.quizwhizz.repository.impl.UserAllScoresRepository;
 import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,14 +30,17 @@ public class UserServiceImpl implements UserService {
 	final private RoleRepository roleRepository;
 	final private PasswordEncoder passwordEncoder;
 	final private PlayerRepository playerRepository;
+	final private UserAllScoresRepository userAllScoresRepository;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.playerRepository = playerRepository;
+		this.userAllScoresRepository = userAllScoresRepository;
 	}
+
 
 	public List<User> findAll(){
 		return userRepository.findAll();
@@ -151,4 +156,7 @@ public class UserServiceImpl implements UserService {
 		return player;
 	}
 
+	public List<UserAllStats> findAllScoreForUser(Long userId){
+		return userAllScoresRepository.findAllScoreForUser(userId);
+	}
 }

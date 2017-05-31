@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.service;
 
+import com.pw.quizwhizz.model.dto.UserAllStats;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.model.account.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,4 +20,5 @@ public interface UserService {
     void update(User user);
     void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException;
     Player findPlayerByUserId(Long userId);
+    List<UserAllStats> findAllScoreForUser(Long userId);
 }
