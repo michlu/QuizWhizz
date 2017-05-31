@@ -37,21 +37,22 @@ public class UserAllScoresRepository {
     public List<UserAllStats> findAllScoreForUser(Long userId){
         return jdbcTemplate.query(userScores, new UserAllScoresRowMapper(), userId);
     }
-}
-
-/**
- * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
- */
-class UserAllScoresRowMapper implements RowMapper<UserAllStats> {
-    @Override
-    public UserAllStats mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-        UserAllStats userAllStats = new UserAllStats();
-        userAllStats.setGameId(resultSet.getInt(1));
-        userAllStats.setGameDate(resultSet.getDate(2));
-        userAllStats.setGameCategory(resultSet.getString(3));
-        userAllStats.setNumberOfPlayers(resultSet.getInt(4));
-        userAllStats.setPoints(resultSet.getInt(5));
-        userAllStats.setWinner(resultSet.getObject(6)==null ? " " : resultSet.getString(6));
-        return userAllStats;
+    /**
+     * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
+     */
+     class UserAllScoresRowMapper implements RowMapper<UserAllStats> {
+        @Override
+        public UserAllStats mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+            UserAllStats userAllStats = new UserAllStats();
+            userAllStats.setGameId(resultSet.getInt(1));
+            userAllStats.setGameDate(resultSet.getDate(2));
+            userAllStats.setGameCategory(resultSet.getString(3));
+            userAllStats.setNumberOfPlayers(resultSet.getInt(4));
+            userAllStats.setPoints(resultSet.getInt(5));
+            userAllStats.setWinner(resultSet.getObject(6)==null ? " " : resultSet.getString(6));
+            return userAllStats;
+        }
     }
 }
+
+
