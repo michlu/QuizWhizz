@@ -59,7 +59,7 @@
                 <div class="row stylish-panel">
 
                     <div class="col-sm-6 col-md-4" th:each="category,iterationStatus  : ${categories}">
-                        <div th:height="450">
+                        <div style="height: 440px;">
                             <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
                             <h2 th:text="${category.name}"></h2>
                             <p th:text="${category.description}"></p>
