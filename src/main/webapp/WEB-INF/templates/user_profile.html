@@ -108,24 +108,26 @@
                         <tr>
                             <th>Nr:</th>
                             <th>Id:</th>
+                            <th>Data:</th>
                             <th>Kategoria:</th>
-                            <th>Gracze:</th>
+                            <th>Ilość graczy:</th>
                             <th>Zdobyte pkt:</th>
-                            <th>Zywcięzca:</th>
+                            <th>Zywcięzca (*):</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>Java</td>
-                            <td>James Gosling</td>
-                            <td>300</td>
-                            <td>James Gosling</td>
+                        <tr th:each="userAllScore, iterationStatus : ${userAllScores}">
+                            <td th:text="${iterationStatus.count}"></td>
+                            <td th:text="${userAllScore.gameId}"></td>
+                            <td th:text="${userAllScore.gameDate}"></td>
+                            <td th:text="${userAllScore.gameCategory}"></td>
+                            <td th:text="${userAllScore.numberOfPlayers}"></td>
+                            <td th:text="${userAllScore.points}"></td>
+                            <td th:text="${userAllScore.winner}"></td>
                         </tr>
                         </tbody>
                     </table>
-
+                    <p align="right">* - zwycięzca jest podawany jedynie dla gier wieloosobowych</p>
                 </div>
                 <div class="tab-pane fade in" id="tab3">
                     <!-- TABELA EDYCJI DANYCH USERA -->
@@ -139,8 +141,8 @@
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="text-center">
                                     <img src="#" th:src="@{${user.urlImage}}" class="avatar img-circle img-thumbnail" alt="avatar">
-                                    <h6>Zmień zdjęcie profilowe...</h6>
-                                    <input th:name="file" type="file" class="text-center center-block well well-sm">
+                                    <h6>Zmień zdjęcie profilowe (200x200)...</h6>
+                                    <input th:name="file" type="file" class="text-center center-block well well-sm" accept="image/*">
                                 </div>
                             </div>
                             <!-- edit form column -->

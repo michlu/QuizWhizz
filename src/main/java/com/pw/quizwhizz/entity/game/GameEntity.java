@@ -16,24 +16,20 @@ public class GameEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    // Game_id niepotrzebne: gra dostanie id z GameEntity po zapisaniu do bazy
     @OneToOne
     @JoinColumn(name = "category_id")
     CategoryEntity category;
 
     @Enumerated
     @Column(name = "current_state")
-    GameState currentState;     // enum; w odopwiedniej metodzie z kontrolera uzyskamy go z GameStateMachine
+    GameState currentState;
 
-    // Domyslnie mapuje na DATETIME !! sprawdzic czy to odpowiedni format
     @Column(name = "start_time")
-    Instant startTime;          // podobnie: po startcie wycigniemy z GSM
+    Instant startTime;
 
     public GameEntity(GameEntityBuilder builder) {
         this.category = builder.getCategory();
         this.currentState = builder.getGameState();
         this.startTime = builder.getStartTime();
     }
-    // Pytania nalezace do konkretnej gry w osobnej klasie i encji: QuestionInGameEntity
-
 }

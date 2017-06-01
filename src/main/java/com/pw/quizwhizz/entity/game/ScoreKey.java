@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.entity.game;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * Created by karol on 03.05.2017.
  */
 @Getter @Setter
+@EqualsAndHashCode
 @Embeddable
 public class ScoreKey implements Serializable {
     @Column(name = "game_id", nullable = false)

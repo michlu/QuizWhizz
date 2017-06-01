@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -67,7 +68,7 @@ public class JpaConfig {
         dataSource.setUsername("root");
         dataSource.setPassword("admin");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setInitialSize(5);           // ilosc puli polaczen z baza danych
+        dataSource.setInitialSize(10);           // ilosc puli polaczen z baza danych
         dataSource.addConnectionProperty("uceUnicode", "yes");
         dataSource.addConnectionProperty("characterEncoding", "UTF-8");
         dataSource.addConnectionProperty("useSSL", "false");
@@ -110,5 +111,13 @@ public class JpaConfig {
         dataSourceInitializer.setDataSource(createDS());
         dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
         return dataSourceInitializer;
+    }
+
+    /**
+     * Bean udostepniajacy JdbcTemplate do zapytań SQL
+     */
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }

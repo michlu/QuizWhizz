@@ -4,17 +4,23 @@ import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
+import com.pw.quizwhizz.model.dto.Ranking;
+import com.pw.quizwhizz.model.dto.UserAllStats;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
+import com.pw.quizwhizz.repository.impl.RankingRepository;
+import com.pw.quizwhizz.repository.impl.UserAllScoresRepository;
 import com.pw.quizwhizz.service.UserService;
+import com.pw.quizwhizz.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,14 +34,21 @@ public class UserServiceImpl implements UserService {
 	final private RoleRepository roleRepository;
 	final private PasswordEncoder passwordEncoder;
 	final private PlayerRepository playerRepository;
+	final private UserAllScoresRepository userAllScoresRepository;
+	final private RankingRepository rankingRepository;
+	final private ImageUtil imageUtil;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository, RankingRepository rankingRepository, ImageUtil imageUtil) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.playerRepository = playerRepository;
+		this.userAllScoresRepository = userAllScoresRepository;
+		this.rankingRepository = rankingRepository;
+		this.imageUtil = imageUtil;
 	}
+
 
 	public List<User> findAll(){
 		return userRepository.findAll();
@@ -109,10 +122,10 @@ public class UserServiceImpl implements UserService {
 	public void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException {
 		User updateUser = userRepository.findById(user.getId());
 		String fileNameWithExtension = "profile_" + user.getId() + "." + file.getOriginalFilename().split("\\.")[1];
-		byte[] bytes = file.getBytes();
+		BufferedImage resizedImage = imageUtil.resizeImage(file.getBytes(), 200, 200);
 		updateUser.setUrlImage("/resources/images/" + fileNameWithExtension);
 		Path path = Paths.get(saveDirectory + fileNameWithExtension);
-		Files.write(path, bytes);
+		Files.write(path, imageUtil.imageToByte(resizedImage));
 
 		if(user.getFirstName()!=null)
 			updateUser.setFirstName(user.getFirstName());
@@ -149,6 +162,16 @@ public class UserServiceImpl implements UserService {
 			player.setXp(playerEntity.getXp());
 		}
 		return player;
+	}
+
+	public List<UserAllStats> findAllScoreForUser(Long userId){
+		return userAllScoresRepository.findAllScoreForUser(userId);
+	}
+	public List<Ranking> findGeneralRank(int limitSearch){
+		return rankingRepository.findGeneralRank(limitSearch);
+	}
+	public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
+		return rankingRepository.findFiveByCategory(limitSearch, categoryId);
 	}
 
 }

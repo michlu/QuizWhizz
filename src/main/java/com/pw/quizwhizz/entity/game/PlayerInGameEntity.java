@@ -12,6 +12,6 @@ public class PlayerInGameEntity {
     @EmbeddedId
     private PlayerInGameKey id;
 
-    @Column(name = "owner")
+    @Column(columnDefinition = "TINYINT(1)", name = "owner")
     private boolean isOwner;
 }

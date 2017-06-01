@@ -51,8 +51,7 @@
             <div class="page-header">
                 <h1 class="text-center">Rozpocznij grę...</h1>
             </div>
-            <p class="lead text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.</p>
+            <p class="lead text-center">Poniżej znajdują się kategorie w których możesz się sprawdzić w grze jednoosobowej lub zmierzyć się z innymi graczami. Rozpocznij quiz i poczekaj na resztę graczy.</p>
 
             <div class="container">
 
@@ -60,10 +59,10 @@
                 <div class="row stylish-panel">
 
                     <div class="col-sm-6 col-md-4" th:each="category,iterationStatus  : ${categories}">
-                        <div>
+                        <div style="height: 440px;">
                             <img src="#" th:src="@{${category.urlImage}}" class="img-circle img-thumbnail">
                             <h2 th:text="${category.name}"></h2>
-                            <p th:text="${category.description}">Lorem ipsum dolor sit amet</p>
+                            <p th:text="${category.description}"></p>
                             <a href="#" th:href="@{'/game/open/forCategory/'+${category.id}}" class="btn btn-primary">Rozpocznij quiz »</a>
                         </div>
                     </div>
@@ -82,8 +81,7 @@
             <h1 class="text-center dark-background-text">...lub dołącz do gry</h1>
         </div>
 
-        <p class="lead text-center dark-background-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua.</p>
+        <p class="lead text-center dark-background-text">Znajdź otwartą grę i dołącz do rozgrywki. Zmierz się z innymi graczami w wybranych kategoriach. Wygrane w rozgrywkach wieloosobowych są dodatkowo nagradzane.</p>
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
@@ -126,7 +124,7 @@
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
-                <img src="#" th:src="@{/resources/images/category_geography.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <img src="#" th:src="@{/resources/images/category_geografia.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
                 <div class="category">
                     Geografia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
                 </div>
@@ -166,6 +164,90 @@
 
 </div>
 
+<!-- RANKING -->
+<div class="container">
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="text-center">Ranking</h1>
+        </div>
+        <p class="lead text-center">Zestawienie TOP 5 najleszych graczy ze wszystkich kategorii.</p>
+
+        <div class="container">
+
+            <table class="table table-striped" align="center" valign="middle">
+                <tr class="score-headers">
+                    <th>Ranking</th>
+                    <th></th>
+                    <th>Gracz</th>
+                    <th>Rozegrane gry</th>
+                    <!--<th>Wygrane MP</th>-->
+                    <th>Zdobyte punkty</th>
+                </tr>
+
+                <tr class="score-row" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                    <td>
+                        <h1 th:text="${iterationStatus.count}"></h1>
+                    </td>
+                    <td>
+                        <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture">
+                    </td>
+                    <td>
+                        <h1 th:text="${ranking.playerName}"></h1>
+                    </td>
+                    <td>
+                        <h1 th:text="${ranking.gamePlayed}"></h1>
+                    </td>
+                    <td>
+                        <h1 th:text="${ranking.allPoints}"></h1>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="container padding-top">
+
+            <div class="page-header">
+                <h1 class="text-center">Najlepsi według kategorii</h1>
+            </div>
+            <p class="lead text-center">Zestawienie najleszych graczy w danych kategoriach, uwzględniana jest ilość poprawnych odpowiedzi.</p>
+
+            <div class="col-sm-12 col-md-6 padding-top" th:each="element : ${categoryRankings}">
+                <p class="lead text-center"><u th:text="${element.key}"></u></p>
+                <table class="table table-striped" align="center" valign="middle">
+                    <tr class="score-headers">
+                        <th>Ranking</th>
+                        <th></th>
+                        <th>Gracz</th>
+                        <th>Rozegrane gry</th>
+                        <!--<th>Wygrane MP</th>-->
+                        <th>Pop. Odp.</th>
+                    </tr>
+                    <tr class="score-row" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                        <td>
+                            <h4 th:text="${iterationStatus.count}"></h4>
+                        </td>
+                        <td>
+                            <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture-small">
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.playerName}"></h4>
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.gamePlayed}"></h4>
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.allPoints}/10"></h4>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
 
 <hr class="featurette-divider">
 <!-- Footer -->
@@ -183,6 +265,11 @@
 <!-- Bootstrap Core JavaScript -->
 <script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
+<script>
+    function rowClicked(value) {
+        location.href = "/user/" + value;
+    }
+</script>
 </body>
 
 </html>

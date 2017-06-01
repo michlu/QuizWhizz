@@ -4,11 +4,14 @@ import com.pw.quizwhizz.entity.game.CategoryEntity;
 import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.repository.game.CategoryRepository;
 import com.pw.quizwhizz.service.CategoryService;
+import com.pw.quizwhizz.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +23,9 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+
+    @Autowired
+    ImageUtil imageUtil;
 
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
@@ -75,10 +81,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void addCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException {
         String fileNameWithExtension = "category_" + category.getName().toLowerCase().replace(' ', '_') + "." + file.getOriginalFilename().split("\\.")[1];
-        byte[] bytes = file.getBytes();
+        BufferedImage resizedImage = imageUtil.resizeImage(file.getBytes(), 200, 200);
         category.setUrlImage("/resources/images/" + fileNameWithExtension);
         Path path = Paths.get(saveDirectory + fileNameWithExtension);
-        Files.write(path, bytes);
+        Files.write(path, imageUtil.imageToByte(resizedImage));
         saveAsCategoryEntity(category);
     }
 
@@ -87,10 +93,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void updateCategoryWithImage(Category updatedCategory, MultipartFile file, String saveDirectory) throws IOException {
         String fileNameWithExtension = "category_" + updatedCategory.getName().toLowerCase().replace(' ', '_') + "." + file.getOriginalFilename().split("\\.")[1];
-        byte[] bytes = file.getBytes();
+        BufferedImage resizedImage = imageUtil.resizeImage(file.getBytes(), 200, 200);
         updatedCategory.setUrlImage("/resources/images/" + fileNameWithExtension);
         Path path = Paths.get(saveDirectory + fileNameWithExtension);
-        Files.write(path, bytes);
+        Files.write(path, imageUtil.imageToByte(resizedImage));
 
         CategoryEntity updatedCategoryEntity = getCategoryEntity(updatedCategory);
         categoryRepository.saveAndFlush(updatedCategoryEntity);
