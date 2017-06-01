@@ -1,7 +1,6 @@
 package com.pw.quizwhizz.entity.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,8 +18,7 @@ public class AnswerEntity {
     private Long id;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answer;
-    @Column(nullable = false)
-    @JsonProperty
+    @Column(columnDefinition = "TINYINT(1)", nullable = false)
     private boolean isCorrect;
 
 
