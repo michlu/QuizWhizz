@@ -4,11 +4,13 @@ import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
+import com.pw.quizwhizz.model.dto.Ranking;
 import com.pw.quizwhizz.model.dto.UserAllStats;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
+import com.pw.quizwhizz.repository.impl.RankingRepository;
 import com.pw.quizwhizz.repository.impl.UserAllScoresRepository;
 import com.pw.quizwhizz.service.UserService;
 import com.pw.quizwhizz.util.ImageUtil;
@@ -33,17 +35,18 @@ public class UserServiceImpl implements UserService {
 	final private PasswordEncoder passwordEncoder;
 	final private PlayerRepository playerRepository;
 	final private UserAllScoresRepository userAllScoresRepository;
+	final private RankingRepository rankingRepository;
+	final private ImageUtil imageUtil;
 
 	@Autowired
-	ImageUtil imageUtil;
-
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository, RankingRepository rankingRepository, ImageUtil imageUtil) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.playerRepository = playerRepository;
 		this.userAllScoresRepository = userAllScoresRepository;
+		this.rankingRepository = rankingRepository;
+		this.imageUtil = imageUtil;
 	}
 
 
@@ -164,4 +167,8 @@ public class UserServiceImpl implements UserService {
 	public List<UserAllStats> findAllScoreForUser(Long userId){
 		return userAllScoresRepository.findAllScoreForUser(userId);
 	}
+	public List<Ranking> findGeneralRank(int limitSearch){
+		return rankingRepository.findGeneralRank(limitSearch);
+	}
+
 }
