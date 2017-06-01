@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public class UserAllScoresRepository {
 
-    JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     public UserAllScoresRepository(JdbcTemplate jdbcTemplate) {

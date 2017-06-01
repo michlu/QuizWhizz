@@ -11,10 +11,10 @@ import java.util.Date;
  */
 @Data
 public class UserAllStats implements Serializable {
-    int gameId;
-    Date gameDate;
-    String gameCategory;
-    int numberOfPlayers;
-    int points;
-    String winner;
+    private int gameId;
+    private Date gameDate;
+    private String gameCategory;
+    private int numberOfPlayers;
+    private int points;
+    private String winner;
 }
