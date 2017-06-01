@@ -1,6 +1,8 @@
 package com.pw.quizwhizz.controller;
 
+import com.pw.quizwhizz.model.dto.Ranking;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
+import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.UserService;
@@ -9,8 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class AppController {
+    private final static int GENERAL_RANKING_LIMIT = 5; // ustaw ilosc graczy w rankingu generalnym
+    private final static int CATEGORY_RANKING_LIMIT = 3; // ustaw ilosc graczy w rankingu kategorii
+
     private final CategoryService categoryService;
     private final GameService gameService;
     private final UserService userService;
@@ -24,9 +33,18 @@ public class AppController {
 
     @RequestMapping("/")
     public String home(Model model) throws IllegalNumberOfQuestionsException {
-        model.addAttribute("categories", categoryService.findAll());
+        List<Category> categories = categoryService.findAll();
+        Map<String, List<Ranking>> categoryRankings = new HashMap<>();
+
+        for (Category category : categories) {
+            categoryRankings.put(
+                    category.getName(),
+                    userService.findFiveByCategory(CATEGORY_RANKING_LIMIT, category.getId()));
+        }
+        model.addAttribute("categories", categories);
         model.addAttribute("games", gameService.getAllOpenGames());
-        model.addAttribute("generalRank", userService.findGeneralRank(3)); // ustaw ilosc graczy w rankingu generalnym
+        model.addAttribute("generalRank", userService.findGeneralRank(GENERAL_RANKING_LIMIT));
+        model.addAttribute("categoryRankings", categoryRankings);
         return "index";
     }
 

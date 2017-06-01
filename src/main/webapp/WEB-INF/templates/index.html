@@ -171,7 +171,7 @@
         <div class="page-header">
             <h1 class="text-center">Ranking</h1>
         </div>
-        <p class="lead text-center">Zestawienie najleszych graczy z TOP 5.</p>
+        <p class="lead text-center">Zestawienie TOP 5 najleszych graczy ze wszystkich kategorii.</p>
 
         <div class="container">
 
@@ -184,7 +184,6 @@
                     <!--<th>Wygrane MP</th>-->
                     <th>Zdobyte punkty</th>
                 </tr>
-
 
                 <tr class="score-row" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                     <td>
@@ -204,9 +203,48 @@
                     </td>
                 </tr>
             </table>
+        </div>
 
+        <div class="container padding-top">
+
+            <div class="page-header">
+                <h1 class="text-center">Najlepsi według kategorii</h1>
+            </div>
+            <p class="lead text-center">Zestawienie najleszych graczy w danych kategoriach, uwzględniana jest ilość poprawnych odpowiedzi.</p>
+
+            <div class="col-sm-12 col-md-6 padding-top" th:each="element : ${categoryRankings}">
+                <p class="lead text-center"><u th:text="${element.key}"></u></p>
+                <table class="table table-striped" align="center" valign="middle">
+                    <tr class="score-headers">
+                        <th>Ranking</th>
+                        <th></th>
+                        <th>Gracz</th>
+                        <th>Rozegrane gry</th>
+                        <!--<th>Wygrane MP</th>-->
+                        <th>Pop. Odp.</th>
+                    </tr>
+                    <tr class="score-row" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                        <td>
+                            <h4 th:text="${iterationStatus.count}"></h4>
+                        </td>
+                        <td>
+                            <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture-small">
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.playerName}"></h4>
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.gamePlayed}"></h4>
+                        </td>
+                        <td>
+                            <h4 th:text="${ranking.allPoints}/10"></h4>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
         </div>
+
     </div>
 </div>
 

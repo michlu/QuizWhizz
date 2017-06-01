@@ -23,4 +23,5 @@ public interface UserService {
     Player findPlayerByUserId(Long userId);
     List<UserAllStats> findAllScoreForUser(Long userId);
     List<Ranking> findGeneralRank(int limitSearch);
+    List<Ranking> findFiveByCategory(int limitSearch , Long categoryId);
 }

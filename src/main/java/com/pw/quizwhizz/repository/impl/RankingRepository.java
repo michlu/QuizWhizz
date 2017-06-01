@@ -11,8 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * @author michlu
- * @sience 01.06.2017
+ * Udostępnia szczegolowe dane dla zestawienia wyników graczy. Udostepnia metode zwracajaca liste obiektow DTO z danymi dla wszystkich punktacji graczy
  */
 @Repository
 public class RankingRepository {
@@ -30,14 +29,27 @@ public class RankingRepository {
             "ORDER BY u.player_xp DESC " +
             "LIMIT ?;";
 
+    private static final String categoryRank =
+            "SELECT user.url_image, user.first_name, count(g.id) gs, sum(score.points) ss, user.id " +
+            "FROM " +
+            "game g " +
+            "INNER JOIN score ON g.id = score.game_id " +
+            "INNER JOIN user ON user.id = score.user_id " +
+            "INNER JOIN category ON g.category_id = category.id " +
+            "WHERE user.player_xp > 0 AND category.id = ? " +
+            "GROUP BY user.id " +
+            "ORDER BY ss DESC, gs DESC " +
+            "LIMIT ?;";
+
+    // wyniki ogolne
     public List<Ranking> findGeneralRank(int limitSearch){
         return jdbcTemplate.query(generalRank, new RankingRowMapper(), limitSearch);
     }
 
-    // wyszukiwanie wynikow po rodzaju kategorii
-//    public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
-//        return jdbcTemplate.query(sql1, new RankingRowMapper(), categoryId, limitSearch);
-//    }
+    // wyniki po rodzaju kategorii
+    public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
+        return jdbcTemplate.query(categoryRank, new RankingRowMapper(), categoryId, limitSearch);
+    }
 
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
