@@ -55,7 +55,6 @@
 
             <div class="container">
 
-
                 <div class="row stylish-panel">
 
                     <div class="col-sm-6 col-md-4" th:each="category,iterationStatus  : ${categories}">
@@ -82,6 +81,11 @@
         </div>
 
         <p class="lead text-center dark-background-text">Znajdź otwartą grę i dołącz do rozgrywki. Zmierz się z innymi graczami w wybranych kategoriach. Wygrane w rozgrywkach wieloosobowych są dodatkowo nagradzane.</p>
+
+        <div class="wrapper">
+            <input type="button" class="btn-transparent" value="Aktualizuj aktywne gry" onClick="window.location.reload()">
+            <!-- th:if="${games.isEmpty()}" tylko gdy nie ma aktywnych gier -->
+        </div>
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
