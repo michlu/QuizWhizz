@@ -104,3 +104,6 @@
 .wrapper {
     text-align: center;
 }
+
+.tr-color:hover { background: #dddddd !important; }
+.tr-color:hover td { background: transparent; }

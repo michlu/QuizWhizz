@@ -189,7 +189,7 @@
                     <th>Zdobyte punkty</th>
                 </tr>
 
-                <tr class="score-row" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                     <td>
                         <h1 th:text="${iterationStatus.count}"></h1>
                     </td>
@@ -227,7 +227,7 @@
                         <!--<th>Wygrane MP</th>-->
                         <th>Pop. Odp.</th>
                     </tr>
-                    <tr class="score-row" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                    <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                         <td>
                             <h4 th:text="${iterationStatus.count}"></h4>
                         </td>
