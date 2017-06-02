@@ -17,7 +17,9 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <link href="TimeCircles.css" rel="stylesheet" th:href="@{/resources/css/TimeCircles.css}">
     <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/TimeCircles.js}"></script>
     <script type="text/javascript" th:src="@{/resources/scripts/started_game.js}"></script>
 
 </head>
@@ -41,6 +43,7 @@
             <span>Czas na odpowiedź: </span>
             <span id="question-time-left">15</span>
         </div>
+            <div class="timer"  style="width: 100px; height: 100px;" data-timer="15"></div>
         <h1 class="lead text-center text-uppercase padding-top" >Wybierz poprawną odpowiedź</h1>
     </div>
 

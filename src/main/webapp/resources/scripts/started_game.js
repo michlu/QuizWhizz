@@ -1,6 +1,19 @@
 $(document).ready(function () {
         $('#question-1').show();
-        runQuestionTimer();
+
+
+    var timer = $(".timer").TimeCircles(
+        { time: {
+            Days: { show: false },
+            Hours: { show: false },
+            Minutes: { show : false },
+            Seconds: { color: "#C0C8CF" }
+        },
+        refresh_interval: 1,
+        fg_width: 0.05,
+        count_past_zero: true
+    });
+    runQuestionTimer();
 
         var gameSecondsLeft = 150;
         var gameTimeIntervalId = setInterval(function() {
