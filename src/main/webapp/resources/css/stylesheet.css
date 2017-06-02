@@ -32,6 +32,15 @@
     color: #adadad;
 }
 
+.grey-background {
+    width: 100%;
+    background-color: #efefef;
+}
+
+.h1-big {
+    font-size:60px;
+}
+
 .container-padding {
     padding: 40px 0;
 }
@@ -105,5 +114,9 @@
     text-align: center;
 }
 
-.tr-color:hover { background: #dddddd !important; }
-.tr-color:hover td { background: transparent; }
+.tr-color:hover {
+    background: #dddddd !important;
+}
+.tr-color:hover td {
+    background: transparent;
+}

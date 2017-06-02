@@ -253,6 +253,40 @@
 </div>
 
 
+<!-- STATYSTYKI -->
+<div class="grey-background">
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1 class="text-center">Statystyki portalu</h1>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${numberUsers}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Zarejestrowanych użytkowników</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.numberGames}" class="h1-big text-center"></h1>
+            <p class="lead text-center">Rozegrane gry</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.numberMPGames}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Gry wieloosobowe</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.mostPopularCategory}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Najchętniej wybierana kategoria</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.mostPopularScore}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Najczęściej osiągany wynik</p>
+        </div>
+    </div>
+
+</div>
+
+
 <hr class="featurette-divider">
 <!-- Footer -->
 <footer>
