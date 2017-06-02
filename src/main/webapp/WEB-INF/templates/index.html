@@ -123,47 +123,6 @@
             </div>
         </div>
 
-
-
-
-        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
-            <div class="clearfix background">
-                <img src="#" th:src="@{/resources/images/category_geografia.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
-                <div class="category">
-                    Geografia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
-                </div>
-                <div class="avatar">
-                    <img src="#" th:src="@{/resources/images/profile_2.png}" /> <!-- obrazek zalozyciela gry -->
-                </div>
-            </div>
-            <div class="info">
-                <div class="status">
-                    Trwa <!-- czy gra sie zaczela th:text="${}" -->
-                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
-                </div>
-                <div class="desc">
-                    <table class="table borderless">
-                        <tbody>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Owner</small></p></td>
-                            <td><span>Tonald Drump</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
-                        </tr>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
-                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
-                        </tr>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Numer gry</small></p></td>
-                            <td><span>Test</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="bottom">
-                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
-            </div>
-        </div>
-
     </div>
 
 </div>

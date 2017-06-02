@@ -6,7 +6,6 @@ import com.pw.quizwhizz.model.game.Category;
 import com.pw.quizwhizz.service.CategoryService;
 import com.pw.quizwhizz.service.GameService;
 import com.pw.quizwhizz.service.StatService;
-import com.pw.quizwhizz.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +22,12 @@ public class AppController {
 
     private final CategoryService categoryService;
     private final GameService gameService;
-    private final UserService userService;
     private final StatService statService;
 
     @Autowired
-    public AppController(CategoryService categoryService, GameService gameService, UserService userService, StatService statService) {
+    public AppController(CategoryService categoryService, GameService gameService, StatService statService) {
         this.categoryService = categoryService;
         this.gameService = gameService;
-        this.userService = userService;
         this.statService = statService;
     }
 
@@ -42,11 +39,11 @@ public class AppController {
         for (Category category : categories) {
             categoryRankings.put(
                     category.getName(),
-                    userService.findFiveByCategory(CATEGORY_RANKING_LIMIT, category.getId()));
+                    statService.findFiveByCategory(CATEGORY_RANKING_LIMIT, category.getId()));
         }
         model.addAttribute("categories", categories);
         model.addAttribute("games", gameService.getAllOpenGames());
-        model.addAttribute("generalRank", userService.findGeneralRank(GENERAL_RANKING_LIMIT));
+        model.addAttribute("generalRank", statService.findGeneralRank(GENERAL_RANKING_LIMIT));
         model.addAttribute("categoryRankings", categoryRankings);
         model.addAttribute("statistics", statService.findStatistic());
         model.addAttribute("numberUsers", statService.findNumberOfUsers());

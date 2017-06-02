@@ -1,5 +1,6 @@
 package com.pw.quizwhizz.service.impl;
 
+import com.pw.quizwhizz.model.dto.Ranking;
 import com.pw.quizwhizz.model.dto.Statistics;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.impl.RankingRepository;
@@ -8,6 +9,8 @@ import com.pw.quizwhizz.service.StatService;
 import com.pw.quizwhizz.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author michlu
@@ -36,5 +39,13 @@ public class StatServiceImpl implements StatService {
     @Override
     public Statistics findStatistic(){
         return statisticsRepository.findStatistic();
+    }
+
+    public List<Ranking> findGeneralRank(int limitSearch){
+        return rankingRepository.findGeneralRank(limitSearch);
+    }
+
+    public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
+        return rankingRepository.findByCategory(limitSearch, categoryId);
     }
 }
