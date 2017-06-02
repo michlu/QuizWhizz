@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
 		return rankingRepository.findGeneralRank(limitSearch);
 	}
 	public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
-		return rankingRepository.findFiveByCategory(limitSearch, categoryId);
+		return rankingRepository.findByCategory(limitSearch, categoryId);
 	}
 
 }
