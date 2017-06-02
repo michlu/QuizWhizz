@@ -17,8 +17,9 @@ import java.util.Map;
 
 @Controller
 public class AppController {
-    private final static int GENERAL_RANKING_LIMIT = 5; // ustaw ilosc graczy w rankingu generalnym
-    private final static int CATEGORY_RANKING_LIMIT = 3; // ustaw ilosc graczy w rankingu kategorii
+    private final static int GENERAL_RANKING_LIMIT_MAIN_PAGE = 5; // ustaw ilosc graczy w rankingu generalnym strona glowna
+    private final static int GENERAL_RANKING_LIMIT = 50; // ustaw ilosc graczy w rankingu generalnym strona rankingu
+    private final static int CATEGORY_RANKING_LIMIT_MAIN_PAGE = 3; // ustaw ilosc graczy w rankingu kategorii strona glowna
 
     private final CategoryService categoryService;
     private final GameService gameService;
@@ -39,15 +40,21 @@ public class AppController {
         for (Category category : categories) {
             categoryRankings.put(
                     category.getName(),
-                    statService.findFiveByCategory(CATEGORY_RANKING_LIMIT, category.getId()));
+                    statService.findFiveByCategory(CATEGORY_RANKING_LIMIT_MAIN_PAGE, category.getId()));
         }
         model.addAttribute("categories", categories);
         model.addAttribute("games", gameService.getAllOpenGames());
-        model.addAttribute("generalRank", statService.findGeneralRank(GENERAL_RANKING_LIMIT));
+        model.addAttribute("generalRank", statService.findGeneralRank(GENERAL_RANKING_LIMIT_MAIN_PAGE));
         model.addAttribute("categoryRankings", categoryRankings);
         model.addAttribute("statistics", statService.findStatistic());
         model.addAttribute("numberUsers", statService.findNumberOfUsers());
         return "index";
+    }
+
+    @RequestMapping("/app/ranking")
+    public String ranking(Model model) {
+        model.addAttribute("generalRank", statService.findGeneralRank(GENERAL_RANKING_LIMIT));
+        return "user_ranking";
     }
 
     // do testow.. wynik gry

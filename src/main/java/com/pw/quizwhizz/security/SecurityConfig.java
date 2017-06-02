@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(filter,CsrfFilter.class)   // ustawia kodowanie na UTF-8
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
+                    .antMatchers("/app/**").permitAll()
                     .antMatchers("/register").permitAll()
                     .antMatchers("/resources/**").permitAll().anyRequest().permitAll()
                     .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
