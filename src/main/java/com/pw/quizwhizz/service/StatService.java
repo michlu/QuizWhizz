@@ -6,8 +6,8 @@ import com.pw.quizwhizz.model.dto.Statistics;
 import java.util.List;
 
 /**
- * @author michlu
- * @sience 02.06.2017
+ * Abstrakcyjna warstwa serwisu
+ * @author Michał Nowiński
  */
 public interface StatService {
     int findNumberOfUsers();

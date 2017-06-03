@@ -4,7 +4,6 @@ import com.pw.quizwhizz.entity.game.PlayerEntity;
 import com.pw.quizwhizz.model.account.Role;
 import com.pw.quizwhizz.model.account.User;
 import com.pw.quizwhizz.model.account.UserProfileType;
-import com.pw.quizwhizz.model.dto.Ranking;
 import com.pw.quizwhizz.model.dto.UserAllStats;
 import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
@@ -27,7 +26,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-
+/**
+ * Serwis domenowy udostepniajacy funkcjonalnosci dla domeny User
+ * @author Michał Nowiński
+ * @see UserService
+ */
 @Service
 public class UserServiceImpl implements UserService {
 	final private UserRepository userRepository;
@@ -49,7 +52,6 @@ public class UserServiceImpl implements UserService {
 		this.imageUtil = imageUtil;
 	}
 
-
 	public List<User> findAll(){
 		return userRepository.findAll();
 	}
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
 	public User findById(Long id) {
 		return userRepository.findById(id);
 	}
+
 	@Override
 	public void addWithDefaultRole(User user) {
 		addAccountForUserWithRole(user, UserProfileType.ROLE_USER);
@@ -79,6 +82,11 @@ public class UserServiceImpl implements UserService {
 		addAccountForUserWithRole(user, UserProfileType.ROLE_USER, UserProfileType.ROLE_ADMIN);
 	}
 
+	/**
+	 * Dodaje role Uzytkownikowi
+	 * @param userId numer id uzytkownika
+	 * @param roles tabela z rolami do nadania uzytkownikowi
+	 */
 	@Transactional
 	@Override
 	public void addRoleToUser(String userId, String[] roles){
@@ -90,6 +98,11 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
+	/**
+	 * Usowa role Uzytkownikowi
+	 * @param userId numer id uzytkownika
+	 * @param roles tabela z rolami do usuniecia uzytkownikowi
+	 */
 	@Transactional
 	@Override
 	public void removeRoleUser(String userId, String[] roles) {
@@ -101,6 +114,10 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
+	/**
+	 * Aktualizuje dane uzytkownika. Sprawdza jakie dane zostaly przeslane poprzez formularz i aktualizuje jedynie zmienione.
+	 * @param user obiekt Uzytkownika przeslany z formularza
+	 */
 	@Transactional
 	@Override
 	public void update(User user) {
@@ -117,6 +134,13 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(updateUser);
 	}
 
+	/**
+	 * Aktualizuje dane Uzytkownika łacznie ze zdjeciem proflowym. Sprawdza jakie dane zostaly przeslane poprzez formularz i aktualizuje jedynie zmienione.
+	 * @param user obiekt Uzytkownika przeslany z formularza
+	 * @param file obraz proflu uzytkownika
+	 * @param saveDirectory sciezka do zapisu pliku
+	 * @throws IOException wymagana przez Files
+	 */
 	@Transactional
 	@Override
 	public void updateUserWithImage(User user, MultipartFile file, String saveDirectory) throws IOException {
@@ -139,8 +163,8 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * Dodaje nowe konto dla podanego uzytkownika. Hashuje haslo przed zapisaniem do bazy danych.
-	 * @param user
-	 * @param userProfileType przyjmuje Enumy odpowiadajace rolą
+	 * @param user obiekt Uzytkownika przeslany z formularza
+	 * @param userProfileType przyjmuje Enumy odpowiadajace roli
 	 */
 	private void addAccountForUserWithRole(User user, UserProfileType... userProfileType) {
 		for (int i = 0; i < userProfileType.length; i++) {
@@ -151,6 +175,10 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
+	/**
+	 * @param userId numer id uzytkownika
+	 * @return zwraca Player'a po numerze ID Uzytkownika
+	 */
 	public Player findPlayerByUserId(Long userId) {
 		PlayerEntity playerEntity = playerRepository.findOne(userId);
 		Player player = new Player(playerEntity.getName());
@@ -164,6 +192,10 @@ public class UserServiceImpl implements UserService {
 		return player;
 	}
 
+	/**
+	 * @param userId numer id Uzytkownika
+	 * @return zwraca wsyzstkie wyniki gier dla danego Uzytkownika
+	 */
 	public List<UserAllStats> findAllScoreForUser(Long userId){
 		return userAllScoresRepository.findAllScoreForUser(userId);
 	}

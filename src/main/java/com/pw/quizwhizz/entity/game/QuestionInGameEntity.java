@@ -8,10 +8,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-// QuestionInGameEntity zostanie stworzone i zapisane do bazy po uzyskaniu pytan do konkretnej gry w kontrolerze
-// Sekwencja wyswietlania pytan zostanie ustalona w kontrolerze przy pobieraniu listy pytan
-// Dzieki temu wszycy gracze beda dostawac pytania w tej samej kolejnosci
-
+/**
+ * Encja QuestionrInGame
+ * @author Karolina Prusaczyk
+ */
 @Entity
 @Getter @Setter
 @Table(name = "question_in_game")

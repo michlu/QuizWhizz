@@ -8,13 +8,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Serwis domenowy udostepniajacy funkcjonalnosci dla domeny Role
+ * @author Michał Nowiński
+ * @see RoleService
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
 
     RoleRepository roleRepository;
 
     @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

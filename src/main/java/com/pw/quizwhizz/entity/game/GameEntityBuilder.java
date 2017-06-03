@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 
 /**
- * Created by Karolina on 30.04.2017.
+ * Builder dla Encji Game
+ * @author Karolina Prusaczyk
  */
 @Getter
 @Component

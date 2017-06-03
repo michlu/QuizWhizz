@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Created by karol on 03.05.2017.
+ * Repozytorium udostepnia encje ScoreEntity
+ * @author Karolina Prusaczyk
+ * @see JpaRepository
  */
 @Repository
 public interface ScoreRepository extends JpaRepository<ScoreEntity, ScoreKey> {

@@ -19,17 +19,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serwis domenowy udostepniajacy funkcjonalnosci dla domeny Category
+ * @author Michał Nowiński, Karolina Prusaczyk
+ * @see CategoryService
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ImageUtil imageUtil;
 
     @Autowired
-    ImageUtil imageUtil;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ImageUtil imageUtil) {
         this.categoryRepository = categoryRepository;
+        this.imageUtil = imageUtil;
     }
 
     @Override
@@ -68,15 +72,25 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    /**
+     * Dodaje Kategorie z domyslnym obrazem
+     * @param category przyjmuje obiekt Category z formularza
+     */
     @Transactional
     @Override
     public void addCategory(Category category){
         if(category.getUrlImage().equals(null) || category.getUrlImage().equals(""))
             category.setUrlImage("/resources/images/category_default.png");
-
         saveAsCategoryEntity(category);
     }
 
+    /**
+     * Dodaje Kategorie z obrazem przekazanym w fomularzu
+     * @param category przyjmuje obiekt Category z formularza
+     * @param file plik obrazu
+     * @param saveDirectory sciezka do zapisu pliku obrazu
+     * @throws IOException wymagane przez Files
+     */
     @Transactional
     @Override
     public void addCategoryWithImage(Category category, MultipartFile file, String saveDirectory) throws IOException {
@@ -88,6 +102,13 @@ public class CategoryServiceImpl implements CategoryService {
         saveAsCategoryEntity(category);
     }
 
+    /**
+     * Aktualizuje Kategorie z obrazem przekzanym w formularzu edcyji kategorii
+     * @param updatedCategory przyjmuje obiekt Category z formularza
+     * @param file plik obrazu
+     * @param saveDirectory sciezka do zapisu pliku obrazu
+     * @throws IOException wymagane przez Files
+     */
     @Transactional
     @Modifying
     @Override
@@ -102,6 +123,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.saveAndFlush(updatedCategoryEntity);
     }
 
+    /**
+     * Aktualizuje Kategorie bez zmiany obrazu
+     * @param updatedCategory przyjmuje obiekt Category z formularza
+     */
     @Transactional
     @Modifying
     @Override
@@ -110,6 +135,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.saveAndFlush(updatedCategoryEntity);
     }
 
+    /**
+     * Aktualizuje Kategorie
+     * @deprecated
+     */
     @Transactional
     @Modifying
     @Override

@@ -12,8 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serwis domenowy udostepniajacy funkcjonalnosci dla domeny Answer
+ * @author Michał Nowiński, Karolina Prusaczyk
+ * @see AnswerService
+ */
 @Service
-public class AnswerServiceImpl implements AnswerService{
+public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
