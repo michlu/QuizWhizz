@@ -38,12 +38,13 @@
         <img id="rugby-picture" src="#" th:src="@{/resources/images/rugby.jpg}">
     </div>
 
-    <h1 class="text-center">Obecni gracze:</h1>
-    <div id="players-container"></div>
 
     <div th:hidden="${!isOwner}">
         <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-primary btn-lg btn-block">Start</a>
     </div>
+    <h3 class="text-center">Obecni gracze:</h3>
+    <ul class="list-inline"id="players-container">
+    </ul>
 </div>
 <footer>
     <!-- import footer -->

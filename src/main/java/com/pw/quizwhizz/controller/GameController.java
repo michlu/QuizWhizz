@@ -132,7 +132,6 @@ public class GameController {
         model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
-    // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
 
     @RequestMapping(value = "/{gameId}/isClosed", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
