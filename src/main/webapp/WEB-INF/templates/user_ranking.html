@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Quiz Whizz</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
+    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/scripts/started_game.js}"></script>
+
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- import navbar -->
+        <div th:replace="fragments/navbar :: navbar"></div>
+    </div>
+</nav>
+
+
+<div class="container" >
+    <div class="page-header">
+        <h1 class="text-center">TOP 50</h1>
+    </div>
+    <p class="lead text-center">Zestawienia najlepszych graczy.</p>
+
+    <div>
+        <table class="table table-striped" align="center" valign="middle">
+            <tr class="score-headers">
+                <th>Ranking</th>
+                <th></th>
+                <th>Gracz</th>
+                <th>Rozegrane gry</th>
+                <!--<th>Wygrane MP</th>-->
+                <th>Zdobyte punkty</th>
+            </tr>
+
+            <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                <td>
+                    <h1 th:text="${iterationStatus.count}"></h1>
+                </td>
+                <td>
+                    <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture">
+                </td>
+                <td>
+                    <h1 th:text="${ranking.playerName}"></h1>
+                </td>
+                <td>
+                    <h1 th:text="${ranking.gamePlayed}"></h1>
+                </td>
+                <td>
+                    <h1 th:text="${ranking.allPoints}"></h1>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<footer>
+    <!-- import footer -->
+    <div id="footer" th:replace="fragments/footer :: footer"></div>
+</footer>
+
+<!-- jQuery -->
+<script th:src="@{/resources/js/jquery.js}" src="resources/js/jquery.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/resources/js/bootstrap.min.js}" src="resources/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.0/js/mdb.min.js"></script>
+<script>
+    function rowClicked(value) {
+        location.href = "/user/" + value;
+    }
+</script>
+</body>
+</html>

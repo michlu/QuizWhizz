@@ -47,7 +47,7 @@ public class RankingRepository {
     }
 
     // wyniki po rodzaju kategorii
-    public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
+    public List<Ranking> findByCategory(int limitSearch , Long categoryId){
         return jdbcTemplate.query(categoryRank, new RankingRowMapper(), categoryId, limitSearch);
     }
 

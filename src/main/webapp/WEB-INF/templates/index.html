@@ -55,7 +55,6 @@
 
             <div class="container">
 
-
                 <div class="row stylish-panel">
 
                     <div class="col-sm-6 col-md-4" th:each="category,iterationStatus  : ${categories}">
@@ -82,6 +81,11 @@
         </div>
 
         <p class="lead text-center dark-background-text">Znajdź otwartą grę i dołącz do rozgrywki. Zmierz się z innymi graczami w wybranych kategoriach. Wygrane w rozgrywkach wieloosobowych są dodatkowo nagradzane.</p>
+
+        <div class="wrapper">
+            <input type="button" class="btn-transparent" value="Aktualizuj aktywne gry" onClick="window.location.reload()">
+            <!-- th:if="${games.isEmpty()}" tylko gdy nie ma aktywnych gier -->
+        </div>
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
@@ -119,47 +123,6 @@
             </div>
         </div>
 
-
-
-
-        <div class="col-xs-4 col-sm-3 col-md-2 card hovercard"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
-            <div class="clearfix background">
-                <img src="#" th:src="@{/resources/images/category_geografia.png}" class="img-responsive"/> <!-- obrazek kategori gry -->
-                <div class="category">
-                    Geografia <!-- nazwa kategori rozgrywanej gry th:text="${}" -->
-                </div>
-                <div class="avatar">
-                    <img src="#" th:src="@{/resources/images/profile_2.png}" /> <!-- obrazek zalozyciela gry -->
-                </div>
-            </div>
-            <div class="info">
-                <div class="status">
-                    Trwa <!-- czy gra sie zaczela th:text="${}" -->
-                    <div class="desc"><p class="text-uppercase"><small>status gry</small></p></div>
-                </div>
-                <div class="desc">
-                    <table class="table borderless">
-                        <tbody>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Owner</small></p></td>
-                            <td><span>Tonald Drump</span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
-                        </tr>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Graczy</small></p></td>
-                            <td><span>2</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
-                        </tr>
-                        <tr>
-                            <td><p class="text-uppercase"><small>Numer gry</small></p></td>
-                            <td><span>Test</span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="bottom">
-                <a href="#"  class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
-            </div>
-        </div>
-
     </div>
 
 </div>
@@ -185,7 +148,7 @@
                     <th>Zdobyte punkty</th>
                 </tr>
 
-                <tr class="score-row" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                     <td>
                         <h1 th:text="${iterationStatus.count}"></h1>
                     </td>
@@ -203,6 +166,11 @@
                     </td>
                 </tr>
             </table>
+
+            <div class="wrapper" style="padding-top: 20px">
+                <a th:href="@{/app/ranking}" class="btn btn-default">Sprawdź wyniki w Top 50</a>
+            </div>
+
         </div>
 
         <div class="container padding-top">
@@ -223,7 +191,7 @@
                         <!--<th>Wygrane MP</th>-->
                         <th>Pop. Odp.</th>
                     </tr>
-                    <tr class="score-row" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                    <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${element.value}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                         <td>
                             <h4 th:text="${iterationStatus.count}"></h4>
                         </td>
@@ -246,6 +214,40 @@
         </div>
 
     </div>
+</div>
+
+
+<!-- STATYSTYKI -->
+<div class="grey-background">
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1 class="text-center">Statystyki portalu</h1>
+        </div>
+
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${numberUsers}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Zarejestrowanych użytkowników</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.numberGames}" class="h1-big text-center"></h1>
+            <p class="lead text-center">Rozegrane gry</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.numberMPGames}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Gry wieloosobowe</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.mostPopularCategory}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Najchętniej wybierana kategoria</p>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-4">
+            <h1 th:text="${statistics.mostPopularScore}" class="h1-big text-center"></h1>
+            <p class="lead text-center ">Najczęściej osiągany wynik</p>
+        </div>
+    </div>
+
 </div>
 
 
