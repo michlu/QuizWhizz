@@ -1,8 +1,6 @@
 $(document).ready(function () {
         $('#question-1').show();
-    runCircleTimer();
-    addListenerToCircleTimer();
-    runQuestionTimer();
+        runQuestionTimer();
 
         var gameSecondsLeft = 150;
         var gameTimeIntervalId = setInterval(function() {
@@ -43,8 +41,7 @@ function showQuestion() {
     $('#question-' + currentQuestion).show();
 
     clearInterval(questionTimeIntervalId);
-    destroyTimer();
-    runCircleTimer();
+    destroyQuestionTimer();
     runQuestionTimer();
 
     if(currentQuestion == 10) {
@@ -52,19 +49,8 @@ function showQuestion() {
         setTimeout(function() { sendAnswers(); }, timeForAnswerInMiliseconds)
     }
 }
+
 function runQuestionTimer() {
-    var questionSecondsLeft = 15;
-    $('#question-time-left').text(questionSecondsLeft);
-
-    questionTimeIntervalId = setInterval(function () {
-        $('#question-time-left').text(--questionSecondsLeft);
-        if (questionSecondsLeft <= 0) {
-            clearInterval(questionTimeIntervalId);
-        }
-    }, 1000);
-}
-
-function runCircleTimer() {
     $(".timer").TimeCircles(
         {
             time: {
@@ -84,15 +70,7 @@ function runCircleTimer() {
         });
 }
 
-function destroyTimer() {
+function destroyQuestionTimer() {
     $(".timer").TimeCircles().destroy();
 }
 
-function addListenerToCircleTimer() {
-    $(".timer").TimeCircles().addListener(function(unit, amount, total){
-        if(total == 0) {
-            console.log("Czas minal");
-//            $(".timer").TimeCircles().start();
-        }
-    });
-}
