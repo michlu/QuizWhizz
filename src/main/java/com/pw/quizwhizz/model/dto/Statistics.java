@@ -3,8 +3,8 @@ package com.pw.quizwhizz.model.dto;
 import lombok.Data;
 
 /**
- * @author michlu
- * @sience 02.06.2017
+ * Klasa DTO przekazujaca dane do statystky portalu
+ * @author Michał Nowiński
  */
 @Data
 public class Statistics {

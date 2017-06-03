@@ -8,30 +8,47 @@ import javax.servlet.ServletRegistration;
 
 /**
  * Klasa inicjalizujaca ustawienia Springa.
+ * @author Michał Nowiński
+ * @see AbstractAnnotationConfigDispatcherServletInitializer
  */
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    /**
+     * @return zwraca ustawienia aplikacji
+     */
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{SecurityConfig.class, JpaConfig.class};
     }
 
+    /**
+     * @return zwraca ustawienia webowe aplikacji
+     */
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{ThymeleafConfig.class}; // konfuguracje webowe
+        return new Class[]{ThymeleafConfig.class};
     }
 
+    /**
+     * @return zwraca adres URL ktory ma byc obslugiwany przez springa
+     */
     @Override
     protected String[] getServletMappings() {
-        return new String[]{"/"}; // adres URL ktory ma byc obslugiwany przez springa
+        return new String[]{"/"};
     }
 
-
+    /**
+     * Rejestruje dodadkowe ustawienia
+     */
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(getMultipartConfigElement());
     }
 
+
+    /**
+     * @return ustawienia dla elementów MultiPartFile
+     */
     private MultipartConfigElement getMultipartConfigElement() {
         MultipartConfigElement multipartConfigElement =
                 new MultipartConfigElement( LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD);

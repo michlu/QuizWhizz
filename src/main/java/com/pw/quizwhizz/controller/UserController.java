@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 
-
+/**
+ * Kontroler funkcjonalnosci dla uzytkownikow oraz obsluga żądań dotyczacych rejestracji.
+ * @author Michał Nowiński
+ */
 @Controller
 public class UserController {
 
@@ -26,23 +29,42 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/loginform")
+	/**
+	 * @return zwraca login_form.html strone zawierajaca formularz logowania uzytkownikow
+	 */
+	@GetMapping("/loginform")
 	public String loginForm() {
 		return "login_form";
 	}
 
+	/**
+	 * @param model zawiera bledy logowania
+	 * @return zwraca login_form.html strone zawierajaca formularz logowania uzytkownikow
+	 */
 	@GetMapping("/loginerror")
 	public String loginError(Model model) {
 		model.addAttribute("loginError", true);
 		return "login_form";
 	}
 
+	/**
+	 * @param model zwiera zuytkownika
+	 * @return zwraca login_form.html strone zawierajaca firmularz rejestracji uzytkownikow
+	 */
 	@GetMapping("/register")
 	public String register(Model model) {
 		model.addAttribute("user", new User());
 		return "register_form";
 	}
 
+	/**
+	 * Obsluguje motede POST /register, przyjmuje dane z formularza rejestracji uzytkownika
+	 * @param user uzytkwnik
+	 * @param bindResult bledy poprawnosci danych przy rejestracji
+	 * @param request wymagane do auto logowania po rejestracji
+	 * @return zwraca strone register_success.html w przypadku prawidlowej rejestracji albo powraca z powrotem na register_form.html w przypadku bledow przy rejestracji
+	 * @throws ServletException wymagane przez HttpServletRequest
+	 */
 	@PostMapping("/register")
 	public String addUser(@ModelAttribute @Valid User user, BindingResult bindResult, HttpServletRequest request) throws ServletException {
 		if(bindResult.hasErrors())
@@ -50,11 +72,18 @@ public class UserController {
 		else {
 			userService.addWithDefaultRole(user);
 			request.login(user.getEmail(),user.getPassword()); // auto logowanie
-
 			return "register_success";
 		}
 	}
 
+	/**
+	 * Obsluguje metode GET /user/{userId} zawierajaca id uzytkownika. Przekazuje strone profilowa uzytkownika. Sprawdza czy uzytkownik odwiedza swoja strone profilowa.
+	 * Uzytkownik odwiedzajacy swoja strone profilowa posiada dodatkowe okno do edycji wlasnych danych osobowych.
+	 * @param userId numer id uzytkownika
+	 * @param authentication dane uwierzytelniania uzytkownika
+	 * @param model zawiera userCheckHimself odpowiedzialny za przekazanie warunku spawdzenia wlasnego profilu, dane uzytkownika, dane playera, wszystkie wyniki dla danego uzytkownika
+	 * @return zwraca user_profile.html ze strona profilowa uzytkownika. Strona zawiera statystyki gracza, dane osobowe i formularze edycji
+	 */
 	@GetMapping("/user/{userId}")
 	public String userProfile(
 			@PathVariable Long userId,
@@ -69,10 +98,13 @@ public class UserController {
 		model.addAttribute("user", user);
         model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
 		model.addAttribute("userAllScores", userService.findAllScoreForUser(user.getId()));
-
 		return "user_profile";
 	}
 
+	/**
+	 * Obsluguje metode GET /user/my. Przekazuje storne pofrilowa uzytkownika ktory odwoluje sie bezposrednio do wlasnego profilu
+	 * @return zwraca user_profile.html ze strona profilowa uzytkownika. Strona zawiera statystyki gracza, dane osobowe i formularze edycji
+	 */
 	@GetMapping("/user/my")
 	public String userProfileMy(
 			Authentication authentication,
@@ -83,10 +115,17 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("player", userService.findPlayerByUserId(user.getId()));
 		model.addAttribute("userAllScores", userService.findAllScoreForUser(user.getId()));
-
 		return "user_profile";
 	}
 
+	/**
+	 * Obsluguje metode POST /user/editme. Przyjmuje dane z formularza ze strony porfilowej uzytkownika. Pozwala na edycje danych uzytkownkowi
+	 * @param user uzytkownik
+	 * @param bindResult bledy walidacji formularza
+	 * @param file plik zdjecia profilowego
+	 * @param request potrzebny do ustalenia sciezki kontekstu aplikacji
+	 * @return przekierowuje z powrotem na strone profilowa uzytkownika
+	 */
 	@PostMapping("/user/editme")
 	public String postUserEditMe(
 			@ModelAttribute User user,
@@ -112,5 +151,4 @@ public class UserController {
 			return "redirect:/user/my";
 		}
 	}
-
 }

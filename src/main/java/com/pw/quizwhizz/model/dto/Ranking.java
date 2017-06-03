@@ -3,8 +3,8 @@ package com.pw.quizwhizz.model.dto;
 import lombok.Data;
 
 /**
- * @author michlu
- * @sience 01.06.2017
+ * Klasa DTO transportujaca dane przekazywane do list rankingu.
+ * @author Michał Nowiński
  */
 @Data
 public class Ranking {

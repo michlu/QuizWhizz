@@ -12,10 +12,19 @@ import java.io.InputStream;
 
 /**
  * Narzedzia do edycji obrazow
+ * @author Michał Nowiński
  */
 @Component
 public class ImageUtil {
 
+    /**
+     * Zmienia rozmiar obrazu
+     * @param image obraz przekazany jako byte
+     * @param width szerokosc wyjsciowa obrazu
+     * @param height wysokosc wyjsciowa obrazu
+     * @return zwraca BufferedImage obrazu
+     * @throws IOException wymagane dla ImageIO
+     */
     public static BufferedImage resizeImage(byte[] image, int width, int height) throws IOException {
         InputStream in = new ByteArrayInputStream(image);
         BufferedImage originalImage = ImageIO.read(in);
@@ -30,6 +39,10 @@ public class ImageUtil {
         return bufferedImage;
     }
 
+    /**
+     * @param image przujmuje BufferedImage
+     * @return zwraca obraz w wersji byte'owej. Konwertuje na format PNG
+     */
     public static byte[] imageToByte(BufferedImage image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
