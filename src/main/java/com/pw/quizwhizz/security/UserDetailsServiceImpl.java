@@ -13,7 +13,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Serwis konwertujacy klase User na klase UserDetails wykorzystywana przez Authentication w SpringSecurity
+ * @author Michał Nowiński
+ * @see UserDetailsService
+ * @see org.springframework.security.core.Authentication
+ */
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	private UserRepository userRepository;
@@ -27,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(username);
 		if(user == null)
-			throw new UsernameNotFoundException("User not found" + user.getEmail());
+			throw new UsernameNotFoundException("SpringSecurity: Nie ma takiego użytkownika - " + user.getEmail());
 		org.springframework.security.core.userdetails.User userDetails = 
 				new org.springframework.security.core.userdetails.User(
 						user.getEmail(), 

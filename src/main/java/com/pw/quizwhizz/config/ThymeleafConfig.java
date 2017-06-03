@@ -19,6 +19,10 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+/**
+ * Ustawienia Thymeleaf
+ * @author Michał Nowiński
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.pw.quizwhizz")
@@ -31,6 +35,9 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Ustawia wymuszenie kodowania UTF-8
+     */
     @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
@@ -49,6 +56,9 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         return engine;
     }
 
+    /**
+     * Ustawia sciezke do plikow widoku oraz ustala ich rozszerzenie
+     */
     private ITemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setApplicationContext(applicationContext);
@@ -59,6 +69,9 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
         return resolver;
     }
 
+    /**
+     * Ustawia sciezke dla plikow statycznych
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
@@ -67,7 +80,7 @@ public class ThymeleafConfig extends WebMvcConfigurerAdapter implements Applicat
     }
 
     /**
-     * Pliki statyczne znajdujace sie na serwerze maja byc obslugiwane przy pomocy domyslnych ustawien.
+     * Ustawia aby pliki statyczne znajdujace sie na serwerze byly obslugiwane przy pomocy domyslnych ustawien
      */
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {

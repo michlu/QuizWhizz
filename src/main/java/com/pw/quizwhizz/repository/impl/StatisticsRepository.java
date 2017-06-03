@@ -10,7 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Udostępnia statystyki dla portalu, takie jak ilosc rozegranych gier łacznie, gier wieloosobowych, najczesciej wybierana kategoria
+ * Repozytorium udostępnia statystyki dla portalu, takie jak ilosc rozegranych gier łacznie, gier wieloosobowych, najczesciej wybierana kategoria
+ * @author Michał Nowiński
  */
 @Repository
 public class StatisticsRepository {
@@ -33,8 +34,10 @@ public class StatisticsRepository {
     public Statistics findStatistic(){
         return jdbcTemplate.queryForObject(statisticSQL, new StatisticRowMapper());
     }
+
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
+     * @see RowMapper
      */
     class StatisticRowMapper implements RowMapper<Statistics> {
         @Override

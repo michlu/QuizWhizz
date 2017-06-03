@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Udostępnia szczegolowe dane dla wynikow gier danego uzytkownika. Udostepnia metode zwracajaca liste obiektow DTO z danymi dla wszystkich gier uzytkownika
+ * Repozytorium udostępnia szczegolowe dane dla wynikow gier danego uzytkownika. Udostepnia metode zwracajaca liste obiektow DTO z danymi dla wszystkich gier uzytkownika
+ * @author Michał Nowiński
  */
 @Repository
 public class UserAllScoresRepository {
@@ -39,6 +40,7 @@ public class UserAllScoresRepository {
     }
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
+     * @see RowMapper
      */
      class UserAllScoresRowMapper implements RowMapper<UserAllStats> {
         @Override

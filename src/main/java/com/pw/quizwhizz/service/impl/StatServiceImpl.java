@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author michlu
- * @sience 02.06.2017
+ * Serwis udostepniajacy dane statystyczne dla portalu (statystyki, rankingi)
+ * @author Michał Nowiński
+ * @see StatService
  */
 @Service
 public class StatServiceImpl implements StatService {
@@ -31,7 +32,7 @@ public class StatServiceImpl implements StatService {
         this.userRepository = userRepository;
     }
 
-
+    @Override
     public int findNumberOfUsers(){
         return userRepository.countAll();
     }
@@ -41,10 +42,12 @@ public class StatServiceImpl implements StatService {
         return statisticsRepository.findStatistic();
     }
 
+    @Override
     public List<Ranking> findGeneralRank(int limitSearch){
         return rankingRepository.findGeneralRank(limitSearch);
     }
 
+    @Override
     public List<Ranking> findFiveByCategory(int limitSearch , Long categoryId){
         return rankingRepository.findByCategory(limitSearch, categoryId);
     }

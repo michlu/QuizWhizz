@@ -15,11 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Startowy kontroler aplikacji
+ * @author Michał Nowiński
+ */
 @Controller
 public class AppController {
-    private final static int GENERAL_RANKING_LIMIT_MAIN_PAGE = 5; // ustaw ilosc graczy w rankingu generalnym strona glowna
-    private final static int GENERAL_RANKING_LIMIT = 50; // ustaw ilosc graczy w rankingu generalnym strona rankingu
-    private final static int CATEGORY_RANKING_LIMIT_MAIN_PAGE = 3; // ustaw ilosc graczy w rankingu kategorii strona glowna
+    /** Ile ({@value}) graczy ma byc wyswietlanych w rankingu generalnym na stronie glownej */
+    private final static int GENERAL_RANKING_LIMIT_MAIN_PAGE = 5;
+    /** Ile ({@value}) graczy ma byc wyswietlanych w rankingu generalnym na stronie Top50 */
+    private final static int GENERAL_RANKING_LIMIT = 50;
+    /** Ile ({@value}) graczy ma byc wyswietlanych w rankingu sortowanym wedlug kategori na stronie glownej */
+    private final static int CATEGORY_RANKING_LIMIT_MAIN_PAGE = 3;
 
     private final CategoryService categoryService;
     private final GameService gameService;
@@ -32,6 +39,12 @@ public class AppController {
         this.statService = statService;
     }
 
+    /**
+     * Obsluguje sciezke startowa aplikacji
+     * @param model przyjmuje liste wysztskich kategorii, rozpoczate gry, ranking generalny, ranking kategori, statystyki portalu, ilosc zarejestrowanych userow
+     * @return zwraca adres strony startowej index
+     * @throws IllegalNumberOfQuestionsException
+     */
     @RequestMapping("/")
     public String home(Model model) throws IllegalNumberOfQuestionsException {
         List<Category> categories = categoryService.findAll();
@@ -51,15 +64,14 @@ public class AppController {
         return "index";
     }
 
+    /**
+     * Obsluguje sciezke do strony rankingu Top50
+     * @param model przyjmuje ranking generalny
+     * @return zwraca adres strony user_ranking
+     */
     @RequestMapping("/app/ranking")
     public String ranking(Model model) {
         model.addAttribute("generalRank", statService.findGeneralRank(GENERAL_RANKING_LIMIT));
         return "user_ranking";
-    }
-
-    // do testow.. wynik gry
-    @RequestMapping("/end")
-    public String endgame() throws IllegalNumberOfQuestionsException {
-        return "check_scores";
     }
 }

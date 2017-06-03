@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Udostępnia szczegolowe dane dla zestawienia wyników graczy. Udostepnia metode zwracajaca liste obiektow DTO z danymi dla wszystkich punktacji graczy
+ * Repozytorium udostępnia szczegolowe dane dla zestawienia wyników graczy. Udostepnia metode zwracajaca liste obiektow DTO z danymi dla wszystkich punktacji graczy
+ * @author Michał Nowiński
  */
 @Repository
 public class RankingRepository {
@@ -41,18 +42,26 @@ public class RankingRepository {
             "ORDER BY ss DESC, gs DESC " +
             "LIMIT ?;";
 
-    // wyniki ogolne
+    /**
+     * @param limitSearch ilosc zwracanych wynikow (dla ilu graczy)
+     * @return lista wynikow do rankingu generalnego
+     */
     public List<Ranking> findGeneralRank(int limitSearch){
         return jdbcTemplate.query(generalRank, new RankingRowMapper(), limitSearch);
     }
 
-    // wyniki po rodzaju kategorii
+    /**
+     * @param limitSearch ilosc zwracanych wynikow (dla ilu graczy)
+     * @param categoryId numer id kategorii
+     * @return lista wynikow do rankingu sortowanego po kategorii
+     */
     public List<Ranking> findByCategory(int limitSearch , Long categoryId){
         return jdbcTemplate.query(categoryRank, new RankingRowMapper(), categoryId, limitSearch);
     }
 
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
+     * @see RowMapper
      */
     class RankingRowMapper implements RowMapper<Ranking> {
         @Override

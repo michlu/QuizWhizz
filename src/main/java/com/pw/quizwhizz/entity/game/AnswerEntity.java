@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Encja Answer
+ * @author Michał Nowiński
+ */
 @Entity
 @Data
 @NoArgsConstructor

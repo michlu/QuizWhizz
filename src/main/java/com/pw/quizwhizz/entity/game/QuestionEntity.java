@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by karol on 03.05.2017.
+ * Encja Question. Posiada relacje jednostronna jeden do jednego z Kategorią(Category) oraz relacje jednostronna jeden do wielu z Odpowiedzi(Answer).
+ * Wyszukiwać pytania po kategorii, odpowiedzi po pytaniach.
+ * @author Michał Nowiński
  */
 @Data
 @Entity

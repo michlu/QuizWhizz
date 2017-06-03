@@ -2,15 +2,14 @@ package com.pw.quizwhizz.model.dto;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author michlu
- * @sience 30.05.2017
+ * Klasa DTO transportujaca dane dla statystyk danego uzytkownika.
+ * @author Michał Nowiński
  */
 @Data
-public class UserAllStats implements Serializable {
+public class UserAllStats {
     private int gameId;
     private Date gameDate;
     private String gameCategory;

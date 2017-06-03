@@ -6,6 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Abstrakcyjna warstwa serwisu
+ * @author Michał Nowiński, Karolina Prusaczyk
+ */
 public interface AnswerService {
     Answer findById(long id);
     List<Answer> getAnswersByQuestionId(long questionId);

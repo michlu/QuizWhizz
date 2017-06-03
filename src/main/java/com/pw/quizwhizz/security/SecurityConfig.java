@@ -15,6 +15,11 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
+/**
+ * Klasa konfiguracji SpringSecurity. Metoda {@link SecurityConfig#configure} ustawiajaca zabezpiecznia dostepow
+ * @author Michał Nowiński
+ * @see WebSecurityConfigurerAdapter
+ */
 @Configuration
 @EnableWebSecurity // tworzy filtr springSecurityFilterChain do którego delegowane są żądania przez DelegatingFilterProxy
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -56,6 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SpringSecurityDialect();
     }
 
+    /**
+     * Bean wymagany do szyfrowania hasla oraz autologowania.
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -64,6 +72,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
+    /**
+     * Metoda ustawiajaca zabezpieczenia na żądania pod danymi URL'ami.
+     * @param http HttpSecurity wymagany do nakladania zabezpieczen
+     * @throws Exception wymagane przez HttpSecurity
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
@@ -77,8 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/app/**").permitAll()
                     .antMatchers("/register").permitAll()
                     .antMatchers("/resources/**").permitAll().anyRequest().permitAll()
-                    .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')") //dostep dla wyszstkch uzytkownikow
+                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") //dostep tylko dla adminow
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

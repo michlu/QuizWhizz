@@ -7,7 +7,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
+/**
+ * Adnotacja @UniqueEmail powiazana z UniqueEmailValidator
+ * @author Michał Nowiński
+ */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {UniqueEmailValidator.class})

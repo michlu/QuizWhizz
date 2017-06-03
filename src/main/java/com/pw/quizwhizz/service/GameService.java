@@ -9,7 +9,8 @@ import com.pw.quizwhizz.model.game.*;
 import java.util.List;
 
 /**
- * Created by Karolina on 02.05.2017.
+ * Abstrakcyjna warstwa serwisu
+ * @author Karolina Prusaczyk
  */
 public interface GameService {
     Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException;
@@ -31,5 +32,4 @@ public interface GameService {
 
     boolean isPlayerGameOwner(Long id, Long gameId);
     boolean isGameClosed(Long gameId);
-
 }

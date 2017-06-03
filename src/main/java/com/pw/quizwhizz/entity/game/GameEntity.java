@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 
+/**
+ * Encja Game
+ * @author Karolina Prusaczyk
+ */
 @Data
 @Entity
 @NoArgsConstructor

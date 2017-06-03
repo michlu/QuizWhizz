@@ -2,7 +2,6 @@ package com.pw.quizwhizz.model.account;
 
 import com.pw.quizwhizz.annotation.UniqueEmail;
 import com.pw.quizwhizz.annotation.ValidEmail;
-import com.pw.quizwhizz.model.game.Player;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -11,7 +10,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * Tabela zarejestrowanych Uzytkownikow. Zawiera relacje wiele do wielu wzgledem Roli.
+ * @author Michał Nowiński
+ */
 @Entity
 @Data
 @Table(name = "user")
@@ -39,6 +41,9 @@ public class User {
 	@Temporal(TemporalType.DATE) // konwertuje util.Date na sql.Date
 	private Date regDate = new Date();
 
+	/**
+	 * Tworzy tabele relacji miedzy Uzytkownikiem a Rola. Zawiera id uzytkownika i roli.
+	 */
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "user_role",
@@ -48,7 +53,6 @@ public class User {
 
 	@Column(name = "url_image", nullable = false)
 	private String urlImage = "/resources/images/profile_default.png";
-
 
 	public void addRole(Role role) {
 		if(! roles.contains(role))

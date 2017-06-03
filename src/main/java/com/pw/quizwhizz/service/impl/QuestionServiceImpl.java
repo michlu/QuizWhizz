@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Serwis domenowy udostepniajacy funkcjonalnosci dla domeny Question
+ * @author Michał Nowiński, Karolina Prusaczyk
+ * @see QuestionService
+ */
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
@@ -45,6 +50,13 @@ public class QuestionServiceImpl implements QuestionService {
         return getRandomQuestionsByCategoryId(categoryId, 10);
     }
 
+    /**
+     * Zwraca wybrane losowo pytania dla danej kategorii
+     * @param categoryId numer id kategorii
+     * @param number ilosc losowanych pytan
+     * @return zwraca liste losowych pytan dla podanej kategorii
+     * @throws NoQuestionsInDBException gdy w bazie nie ma pytan dla danej kategorii
+     */
     @Override
     public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws NoQuestionsInDBException {
         List<Question> questions = new ArrayList<>();
@@ -69,6 +81,10 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
+    /**
+     * @param category kategoria
+     * @return zwraca liste losowych pytan dla podanej kategorii
+     */
     @Override
     public List<Question> getRandomQuestionsByCategory(Category category, int number) throws NoQuestionsInDBException {
         long id = category.getId();

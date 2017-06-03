@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repozytorium udostepnia encje PlayerInGameEntity
+ * @author Karolina Prusaczyk
+ * @see JpaRepository
+ */
 @Repository
 public interface PlayerInGameRepository extends JpaRepository<PlayerInGameEntity, PlayerInGameKey> {
     List<PlayerInGameEntity> findAllById_GameId(Long gameId);
