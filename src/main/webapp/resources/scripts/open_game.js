@@ -1,3 +1,10 @@
+/**
+ * Skrypty odpowiedzialne za wyswietlanie listy obecnych graczy,
+ * sprawdzanie, czy gra juz się rozpoczela oraz przekierowanie na stronę rozpoczętej gry
+ * @author Karolina Prusaczyk
+ */
+
+
 $(document).ready(function () {
     var gameId = $('#game-id').text();
 
@@ -28,7 +35,8 @@ $(document).ready(function () {
             for (let player of responseData) {
                 let playerListItem = $('<li class="list-inline-item label label-success player-name"></li>').text(player.name);
                 playerList.append(playerListItem);
-            };
+            }
+            ;
         });
     }
 });

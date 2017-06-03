@@ -1,3 +1,10 @@
+/**
+ * Skrypty zarzadzajace wyswietlaniem kolejych pytan oraz czasu dla rozpoczetej gry,
+ * odpowiedzialne za wyslanie odpowiedzi gracza w odpowiednim czasie
+ * oraz przekierowanie na odpowiednia stronę.
+ * @author Karolina Prusaczyk
+ */
+
 $(document).ready(function () {
         $('#question-1').show();
         runQuestionTimer();
