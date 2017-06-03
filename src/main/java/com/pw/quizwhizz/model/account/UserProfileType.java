@@ -1,10 +1,12 @@
 package com.pw.quizwhizz.model.account;
 
-import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Enum dostepnych ról dla uzytkownikow.
+ * @author Michał Nowiński
+ */
 @ToString
-
 public enum UserProfileType {
     ROLE_USER("ROLE_USER"),
     ROLE_ADMIN("ROLE_ADMIN");

@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repozytorium udostepnia encje QuestionEntity
+ * @author Michał Nowiński
+ * @see JpaRepository
+ */
 @Repository
 public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> {
     void deleteById(Long id);

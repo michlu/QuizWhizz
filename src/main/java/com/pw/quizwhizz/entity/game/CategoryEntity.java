@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
+/**
+ * Encja Category
+ * @author Michał Nowiński
+ */
 @Entity
 @Data
 @NoArgsConstructor

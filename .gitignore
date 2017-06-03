@@ -30,3 +30,4 @@ src/main/java/com/pw/quizwhizz/config/WebConfig.java
 src/main/resources/messages.properties
 src/main/webapp/WEB-INF/templates/secure/
 
+/src/main/webapp/WEB-INF/templates/user_error.html

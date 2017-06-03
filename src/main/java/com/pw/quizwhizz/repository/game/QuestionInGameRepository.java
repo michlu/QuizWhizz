@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repozytorium udostepnia encje QuestionInGameEntity
+ * @author Karolina Prusaczyk
+ * @see JpaRepository
+ */
 @Repository
 public interface QuestionInGameRepository extends JpaRepository<QuestionInGameEntity, QuestionInGameKey> {
 

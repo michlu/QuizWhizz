@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Encja Score
+ * @author Karolina Prusaczyk
+ */
 @Getter
 @Setter
 @Entity

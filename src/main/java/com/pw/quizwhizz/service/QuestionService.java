@@ -7,6 +7,10 @@ import com.pw.quizwhizz.service.exception.NoQuestionsInDBException;
 
 import java.util.List;
 
+/**
+ * Abstrakcyjna warstwa serwisu
+ * @author Michał Nowiński, Karolina Prusaczyk
+ */
 public interface QuestionService {
     List<Question> getQuestionsForNewGame(long categoryId) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
     List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;

@@ -3,7 +3,9 @@ package com.pw.quizwhizz.security;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 /**
- * klasa filtra tworzy obiekt DelegatingFilterProxy - łącznik pomiędzy kontekstem serwletów, a kontekstem Springa
+ * Klasa filtra. Tworzy obiekt DelegatingFilterProxy - łącznik pomiędzy kontekstem serwletów, a kontekstem Springa
+ * @author Michał Nowiński
+ * @see AbstractSecurityWebApplicationInitializer
  */
 public class SecurityInitializer extends AbstractSecurityWebApplicationInitializer {
 

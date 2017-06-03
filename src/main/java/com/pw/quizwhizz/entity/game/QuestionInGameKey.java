@@ -7,7 +7,8 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
- * Created by karol on 03.05.2017.
+ * Klucz glowny dla encji QuestionInGame
+ * @author Karolina Prusaczyk
  */
 @Data
 @Embeddable

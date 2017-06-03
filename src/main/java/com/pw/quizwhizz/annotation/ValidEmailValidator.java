@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Validator skladni maila. Ulepszona wersja podstawowego validatora.
+ * Walidator Emaila, sprawdza poprawnosc skladni emaila. Jest to dokladniejsza wersja podstawowego walidatora.
+ * @author Michał Nowiński
+ * @see ConstraintValidator
  */
 public class ValidEmailValidator implements ConstraintValidator<ValidEmail, String> {
 

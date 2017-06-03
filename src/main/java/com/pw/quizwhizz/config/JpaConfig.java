@@ -22,6 +22,7 @@ import java.util.Properties;
 
 /**
  * Klasa ustawien dla JPA Hibernate oraz polaczen z baza danych
+ * @author Michał Nowiński
  */
 @Configuration
 @EnableTransactionManagement // wlacza zarzadzanie tranzakcjami przez springa
@@ -40,7 +41,7 @@ public class JpaConfig {
         entityManagerFactory.setPersistenceUnitName("db_quizwhizz");
         entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setJpaVendorAdapter(adapter);
-        entityManagerFactory.setJpaProperties(additionalProperties()); // dodatkowe ustawienia
+        entityManagerFactory.setJpaProperties(additionalProperties());
         entityManagerFactory.setPackagesToScan("com.pw.quizwhizz");
         return entityManagerFactory;
     }
@@ -88,6 +89,10 @@ public class JpaConfig {
         return txManager;
     }
 
+    /**
+     * hibernate.hbm2ddl.auto przyjmuje (validate | update | create | create-drop) - odpowiedzialny za ustawienia rozruchowe bazydanych
+     * @return dodatkowe ustawenia hibernate
+     */
     private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");  // validate | update | create | create-drop

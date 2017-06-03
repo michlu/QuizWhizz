@@ -7,8 +7,9 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * @author michlu
- * @sience 26.04.2017
+ * Walidator Kategorii, sprawdza czy dana kategoria jest unikatowa w bazie danych. Nie pozwala na dodanie dwoch takich samych kategorii.
+ * @author Michał Nowiński
+ * @see ConstraintValidator
  */
 public class UniqueCategoryValidator implements ConstraintValidator<UniqueCategory, String> {
 
@@ -21,7 +22,6 @@ public class UniqueCategoryValidator implements ConstraintValidator<UniqueCatego
 
     @Override
     public void initialize(UniqueCategory uniqueCategory) {
-
     }
 
     @Override

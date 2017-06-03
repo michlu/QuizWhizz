@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Encja PlayerInGame
+ * @author Karolina Prusaczyk
+ */
 @Entity
 @Getter @Setter
 @Table(name = "player_in_game")
