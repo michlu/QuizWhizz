@@ -1,18 +1,7 @@
 $(document).ready(function () {
         $('#question-1').show();
-
-
-    var timer = $(".timer").TimeCircles(
-        { time: {
-            Days: { show: false },
-            Hours: { show: false },
-            Minutes: { show : false },
-            Seconds: { color: "#C0C8CF" }
-        },
-        refresh_interval: 1,
-        fg_width: 0.05,
-        count_past_zero: true
-    });
+    runCircleTimer();
+    addListenerToCircleTimer();
     runQuestionTimer();
 
         var gameSecondsLeft = 150;
@@ -54,6 +43,8 @@ function showQuestion() {
     $('#question-' + currentQuestion).show();
 
     clearInterval(questionTimeIntervalId);
+    destroyTimer();
+    runCircleTimer();
     runQuestionTimer();
 
     if(currentQuestion == 10) {
@@ -73,3 +64,35 @@ function runQuestionTimer() {
     }, 1000);
 }
 
+function runCircleTimer() {
+    $(".timer").TimeCircles(
+        {
+            time: {
+                Days: {show: false},
+                Hours: {show: false},
+                Minutes: {show: false},
+                Seconds: {
+                    color: "#FFCC00",
+                    text: ""
+                }
+            },
+            refresh_interval: 1,
+            fg_width: 0.09,
+            circle_bg_color: "#D7DBDD",
+            animation: "tick",
+            count_past_zero: false
+        });
+}
+
+function destroyTimer() {
+    $(".timer").TimeCircles().destroy();
+}
+
+function addListenerToCircleTimer() {
+    $(".timer").TimeCircles().addListener(function(unit, amount, total){
+        if(total == 0) {
+            console.log("Czas minal");
+//            $(".timer").TimeCircles().start();
+        }
+    });
+}
