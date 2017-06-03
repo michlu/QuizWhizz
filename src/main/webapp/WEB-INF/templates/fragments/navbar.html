@@ -13,7 +13,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="#" th:href="@{/register}">Twoje gry</a>
+                <a href="#" th:href="@{/user/my}">Twoje gry</a>
             </li>
 
             <li th:if="${ #authorization.expression('isAuthenticated()') and #strings.contains(#authentication.principal.authorities,'ROLE_ADMIN')}">
@@ -54,7 +54,7 @@
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="#">Wyniki</a>
+                        <a th:href="@{/app/ranking}">Ranking</a>
                     </li>
                     <li>
                         <a th:href="@{/user/my}">Profil</a>

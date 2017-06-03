@@ -1,9 +1,7 @@
 package com.pw.quizwhizz.repository.game;
 
-import com.pw.quizwhizz.entity.game.QuestionEntity;
 import com.pw.quizwhizz.entity.game.ScoreEntity;
 import com.pw.quizwhizz.entity.game.ScoreKey;
-import com.pw.quizwhizz.model.game.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -30,5 +30,3 @@ src/main/java/com/pw/quizwhizz/config/WebConfig.java
 src/main/resources/messages.properties
 src/main/webapp/WEB-INF/templates/secure/
 
-/src/main/webapp/resources/gfx/questionmark.png
-/src/main/java/com/pw/quizwhizz/exception/EmailExistsException.java
