@@ -130,9 +130,8 @@ public class PlayerTest {
         Category category = mock(Category.class);
         List<Question> questions = mock(List.class);
         GameStateMachine stateMachine = mock(GameStateMachine.class);
-        ScoreBuilder scoreBuilder = mock(ScoreBuilder.class);
         when(questions.size()).thenReturn(10);
-        Game game = new Game(category, questions, stateMachine, scoreBuilder);
+        Game game = new Game(category, questions, stateMachine);
         Game gameSpy = spy(game);
 
         when(stateMachine.gameIsNotInProgress()).thenReturn(false);

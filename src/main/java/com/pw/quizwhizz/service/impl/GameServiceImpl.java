@@ -198,19 +198,6 @@ public class GameServiceImpl implements GameService {
         return scores;
     }
 
-    @Override
-    public Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException {
-        ScoreKey key = new ScoreKey();
-        key.setGameId(gameId);
-        key.setUserId(userId);
-        ScoreEntity scoreEntity = scoreRepository.findOne(key);
-        Game game = findGameById(gameId);
-        Player player = findPlayerByIdAndGame(userId, game);
-
-        Score score = buildScore(scoreEntity, player);
-        return score;
-    }
-
     @Transactional
     @Override
     public void saveScore(Score score) {
@@ -244,18 +231,6 @@ public class GameServiceImpl implements GameService {
         }
 
         scores.sort(Comparator.comparing(Score::getPoints).reversed());
-        return scores;
-    }
-
-    @Override
-    public List<Score> getScoresByPlayer(Player player) {
-        List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
-        List<Score> scores = new ArrayList<>();
-
-        for (ScoreEntity scoreEntity : scoreEntityList) {
-            Score score = buildScore(scoreEntity, player);
-            scores.add(score);
-        }
         return scores;
     }
 

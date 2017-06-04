@@ -58,15 +58,14 @@ public class Game {
      * @param category         kategoria gry
      * @param questions        pytania w grze
      * @param gameStateMachine maszyna stanu gry
-     * @param scoreBuilder     implementacja wzorca Builder dla klasy Score
      */
-    protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine, ScoreBuilder scoreBuilder) throws IllegalNumberOfQuestionsException {
+    protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine) throws IllegalNumberOfQuestionsException {
         validateNumberOfQuestions(questions);
 
         this.category = category;
         this.questions = questions;
         this.gameStateMachine = gameStateMachine;
-        this.scoreBuilder = scoreBuilder;
+        this.scoreBuilder = new ScoreBuilder();
     }
 
     /**

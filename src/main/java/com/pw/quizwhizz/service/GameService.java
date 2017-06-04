@@ -24,9 +24,7 @@ public interface GameService {
     Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
 
     void saveScore(Score score);
-    Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException;
     List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
-    List<Score> getScoresByPlayer(Player player);
     List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException;
     List<String> getNamesOfPlayersInGame(Long gameId);
 
