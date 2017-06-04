@@ -37,7 +37,7 @@ public class ImageUtil {
     }
 
     /**
-     * Metoda przeciazona
+     * Metoda przeciazona {@link ImageUtil#resizeImage}
      * @param originalImage przyjmuje obraz jako BufferedImage
      */
     public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) throws IOException {
