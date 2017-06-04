@@ -3,8 +3,12 @@ package com.pw.quizwhizz.model.game;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-
+/**
+ * Implementacja wzorca Builder dla klasy Score.
+ *
+ * @author Karolina Prusaczyk
+ * @see Game
+ */
 @Getter
 @Component
 public class ScoreBuilder {

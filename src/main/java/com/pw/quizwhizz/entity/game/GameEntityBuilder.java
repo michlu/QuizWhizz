@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 
 /**
- * Builder dla Encji Game
+ * Implementacja wzorca Builder dla encji Game, wykorzystywana w serwisie gry.
+ *
  * @author Karolina Prusaczyk
+ * @see com.pw.quizwhizz.service.impl.GameServiceImpl
  */
 @Getter
 @Component

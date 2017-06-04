@@ -1,13 +1,17 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.model.game.Answer;
-import com.pw.quizwhizz.model.game.Category;
-import lombok.*;
-import javax.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 /**
- * Created by Karolina on 24.03.2017.
+ * Klasa reprezentujaca pytanie o okreslonej kategorii.
+ * Kazde pytanie sklada się z listy odpowiedzi.
+ *
+ * @author Karolina Prusaczyk
+ * @see Answer
+ * @see Category
  */
 @Data
 @NoArgsConstructor

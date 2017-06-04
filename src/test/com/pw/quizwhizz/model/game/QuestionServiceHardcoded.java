@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by Karolina on 26.03.2017.
+ * Klasa wspierająca testy potwierdzające poprawnosc losowania pytań do gry z puli danej kategorii
+ *
+ * @author Karolina Prusaczyk
  */
 public class QuestionServiceHardcoded implements QuestionService {
 
@@ -25,11 +27,6 @@ public class QuestionServiceHardcoded implements QuestionService {
 
     @Override
     public List<Question> findAllByCategoryId(long categoryId) {
-        return null;
-    }
-
-    @Override
-    public List<Question> findAllByCategory(Category categoryEntity) {
         return null;
     }
 

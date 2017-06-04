@@ -16,43 +16,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Karolina on 14.04.2017.
+ * Testy integracyjne symulujące przebieg gry
+ *
+ * @author Karolina Prusaczyk
  */
 public class IntegrationTest {
 
     @Test
     public void GivenSeveralPlayers_WhenEveryoneSubmitsTheirAnswers_ThenWinnerIsDeterminedAndGivenBonus() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException, NoQuestionsInDBException {
-        // First API call (Get categories)
 
-        // Second API call (Create a game)
         Category testCategory = new Category("Test");
-        QuestionService service =  mock(QuestionServiceImpl.class); // should get questions for a given category
+        QuestionService service =  mock(QuestionServiceImpl.class);
         GameStateMachine gsm = mock(GameStateMachine.class);
+        ScoreBuilder scoreBuilder = mock(ScoreBuilder.class);
 
         List<Question> questions = mock(List.class);
         when(questions.size()).thenReturn(10);
         when(service.getRandomQuestionsByCategory(testCategory, 10)).thenReturn(questions);
 
-        Game game = new Game(testCategory, questions, gsm);
+        Game game = new Game(testCategory, questions, gsm, scoreBuilder);
         Player playerOne = new Player("Player 1", game);
 
-        // Third API call (Player joins)
         Player playerTwo = new Player("Player 2", game);
-        // Fourth API call (Player joins)
         Player playerThree = new Player("Player 3", game);
 
-        // Fifth API call (Owner starts the game)
         playerOne.startGame();
 
-        // Sixth API call (Answers submission)
         playerOne.submitAnswers(getCorrectAnswers(5));
-        // Seventh API call
         playerTwo.submitAnswers(getCorrectAnswers(6));
-        // Eighth API call
         playerThree.submitAnswers(getCorrectAnswers(3));
 
         when(gsm.gameIsClosed()).thenReturn(true);
-        // Ninth, Tenth, Eleventh API call (Each player wants to see the scores)
         List<Score> scores = game.checkScores();
 
         Player actualWinner = scores.stream()
@@ -65,7 +59,7 @@ public class IntegrationTest {
         assertThat(playerTwo.isOwner()).isFalse();
         assertThat(playerThree.isOwner()).isFalse();
         assertThat(actualWinner).isEqualTo(playerTwo);
-        assertThat(actualWinner.getXp()).isEqualTo(6 * 10 + 30); // 6 correct answers and a bonus
+        assertThat(actualWinner.getXp()).isEqualTo(6 * 10 + 30);
     }
 
     private ArrayList<Answer> getCorrectAnswers(int numberOfCorrectAnswers) {

@@ -1,13 +1,12 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.annotation.UniqueCategory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-
 /**
- * Created by Karolina on 26.03.2017.
+ * Klasa dostarczajaca informacji o kategorii, w ktorej mozna utworzyc grę.
+ *
+ * @author Karolina Prusaczyk
  */
 @Data
 @NoArgsConstructor

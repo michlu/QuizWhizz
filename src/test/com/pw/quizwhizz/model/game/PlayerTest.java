@@ -9,7 +9,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Karolina on 18.04.2017.
+ * Testy weryfikujące poprawnosc dzialania klasy Player
+ *
+ * @author Karolina Prusaczyk
+ * @see Player
  */
 public class PlayerTest {
 
@@ -127,8 +130,9 @@ public class PlayerTest {
         Category category = mock(Category.class);
         List<Question> questions = mock(List.class);
         GameStateMachine stateMachine = mock(GameStateMachine.class);
+        ScoreBuilder scoreBuilder = mock(ScoreBuilder.class);
         when(questions.size()).thenReturn(10);
-        Game game = new Game(category, questions, stateMachine);
+        Game game = new Game(category, questions, stateMachine, scoreBuilder);
         Game gameSpy = spy(game);
 
         when(stateMachine.gameIsNotInProgress()).thenReturn(false);

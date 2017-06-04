@@ -14,11 +14,14 @@ import com.pw.quizwhizz.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Instant;
 import java.util.*;
 
 /**
- * Implementacja serwisu gry
+ * Implementacja serwisu gry stanowiąca most pomiędzy elementami logiki biznesowej a warstwą persystencji danych.
+ * Operacje serwisu są wykorzystywane przez kontroler gry.
+ *
  * @author Karolina Prusaczyk
  */
 
@@ -96,7 +99,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game findGameById (Long gameId) throws IllegalNumberOfQuestionsException {
+    public Game findGameById(Long gameId) throws IllegalNumberOfQuestionsException {
         GameEntity gameEntity = gameRepository.findOne(gameId);
         List<QuestionInGameEntity> questionsInGame = questionInGameRepository.findAllById_GameId(gameId);
         List<Question> questions = convertToQuestions(questionsInGame);
@@ -109,7 +112,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public boolean isGameStarted (Long gameId){
+    public boolean isGameStarted(Long gameId) {
         GameEntity game = gameRepository.getOne(gameId);
 
         return game.getCurrentState() == GameState.STARTED;
@@ -117,7 +120,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     @Transactional
-    public void startGame (Game game, User user) throws IllegalNumberOfQuestionsException {
+    public void startGame(Game game, User user) throws IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = new Player(user.getFirstName(), game);
         player.setOwner(playerInGameEntity.isOwner());
@@ -134,7 +137,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void submitAnswers (Game game, User user, List < Long > answerIds) throws
+    public void submitAnswers(Game game, User user, List<Long> answerIds) throws
             IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException {
         PlayerInGameEntity playerInGameEntity = getPlayerInGameEntity(game, user);
         Player player = findPlayerByIdAndGame(user.getId(), game);
@@ -153,7 +156,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Score findScoreByUserAndGame ( long userId, long gameId) throws IllegalNumberOfQuestionsException {
+    public Score findScoreByUserAndGame(long userId, long gameId) throws IllegalNumberOfQuestionsException {
         ScoreKey key = new ScoreKey();
         key.setGameId(gameId);
         key.setUserId(userId);
@@ -167,7 +170,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public void saveScore (Score score) {
+    public void saveScore(Score score) {
         ScoreKey key = getScoreKey(score);
         ScoreEntity scoreEntity = new ScoreEntity();
         scoreEntity.setId(key);
@@ -202,7 +205,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Score> getScoresByPlayer (Player player){
+    public List<Score> getScoresByPlayer(Player player) {
         List<ScoreEntity> scoreEntityList = scoreRepository.findAllById_UserId(player.getId());
         List<Score> scores = new ArrayList<>();
 
@@ -215,7 +218,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     @Override
-    public List<Game> getAllOpenGames () throws IllegalNumberOfQuestionsException {
+    public List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException {
         List<Game> games = new ArrayList<>();
         List<GameEntity> gameEntities = gameRepository.findAllByCurrentState(GameState.OPEN);
         for (GameEntity gameEntity : gameEntities) {
@@ -232,7 +235,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<String> getNamesOfPlayersInGame (Long gameId){
+    public List<String> getNamesOfPlayersInGame(Long gameId) {
         List<PlayerInGameEntity> playerInGameEntities = playerInGameRepository.findAllById_GameId(gameId);
         List<Long> playerIds = new ArrayList<>();
 
@@ -251,7 +254,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public boolean isPlayerGameOwner (Long userId, Long gameId){
+    public boolean isPlayerGameOwner(Long userId, Long gameId) {
         PlayerInGameKey key = new PlayerInGameKey();
         key.setGameId(gameId);
         key.setUserId(userId);
@@ -393,6 +396,7 @@ public class GameServiceImpl implements GameService {
         }
         return score;
     }
+
     private ScoreKey getScoreKey(Score score) {
         ScoreKey key = new ScoreKey();
         key.setUserId(score.getPlayer().getId());

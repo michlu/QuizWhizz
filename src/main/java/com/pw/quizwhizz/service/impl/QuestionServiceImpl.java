@@ -107,11 +107,6 @@ public class QuestionServiceImpl implements QuestionService {
         return questions;
     }
 
-    @Override
-    public List<Question> findAllByCategory(Category category){
-        return findAllByCategoryId(category.getId());
-    }
-
     @Transactional
     @Override
     public Question findById(Long id) {

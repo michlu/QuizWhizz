@@ -9,7 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * Encja QuestionrInGame
+ * Encja QuestionInGame dostarczajaca informacji na temat pytań wylosowanych dla danej gry.
+ * Okresla sekwencję, w jakiej będa się pojawiac pytania w grze.
+ *
  * @author Karolina Prusaczyk
  */
 @Entity

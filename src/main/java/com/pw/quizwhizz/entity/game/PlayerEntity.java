@@ -5,7 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * Created by karol on 03.05.2017.
+ * Encja Player dostarczajaca informacji o graczu.
+ * @author Karolina Prusaczyk
  */
 @Entity
 @Data
