@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Klasa wyjatku rzucanego w przypadku, gdy liczba pytań pobrana przez serwis jest niewystarczajaca
+ * Klasa wykorzystywana w grze jako element pytania.
+ * Kazda instancja klasy Answer zawiera informację o poprawnosci odpowiedzi na pytanie lub jej braku.
  *
  * @author Karolina Prusaczyk
  */

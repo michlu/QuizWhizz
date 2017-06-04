@@ -1,11 +1,16 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.model.game.GameState;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.time.Clock;
 import java.time.Instant;
+
+/**
+ * Maszyna stanu gry odpowiedzialna za zapewnienie poprawnego przechodzenia z jednego stanu gry w kolejny.
+ * Dostarcza informacji na temat czasu rozpoczęcia gry oraz jej akualnego stanu.
+ *
+ * @author Karolina Prusaczyk
+ */
 
 public class GameStateMachine {
     Clock clock;

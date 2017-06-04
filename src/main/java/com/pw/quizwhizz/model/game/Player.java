@@ -1,17 +1,21 @@
 package com.pw.quizwhizz.model.game;
 
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
- * Created by Karolina on 14.04.2017.
+ * Klasa stanowiaca zbior informacji dotyczacych osoby prowadzacej interakcję z gra.
+ *
+ * @author Karolina Prusaczyk
+ * @see Game
  */
-
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 public class Player {
@@ -22,10 +26,24 @@ public class Player {
     private Game game;
     private boolean isOwner;
 
+    /**
+     * Konstruktor klasy przyjmujacy
+     *
+     * @param name imię gracza
+     */
     public Player(String name) {
         this.name = name;
     }
 
+    /**
+     * Konstruktor klasy przyjmujacy
+     *
+     * @param name imię gracza oraz
+     * @param game instancję gry, z ktora prowadzona jest interakcja.
+     *             <p>
+     *             Konstruktor dodaje gracza do listy graczy w danej grze i ustala, czy gracz jest
+     *             jej wlascicielem - zalozycielem czy tylko jej uczestnikiem.
+     */
     public Player(String name, Game game) {
         this.name = name;
         this.game = game;
@@ -38,11 +56,20 @@ public class Player {
         game.addPlayer(this);
     }
 
+    /**
+     * Metoda startujaca grę. Jedynie wlasciel gry moze rozpoczac rozgrywke.
+     */
     public void startGame() {
         if (this.isOwner)
             game.start();
     }
 
+    /**
+     * Metoda przesylajaca do gry listę odpowiedzi do ewaluacji wraz z informacja o graczu.
+     *
+     * @param answers odpowiedzi gracza
+     * @throws IllegalTimeOfAnswerSubmissionException jesli gracz sprobuje wyslac odpowiedzi po uplynięciu okreslonego czasu
+     */
     public void submitAnswers(List<Answer> answers) throws IllegalTimeOfAnswerSubmissionException {
         if (answers == null) {
             return;
@@ -50,10 +77,18 @@ public class Player {
         game.evaluateAnswers(this, answers);
     }
 
+    /**
+     * Metoda dodajaca graczowi okreslona liczbę punktow doswiadczenia, wykorzystywanych w rankingach.
+     *
+     * @param xp punkty doswiadzenia przyznane graczowi.
+     */
     public void addXp(int xp) {
         this.xp += xp;
     }
 
+    /**
+     * Metoda zwiększajaca liczbę zagranych przez gracza gier.
+     */
     public void incrementGamesPlayed() {
         this.gamesPlayed += 1;
     }

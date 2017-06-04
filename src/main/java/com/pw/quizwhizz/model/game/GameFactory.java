@@ -5,7 +5,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Created by Karolina on 30.04.2017.
+ * Implementacja wzorca Factory dla gry, wykorzystywana w serwisie gry.
+ *
+ * @author Karolina Prusaczyk
+ * @see com.pw.quizwhizz.service.impl.GameServiceImpl
  */
 @Component
 public class GameFactory {
