@@ -153,6 +153,38 @@ public class GameServiceImpl implements GameService {
                 .orElse(null);
         score.setGameId(game.getId());
         saveScore(score);
+
+        List<PlayerInGameEntity> playersInGame = playerInGameRepository.findAllById_GameId(game.getId());
+        List<Player> players = convertToPlayers(playersInGame, game);
+
+        List<Player> playersWithCalculatedScores = new ArrayList<>();
+        List<ScoreEntity> scoreEntities = scoreRepository.findAllById_GameId(game.getId());
+        List<Score> scores = convertToScores(scoreEntities, game);
+
+        for (Score s : scores) {
+            Player playerWithScore = s.getPlayer();
+            playerWithScore.setGame(game);
+            playerWithScore.setOwner(s.getPlayer().isOwner());
+            playersWithCalculatedScores.add(playerWithScore);
+        }
+
+        if (playersWithCalculatedScores.containsAll(players)) {
+            System.out.println("Wszyscy gracze wyslali odpowiedzi");
+            game.getGameStateMachine().setCurrentState(GameState.CLOSED);
+            updateGame(game);
+        }
+    }
+
+    private List<Score> convertToScores(List<ScoreEntity> scoreEntities, Game game) throws IllegalNumberOfQuestionsException {
+        List<Score> scores = new ArrayList<>();
+        for (ScoreEntity scoreEntity : scoreEntities) {
+            Player player = findPlayerByIdAndGame(scoreEntity.getId().getUserId(), game);
+            boolean isOwner = isPlayerGameOwner(player.getId(), game.getId());
+            player.setOwner(isOwner);
+            Score score = buildScore(scoreEntity, player);
+            scores.add(score);
+        }
+        return scores;
     }
 
     @Override
@@ -266,11 +298,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public boolean isGameClosed(Long gameId) {
         GameEntity gameEntity = gameRepository.findOne(gameId);
-        Game game = gameFactory.build();
-        game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
-        game.getGameStateMachine().determineCurrentState();
-        GameState state = game.getGameStateMachine().getCurrentState();
-        return state == GameState.CLOSED;
+        GameState gameState = gameEntity.getCurrentState();
+        return gameState == GameState.CLOSED;
     }
 
     private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
@@ -324,6 +353,7 @@ public class GameServiceImpl implements GameService {
         List<Player> players = new ArrayList<>();
         for (PlayerInGameEntity playerInGameEntity : playersInGame) {
             Player player = findPlayerByIdAndGame(playerInGameEntity.getId().getUserId(), game);
+            player.setOwner(playerInGameEntity.isOwner());
             players.add(player);
         }
         return players;

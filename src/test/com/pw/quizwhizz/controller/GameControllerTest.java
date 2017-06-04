@@ -4,7 +4,8 @@ package com.pw.quizwhizz.controller;
 import org.junit.Test;
 
 /**
- * Created by karol on 30.04.2017.
+ * Klasa testujaca kontroler gry
+ * @author Karolina Prusaczyk
  */
 public class GameControllerTest {
     @Test

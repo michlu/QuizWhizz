@@ -15,6 +15,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+/**
+ * Klasa testujaca serwis gry
+ * @author Karolina Prusaczyk
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class GameServiceImplTest {
     @Mock
