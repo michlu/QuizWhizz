@@ -16,7 +16,6 @@ public interface QuestionService {
     List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
     List<Question> getRandomQuestionsByCategory(Category category, int number) throws IllegalNumberOfQuestionsException, NoQuestionsInDBException;
     List<Question> findAllByCategoryId(long categoryId);
-    List<Question> findAllByCategory(Category category);
 
     Question findById(Long Id);
     void deleteById(Long Id);

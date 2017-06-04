@@ -14,7 +14,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by Karolina on 30.04.2017.
+ * Klasa testująca fabrykę gier
+ * @author Karolina Prusaczyk
+ * @see GameFactory
  */
 public class GameFactoryTest {
 

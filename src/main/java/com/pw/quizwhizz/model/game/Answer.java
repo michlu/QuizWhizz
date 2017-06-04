@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Created by Karolina on 25.03.2017.
+ * Klasa wykorzystywana w grze jako element pytania.
+ * Kazda instancja klasy Answer zawiera informację o poprawnosci odpowiedzi na pytanie lub jej braku.
+ *
+ * @author Karolina Prusaczyk
  */
 @Data
 @NoArgsConstructor
@@ -21,7 +24,6 @@ public class Answer {
         this.answer = answer;
         this.isCorrect = isCorrect;
     }
-    // GET wymagany dla Thymeleafa
     public boolean getIsCorrect() {
         return isCorrect;
     }

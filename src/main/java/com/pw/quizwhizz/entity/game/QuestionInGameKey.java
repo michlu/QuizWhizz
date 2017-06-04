@@ -7,7 +7,8 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
- * Klucz glowny dla encji QuestionInGame
+ * Zlozony klucz glowny dla encji QuestionInGame
+ *
  * @author Karolina Prusaczyk
  */
 @Data

@@ -1,7 +1,9 @@
 package com.pw.quizwhizz.model.game;
 
 /**
- * Created by Karolina on 14.04.2017.
+ * Enum stanowiacy zbior stanow, ktore przybiera gra.
+ *
+ * @author Karolina Prusaczyk
  */
 public enum GameState {
     OPEN,

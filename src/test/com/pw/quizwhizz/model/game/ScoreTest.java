@@ -1,15 +1,18 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.model.game.Answer;
-import com.pw.quizwhizz.model.game.Player;
-import com.pw.quizwhizz.model.game.Score;
 import org.testng.annotations.Test;
+
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Karolina on 21.04.2017.
+ * Testy klasy Score odpowiedzialnej za ocenianie odpowiedzi graczy, oznaczanie najwyzszych wynikow,
+ * przyznawanie punktow za grę oraz dodatkowych punktow za zwycięstwo w grze wieloosobowej
+ *
+ * @author Karolina Prusaczyk
+ * @see Score
  */
 public class ScoreTest {
     Player player;
