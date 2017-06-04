@@ -1,22 +1,14 @@
 INSERT INTO role(id, role) VALUES (null,"ROLE_USER"), (null, "ROLE_ADMIN");
 
-# INSERT INTO `user` (`id`,`user_email`,`first_name`,`password`,`date_registration`, `url_image`)
-# VALUES
-#   (1,'michlu@o2.pl','Games Josling','$2a$10$nWPT.sl.oljfWR5zu.BSwuOw67CsDM2XqjQ8P0rhjpXUr1MgEWf62','2017-04-10', '/resources/images/profile_1.png'),
-#   (2,'asd@asd.pl','Tonald Drump','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-14', '/resources/images/profile_2.png'),
-#   (3,'dsa@dsa.pl','User','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-19', '/resources/images/profile_default.png'),
-#   (4, 'karolajnaa@gmail.com','Karolina', '12345', '2017-05-01','/resources/images/Pusheen.png'),
-#   (5, 'test@test.com', 'Jessica Farba', '12345', '2017-05-01','/resources/images/profile_default.png'),
-#   (6, 'test2@test.com', 'Michelle Panorama', '12345', '2017-05-26','/resources/images/profile_1.png');
 
 INSERT INTO `user`
 VALUES
   (1,9,'Games Josling',280,'michlu@o2.pl','$2a$10$nWPT.sl.oljfWR5zu.BSwuOw67CsDM2XqjQ8P0rhjpXUr1MgEWf62','2017-04-10','/resources/images/profile_1.png'),
   (2,9,'Tonald Drump',320,'asd@asd.pl','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-14','/resources/images/profile_2.png'),
-  (3,NULL,'User',NULL,'dsa@dsa.pl','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-19','/resources/images/profile_default.png'),
-  (4,NULL,'Karolina',NULL,'karolajnaa@gmail.com','12345','2017-05-01','/resources/images/Pusheen.png'),
-  (5,3,'Jessica Farba',80,'test@test.com','12345','2017-05-01','/resources/images/profile_default.png'),
-  (6,3,'Michelle Panorama',140,'test2@test.com','12345','2017-05-26','/resources/images/profile_1.png');
+  (3,NULL,'User',NULL,'dsa@dsa.pl','$2a$10$rwDRCT2OdhQP/8xHD3IXmOhfiaYe7XduwR9g9y1HVulFDB0lZx69O','2017-04-19','/resources/images/profile_3.png'),
+  (4,NULL,'Karolina',NULL,'karolajnaa@gmail.com','$2a$10$KIxYO/ZH2cdviApusQ1JPu8FBri6CaQ2tB9zGnSK776WWPw95sqvG','2017-05-01','/resources/images/profile_4.png'),
+  (5,3,'Jessica Farba',80,'test@test.com','$2a$10$KIxYO/ZH2cdviApusQ1JPu8FBri6CaQ2tB9zGnSK776WWPw95sqvG','2017-05-01','/resources/images/profile_5.png'),
+  (6,3,'Michelle Panorama',140,'test2@test.com','$2a$10$KIxYO/ZH2cdviApusQ1JPu8FBri6CaQ2tB9zGnSK776WWPw95sqvG','2017-05-26','/resources/images/profile_6.png');
 
 
 

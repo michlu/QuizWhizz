@@ -5,10 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * Narzedzia do edycji obrazow
@@ -40,6 +37,22 @@ public class ImageUtil {
     }
 
     /**
+     * Metoda przeciazona
+     * @param originalImage przyjmuje obraz jako BufferedImage
+     */
+    public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) throws IOException {
+        final BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        final Graphics2D graphics2D = bufferedImage.createGraphics();
+        graphics2D.setComposite(AlphaComposite.Src);
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+        graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics2D.drawImage(originalImage, 0, 0, width, height, null);
+        graphics2D.dispose();
+        return bufferedImage;
+    }
+
+    /**
      * @param image przujmuje BufferedImage
      * @return zwraca obraz w wersji byte'owej. Konwertuje na format PNG
      */
@@ -52,4 +65,6 @@ public class ImageUtil {
         }
         return stream.toByteArray();
     }
+
+
 }

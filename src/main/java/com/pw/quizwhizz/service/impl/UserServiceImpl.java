@@ -9,9 +9,10 @@ import com.pw.quizwhizz.model.game.Player;
 import com.pw.quizwhizz.repository.RoleRepository;
 import com.pw.quizwhizz.repository.UserRepository;
 import com.pw.quizwhizz.repository.game.PlayerRepository;
-import com.pw.quizwhizz.repository.impl.RankingRepository;
 import com.pw.quizwhizz.repository.impl.UserAllScoresRepository;
+import com.pw.quizwhizz.service.RandomProfileImageService;
 import com.pw.quizwhizz.service.UserService;
+import com.pw.quizwhizz.util.FileTool;
 import com.pw.quizwhizz.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,18 +40,20 @@ public class UserServiceImpl implements UserService {
 	final private PasswordEncoder passwordEncoder;
 	final private PlayerRepository playerRepository;
 	final private UserAllScoresRepository userAllScoresRepository;
-	final private RankingRepository rankingRepository;
 	final private ImageUtil imageUtil;
+	final private RandomProfileImageService randomProfileImageService;
+	final private FileTool fileTool;
 
 	@Autowired
-	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository, RankingRepository rankingRepository, ImageUtil imageUtil) {
+	public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PlayerRepository playerRepository, UserAllScoresRepository userAllScoresRepository, ImageUtil imageUtil, RandomProfileImageServiceImpl randomProfileImageService, FileTool fileTool) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.playerRepository = playerRepository;
 		this.userAllScoresRepository = userAllScoresRepository;
-		this.rankingRepository = rankingRepository;
 		this.imageUtil = imageUtil;
+		this.randomProfileImageService = randomProfileImageService;
+		this.fileTool = fileTool;
 	}
 
 	public List<User> findAll(){
@@ -73,13 +77,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void addWithDefaultRole(User user) {
-		addAccountForUserWithRole(user, UserProfileType.ROLE_USER);
+	public void addWithDefaultRole(User user, String saveDirectory) throws IOException {
+		addAccountForUserWithRole(user, saveDirectory, UserProfileType.ROLE_USER);
 	}
 
 	@Override
-	public void addWithAdminRole(User user) {
-		addAccountForUserWithRole(user, UserProfileType.ROLE_USER, UserProfileType.ROLE_ADMIN);
+	public void addWithAdminRole(User user, String saveDirectory) throws IOException {
+		addAccountForUserWithRole(user, saveDirectory, UserProfileType.ROLE_USER, UserProfileType.ROLE_ADMIN);
 	}
 
 	/**
@@ -162,16 +166,30 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * Dodaje nowe konto dla podanego uzytkownika. Hashuje haslo przed zapisaniem do bazy danych.
+	 * Metoda dodaje nowe konto dla podanego uzytkownika. Hashuje haslo przed zapisaniem do bazy danych.
+	 * Przypisuje losowy obraz dla zdjecia profilowego.
 	 * @param user obiekt Uzytkownika przeslany z formularza
+	 * @param saveDirectory   sciezka do zapisu pliku
 	 * @param userProfileType przyjmuje Enumy odpowiadajace roli
 	 */
-	private void addAccountForUserWithRole(User user, UserProfileType... userProfileType) {
+	private void addAccountForUserWithRole(User user, String saveDirectory, UserProfileType... userProfileType) throws IOException {
 		for (int i = 0; i < userProfileType.length; i++) {
 			Role role = roleRepository.findByRole(userProfileType[i]);
 			user.getRoles().add(role);
 		}
+
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		userRepository.save(user);
+		user = userRepository.findById(user.getId()); // wyciaganie id zapisywanego user'a
+
+		File file = randomProfileImageService.getRandomProfileImage();
+		String extension = fileTool.getFileExtension(file);
+		String fileNameWithExtension = "profile_" + user.getId() + "." + extension;
+
+		user.setUrlImage("/resources/images/" + fileNameWithExtension);
+		Path path = Paths.get(saveDirectory + fileNameWithExtension);
+		Files.write(path, fileTool.getFileBytes(file));
+
 		userRepository.save(user);
 	}
 
