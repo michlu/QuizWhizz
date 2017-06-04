@@ -217,7 +217,6 @@ public class GameServiceImpl implements GameService {
         return playerNames;
     }
 
-
     @Override
     public boolean isGameClosed(Long gameId) {
         GameEntity gameEntity = gameRepository.findOne(gameId);
@@ -226,7 +225,7 @@ public class GameServiceImpl implements GameService {
             return true;
         } else {
             Game game = gameFactory.build();
-            game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+            retrieveStartTime(gameEntity, game);
             game.getGameStateMachine().determineCurrentState();
             GameState state = game.getGameStateMachine().getCurrentState();
             return state == GameState.CLOSED;
@@ -238,6 +237,10 @@ public class GameServiceImpl implements GameService {
         key.setUserId(userId);
         key.setGameId(gameId);
         return key;
+    }
+
+    private void retrieveStartTime(GameEntity gameEntity, Game game) {
+        game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
     }
 
     private List<QuestionInGameEntity> getQuestionInGameEntityList(Long gameId) {
@@ -350,9 +353,7 @@ public class GameServiceImpl implements GameService {
     }
 
     private PlayerInGameEntity getPlayerInGameEntity(Game game, User user) {
-        PlayerInGameKey compositeKey = new PlayerInGameKey();
-        compositeKey.setGameId(game.getId());
-        compositeKey.setUserId(user.getId());
+        PlayerInGameKey compositeKey = getPlayerInGameKey(game.getId(), user.getId());
         return playerInGameRepository.findOne(compositeKey);
     }
 
@@ -439,9 +440,7 @@ public class GameServiceImpl implements GameService {
 
     @Transactional
     private void updateScore(Score score) {
-        ScoreKey key = new ScoreKey();
-        key.setGameId(score.getGameId());
-        key.setUserId(score.getPlayer().getId());
+        ScoreKey key = getScoreKey(score);
         ScoreEntity scoreEntity = scoreRepository.findOne(key);
         scoreEntity.setPoints(score.getPoints());
         scoreEntity.setIsHighest(score.isHighest());
