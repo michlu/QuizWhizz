@@ -1,3 +1,10 @@
+/**
+ * Skrypty zarzadzajace wyswietlaniem kolejych pytan oraz czasu dla rozpoczetej gry,
+ * odpowiedzialne za wyslanie odpowiedzi gracza w odpowiednim czasie
+ * oraz przekierowanie na odpowiednia stronę.
+ * @author Karolina Prusaczyk
+ */
+
 $(document).ready(function () {
         $('#question-1').show();
         runQuestionTimer();
@@ -41,6 +48,7 @@ function showQuestion() {
     $('#question-' + currentQuestion).show();
 
     clearInterval(questionTimeIntervalId);
+    destroyQuestionTimer();
     runQuestionTimer();
 
     if(currentQuestion == 10) {
@@ -48,15 +56,28 @@ function showQuestion() {
         setTimeout(function() { sendAnswers(); }, timeForAnswerInMiliseconds)
     }
 }
-function runQuestionTimer() {
-    var questionSecondsLeft = 15;
-    $('#question-time-left').text(questionSecondsLeft);
 
-    questionTimeIntervalId = setInterval(function () {
-        $('#question-time-left').text(--questionSecondsLeft);
-        if (questionSecondsLeft <= 0) {
-            clearInterval(questionTimeIntervalId);
-        }
-    }, 1000);
+function runQuestionTimer() {
+    $(".timer").TimeCircles(
+        {
+            time: {
+                Days: {show: false},
+                Hours: {show: false},
+                Minutes: {show: false},
+                Seconds: {
+                    color: "#FFCC00",
+                    text: ""
+                }
+            },
+            refresh_interval: 1,
+            fg_width: 0.09,
+            circle_bg_color: "#D7DBDD",
+            animation: "tick",
+            count_past_zero: false
+        });
+}
+
+function destroyQuestionTimer() {
+    $(".timer").TimeCircles().destroy();
 }
 

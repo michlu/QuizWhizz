@@ -1,7 +1,6 @@
 package com.pw.quizwhizz.controller;
 
 import com.pw.quizwhizz.model.account.User;
-import java.lang.IllegalStateException;
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
@@ -24,6 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Kontroler obslugujacy zapytania dotyczace gier.
+ * Umozliwia stworzenie i dolaczenie do gry, wyslanie odpowiedzi i odebranie wynikow.
+ *
+ * @author Karolina Prusaczyk
+ */
+
 @Controller
 @RequestMapping("/game")
 public class GameController {
@@ -31,6 +37,13 @@ public class GameController {
     final private UserService userService;
     final private QuestionService questionService;
 
+    /**
+     * Zaleznosci kontrolera, rozwiazywane automatycznie przez Springa
+     *
+     * @param gameService     serwis gry stanowiacy częsc logiki biznesowej
+     * @param userService     serwis uzytkownika sluzacy identyfikacji graczy
+     * @param questionService serwis pytań niezbędny do uzyskania zestawu pytań w celu stworzenia nowej instancji gry
+     */
     @Autowired
     public GameController(GameService gameService, UserService userService, QuestionService questionService) {
         this.gameService = gameService;
@@ -38,6 +51,16 @@ public class GameController {
         this.questionService = questionService;
     }
 
+    /**
+     * Metoda tworzaca nowa instancję gry wraz z pytaniami z wybranej kategorii
+     * i identyfikujaca "wlasciciela" - zalozyciela gry.
+     *
+     * @param categoryId     id kategorii, w ktorej tworzymy gre
+     * @param model          model, ktorego atrybuty będa wyswietlane na widoku
+     * @param authentication interfejs Springa pozwalajacy na zidentyfikowanie uzytkownika w kontekscie aplikacji
+     * @return widok otwartej gry
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/open/forCategory/{categoryId}")
     public String createGame(@PathVariable String categoryId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         List<Question> questions;
@@ -46,7 +69,6 @@ public class GameController {
         } catch (NoQuestionsInDBException e) {
             return "redirect:/";
         }
-
         Game game = gameService.createGame(questions);
         User user = userService.findByEmail(authentication.getName());
         gameService.addOwnerToGame(game, user);
@@ -55,6 +77,15 @@ public class GameController {
         return "open_game";
     }
 
+    /**
+     * Metoda umozliwiajaca dolaczenie do otwartej gry.
+     *
+     * @param gameId         id gry, do ktorej chcemy dolaczyc
+     * @param model          model, ktorego atrybuty będa wyswietlane na widoku
+     * @param authentication interfejs Springa pozwalajacy na zidentyfikowanie uzytkownika w kontekscie aplikacji
+     * @return widok otwartej gry
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/joinOpened")
     public String joinOpenedGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
@@ -67,6 +98,17 @@ public class GameController {
         return "open_game";
     }
 
+    /**
+     * Metoda startujaca grę. Jedynie "wlasciciel" - zalozyciel gry ma prawo rozpoczac grę.
+     * Pozostali gracze nie maja dostępu do przycisku start i zostaja przekierowani na stronę rozpoczętej gry
+     * w momencie, kiedy zalozyciel go nacisnie.
+     *
+     * @param gameId         id gry, ktora ma zostac rozpoczeta
+     * @param model          model, ktorego atrybuty będa wyswietlane na widoku
+     * @param authentication interfejs Springa pozwalajacy na zidentyfikowanie uzytkownika w kontekscie aplikacji
+     * @return widok rozpoczętej gry
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/start")
     public String startGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
@@ -78,6 +120,14 @@ public class GameController {
         return "started_game";
     }
 
+    /**
+     * Metoda sprawdzajaca imiona graczy, ktorzy dolaczyli do rozgrywki, celem wyswietlenia ich
+     * na stronie gry oczekujacej na rozpoczęcie.
+     *
+     * @param gameId id gry oczekujacej na start
+     * @return obiekt JSON skladajacy się z imion graczy, ktorzy dolaczyli do gry
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/getNamesOfPlayers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getNamesOfPlayers(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
@@ -93,6 +143,13 @@ public class GameController {
         return playersJson;
     }
 
+    /**
+     * Metoda sprawdzajaca, czy gra zostala rozpoczeta
+     *
+     * @param gameId id gry, ktorej status sprawdzamy
+     * @return obiekt JSON skladajacy się z pola "isStarted" oraz wartosci true lub false
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/isStarted", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String isGameStarted(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
@@ -101,20 +158,48 @@ public class GameController {
         return "{ \"isStarted\" : " + isStarted + " }";
     }
 
+    /**
+     * Metoda przekierowujaca gracza na stronę rozpoczętej gry, po wciscięciu guzika start przez zalozyciela gry
+     *
+     * @param gameId id rozpoczynanej gry
+     * @param model  model, ktorego atrybuty będa wyswietlane na widoku
+     * @return widok rozpoczętej gry
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/joinStarted")
-    public String joinStartedGame(@PathVariable Long gameId, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException {
+    public String joinStartedGame(@PathVariable Long gameId, Model model) throws IllegalNumberOfQuestionsException {
         Game game = gameService.findGameById(gameId);
 
         fillModelForStartedGamePage(model, game);
         return "started_game";
     }
 
+    /**
+     * Metoda przekierowujaca po okreslonym czasie na stronę odpowiedzi, w przypadku kiedy gracz
+     * nie odpowiedzial na zadne pytanie - zabezpieczenie przed blędami HTTP.
+     *
+     * @param gameId id rozgrywanej gry
+     * @param model  model, ktorego atrybuty będa wyswietlane na widoku
+     * @return widok wyslanych odpowiedzi
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/submitAnswers")
     public String submitAnswers(@PathVariable Long gameId, Model model) throws IllegalNumberOfQuestionsException {
         model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
 
+    /**
+     * Metoda obsugujaca wyslanie wybranych odpowiedzi przez danego gracza.
+     *
+     * @param gameId         id rozgrywanej gry
+     * @param answers        napis skladajacy się z id wybranych odpowiedzi, oddzielonych przecinkami
+     * @param model          model, ktorego atrybuty będa wyswietlane na widoku
+     * @param authentication interfejs Springa pozwalajacy na zidentyfikowanie uzytkownika w kontekscie aplikacji
+     * @return widok wyslanych odpowiedzi
+     * @throws IllegalNumberOfQuestionsException      w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     * @throws IllegalTimeOfAnswerSubmissionException jesli gracz sprobuje wyslac odpowiedzi po uplynięciu okreslonego czasu
+     */
     @RequestMapping(value = "/{gameId}/submitAnswers/{answers}")
     public String submitAnswers(@PathVariable Long gameId, @PathVariable String answers, Model model, Authentication authentication) throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException {
         User user = userService.findByEmail(authentication.getName());
@@ -132,8 +217,15 @@ public class GameController {
         model.addAttribute("gameId", gameId);
         return "submit_answers";
     }
-    // ze strony submit_answers -> skrypt i przekierowanie na check_scores jesli stan gry = closed
 
+    /**
+     * Metoda sprawdzajaca, czy gra się zakonczyla. Wyniki gry wraz z wylonionym zwycięzca mozna uzyskac
+     * jedynie z zakonczonej gry.
+     *
+     * @param gameId id sprawdzanej gry
+     * @return obiekt JSON skladajacy się z pola "isClosed" oraz wartosci true lub false
+     * @throws IllegalNumberOfQuestionsException w przypadku gdy serwis zwroci niewystarczajaca liczbę pytan dla gry
+     */
     @RequestMapping(value = "/{gameId}/isClosed", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String isGameClosed(@PathVariable Long gameId) throws IllegalNumberOfQuestionsException {
@@ -141,6 +233,15 @@ public class GameController {
         return "{ \"isClosed\" : " + isClosed + " }";
     }
 
+    /**
+     * Metoda pobierajaca ostateczne wyniki zakończonej rozgrywki.
+     *
+     * @param gameId id gry, dla ktorej pobieramy wyniki
+     * @param model          model, ktorego atrybuty będa wyswietlane na widoku
+     * @param authentication interfejs Springa pozwalajacy na zidentyfikowanie uzytkownika w kontekscie aplikacji
+     * @return widok wynikow lub wyslanych odpowiedzi w przypadku przechwycenia wyjatku
+     * @throws ScoreCannotBeRetrievedBeforeGameIsClosedException w przypadku gdy nastpi zapytanie o wyniki przed końcem gry
+     */
     @RequestMapping(value = "/{gameId}/checkScores")
     public String checkScores(@PathVariable Long gameId, Model model, Authentication authentication) throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
         User user = userService.findByEmail(authentication.getName());
@@ -167,9 +268,4 @@ public class GameController {
         model.addAttribute("players", game.getPlayers());
         model.addAttribute("questions", game.getQuestions());
     }
-
-    /* TODO:
-    - game: checkScores - if status==closed - ok
-                        - if not closed == wait for all results
-     */
 }

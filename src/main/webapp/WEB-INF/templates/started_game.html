@@ -17,7 +17,9 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <link href="TimeCircles.css" rel="stylesheet" th:href="@{/resources/css/TimeCircles.css}">
     <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/TimeCircles.js}"></script>
     <script type="text/javascript" th:src="@{/resources/scripts/started_game.js}"></script>
 
 </head>
@@ -31,21 +33,18 @@
         </div>
     </nav>
 
-    <div class="page-header">
+    <div class="  ">
         <div id="game-id" style="display: none" th:text="${game.getId()}"></div>
         <div>
             <span>Czas do zakonczenia gry: </span>
             <span id="game-time-left">150</span>
         </div>
-        <div>
-            <span>Czas na odpowiedź: </span>
-            <span id="question-time-left">15</span>
-        </div>
-        <h1 class="lead text-center text-uppercase padding-top" >Wybierz poprawną odpowiedź</h1>
+        <div class="timer" data-timer="16"></div>
+        <h1 class="lead text-center text-uppercase" >Wybierz poprawną odpowiedź</h1>
     </div>
 
     <div class="container" th:each="question, questionsIteration  : ${questions}">
-        <div th:id="'question-' + ${questionsIteration.count}" style="display: none; margin-bottom: 200px">
+        <div th:id="'question-' + ${questionsIteration.count}" style="display: none;">
             <div class="progress">
                 <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar"
                      th:attr="aria-valuenow=${questionsIteration.index * 10}" aria-valuemin="0" aria-valuemax="100"
@@ -65,7 +64,7 @@
     </div>
     <footer>
         <!-- import footer -->
-        <div id="footer" th:replace="fragments/footer :: footer"></div>
+        <div th:replace="fragments/footer :: footer"></div>
     </footer>
 </body>
 

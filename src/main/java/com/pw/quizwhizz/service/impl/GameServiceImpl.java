@@ -17,6 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * Implementacja serwisu gry
+ * @author Karolina Prusaczyk
+ */
+
 @Service
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
