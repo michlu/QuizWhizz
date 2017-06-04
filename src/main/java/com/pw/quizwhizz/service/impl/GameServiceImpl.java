@@ -147,32 +147,43 @@ public class GameServiceImpl implements GameService {
         updateGame(game);
         updatePlayer(player);
 
-        Score score = game.getScores().stream()
-                .filter(s -> s.getPlayer().equals(player))
-                .findFirst()
-                .orElse(null);
-        score.setGameId(game.getId());
-        saveScore(score);
+        getAndSavePlayersScore(game, player);
+        closeGameIfAllPlayersSubmittedAnswers(game);
+    }
 
+    private void closeGameIfAllPlayersSubmittedAnswers(Game game) throws IllegalNumberOfQuestionsException {
         List<PlayerInGameEntity> playersInGame = playerInGameRepository.findAllById_GameId(game.getId());
         List<Player> players = convertToPlayers(playersInGame, game);
-
-        List<Player> playersWithCalculatedScores = new ArrayList<>();
         List<ScoreEntity> scoreEntities = scoreRepository.findAllById_GameId(game.getId());
         List<Score> scores = convertToScores(scoreEntities, game);
 
+        List<Player> playersWithCalculatedScores = getListOfPlayersWhoSubmittedAnswers(game, scores);
+        boolean allPlayersSubmittedAnswers = playersWithCalculatedScores.containsAll(players);
+
+        if (allPlayersSubmittedAnswers) {
+            game.getGameStateMachine().setCurrentState(GameState.CLOSED);
+            updateGame(game);
+        }
+    }
+
+    private List<Player> getListOfPlayersWhoSubmittedAnswers(Game game, List<Score> scores) {
+        List<Player> playersWithCalculatedScores = new ArrayList<>();
         for (Score s : scores) {
             Player playerWithScore = s.getPlayer();
             playerWithScore.setGame(game);
             playerWithScore.setOwner(s.getPlayer().isOwner());
             playersWithCalculatedScores.add(playerWithScore);
         }
+        return playersWithCalculatedScores;
+    }
 
-        if (playersWithCalculatedScores.containsAll(players)) {
-            System.out.println("Wszyscy gracze wyslali odpowiedzi");
-            game.getGameStateMachine().setCurrentState(GameState.CLOSED);
-            updateGame(game);
-        }
+    private void getAndSavePlayersScore(Game game, Player player) {
+        Score score = game.getScores().stream()
+                .filter(s -> s.getPlayer().equals(player))
+                .findFirst()
+                .orElse(null);
+        score.setGameId(game.getId());
+        saveScore(score);
     }
 
     private List<Score> convertToScores(List<ScoreEntity> scoreEntities, Game game) throws IllegalNumberOfQuestionsException {
@@ -299,7 +310,15 @@ public class GameServiceImpl implements GameService {
     public boolean isGameClosed(Long gameId) {
         GameEntity gameEntity = gameRepository.findOne(gameId);
         GameState gameState = gameEntity.getCurrentState();
-        return gameState == GameState.CLOSED;
+        if(gameState == GameState.CLOSED) {
+            return true;
+        } else {
+            Game game = gameFactory.build();
+            game.getGameStateMachine().setStartTime(gameEntity.getStartTime());
+            game.getGameStateMachine().determineCurrentState();
+            GameState state = game.getGameStateMachine().getCurrentState();
+            return state == GameState.CLOSED;
+        }
     }
 
     private Player findPlayerByIdAndGame(Long id, Game game) throws IllegalNumberOfQuestionsException {
