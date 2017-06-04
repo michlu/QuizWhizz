@@ -53,7 +53,7 @@
                 </td>
                 <td>
                     <img th:if="${score.isHighest()}" src="/resources/gfx/cup_icon.png">
-                    <img src="/resources/images/profile_1.png" class="img-circle img-profile-picture">
+                    <img src="#" th:src="@{'/resources/images/profile_'+${score.getPlayer().getId()}+'.png'}" class="img-circle img-profile-picture">
                 </td>
                 <td>
                     <h1 th:text="${score.getPlayer().getName()}"></h1>
