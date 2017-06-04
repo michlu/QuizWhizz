@@ -4,7 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Created by Karolina on 14.04.2017.
+ * Klasa wyjatku rzucanego w przypadku, gdy liczba pytań pobrana przez serwis jest niewystarczajaca
+ *
+ * @author Karolina Prusaczyk
+ * @see Throwable
  */
 public class IllegalNumberOfQuestionsException extends Throwable {
 }

@@ -9,10 +9,12 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
- * Klucz glowny dla encji Score
+ * Zlozony klucz glowny dla encji Score
+ *
  * @author Karolina Prusaczyk
  */
-@Getter @Setter
+@Getter
+@Setter
 @EqualsAndHashCode
 @Embeddable
 public class ScoreKey implements Serializable {

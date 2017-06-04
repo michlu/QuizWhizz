@@ -1,7 +1,5 @@
 package com.pw.quizwhizz.model.game;
 
-import com.pw.quizwhizz.model.game.GameState;
-import com.pw.quizwhizz.model.game.GameStateMachine;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
@@ -9,16 +7,17 @@ import org.mockito.stubbing.OngoingStubbing;
 import java.time.Clock;
 import java.time.Instant;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Karolina on 19.04.2017.
+ * Klasa testująca maszynę stanow gry
+ * @author Karolina Prusaczyk
+ * @see GameStateMachine
  */
 public class GameStateMachineTest {
     private Clock mockClock;
     GameStateMachine stateMachine;
-    static final int answerTimeForSingleQuestionInSeconds = 15;
     static final int timeFrameForAnswerSubmissionInSeconds = 10;
     int timeUntilAnswerEvaluationInSeconds = 150;
     int timeUntilGameClosureInSeconds = timeUntilAnswerEvaluationInSeconds + timeFrameForAnswerSubmissionInSeconds;

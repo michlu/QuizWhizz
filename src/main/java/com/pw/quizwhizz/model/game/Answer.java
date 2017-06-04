@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 /**
- * Created by Karolina on 25.03.2017.
+ * Klasa wyjatku rzucanego w przypadku, gdy liczba pytań pobrana przez serwis jest niewystarczajaca
+ *
+ * @author Karolina Prusaczyk
  */
 @Data
 @NoArgsConstructor
@@ -21,7 +23,6 @@ public class Answer {
         this.answer = answer;
         this.isCorrect = isCorrect;
     }
-    // GET wymagany dla Thymeleafa
     public boolean getIsCorrect() {
         return isCorrect;
     }

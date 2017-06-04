@@ -8,7 +8,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
- * Created by Karolina on 26.03.2017.
+ * Klasa testująca poprawnosc losowania pytań do gry z puli danej kategorii
+ *
+ * @author Karolina Prusaczyk
+ * @see com.pw.quizwhizz.service.QuestionService
  */
 public class QuestionServiceHardcodedTest {
     private QuestionServiceHardcoded questionService = new QuestionServiceHardcoded();

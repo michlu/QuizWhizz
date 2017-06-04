@@ -42,7 +42,7 @@
     <div th:hidden="${!isOwner}">
         <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-primary btn-lg btn-block">Start</a>
     </div>
-    <h3 class="text-center">Obecni gracze:</h3>
+    <h3>Obecni gracze:</h3>
     <ul class="list-inline"id="players-container">
     </ul>
 </div>

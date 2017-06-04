@@ -6,7 +6,9 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Encja PlayerInGame
+ * Encja PlayerInGame zawierajaca informacje na temat gracza w kontekscie konkretnej gry.
+ * Okresla, czy gracz jest wlascicielem-zalozycielem danej gry.
+ *
  * @author Karolina Prusaczyk
  */
 @Entity

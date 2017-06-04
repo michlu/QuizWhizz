@@ -1,13 +1,8 @@
 package com.pw.quizwhizz.model.game;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Java6Assertions.assertThat;
-import static org.mockito.Mockito.*;
-
 import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
-import com.pw.quizwhizz.model.game.*;
 import org.assertj.core.api.Java6Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +11,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 /**
- * Created by Karolina on 25.03.2017.
+ * Klasa testująca logikę biznesową gry, wykorzystująca obiekty mockujące biblioteki Mockito.
+ *
+ * @author Karolina Prusaczyk
+ * @see Game
  */
 @RunWith(MockitoJUnitRunner.class)
 public class GameTest {

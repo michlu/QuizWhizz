@@ -12,7 +12,10 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created by Karolina on 14.04.2017.
+ * Klasa Score odpowiedzialna za ocenianie odpowiedzi graczy, oznaczanie najwyzszych wynikow,
+ * przyznawanie punktow za grę oraz dodatkowych punktow za zwycięstwo w grze wieloosobowej.
+ *
+ * @author Karolina Prusaczyk
  */
 
 @Component

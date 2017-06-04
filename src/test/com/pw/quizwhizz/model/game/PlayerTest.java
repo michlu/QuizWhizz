@@ -9,7 +9,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Karolina on 18.04.2017.
+ * Testy weryfikujące poprawnosc dzialania klasy Player
+ *
+ * @author Karolina Prusaczyk
+ * @see Player
  */
 public class PlayerTest {
 

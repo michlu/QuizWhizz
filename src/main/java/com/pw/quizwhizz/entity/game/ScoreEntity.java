@@ -6,7 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * Encja Score
+ * Encja Score przechowujaca wyniki graczy oraz informację o zwycięzcy w danej grze
+ *
  * @author Karolina Prusaczyk
  */
 @Getter
