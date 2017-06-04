@@ -54,6 +54,7 @@ public class Score {
      * oraz inrementujaca liczbę zagranych przez niego gier.
      *
      * @param submittedAnswers - instancji klasy budujacej Score
+     * @see Game#evaluateAnswers(Player, List)
      */
     void evaluateAnswers(List<Answer> submittedAnswers) {
         for (int i = 0; i < submittedAnswers.size(); i++) {
@@ -69,6 +70,9 @@ public class Score {
     /**
      * Metoda wykorzystywana przez instancję gry do oznaczenia danego wyniku jako najwyzszy
      * ze zdobytych w danej rozgrywce oraz dodania zwycięzcy 30 punktow bonusu.
+     * @see Game#checkScores()
+     * @see Player#addXp(int)
+     * @see Player#incrementGamesPlayed()
      */
     void markAsHighest() {
         isHighest = true;

@@ -11,7 +11,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Karolina on 24.03.2017.
+ * Centralna klasa logiki biznesowej okreslajaca zasady gry
+ *
+ * @author Karolina Prusaczyk
  */
 @Getter
 public class Game {

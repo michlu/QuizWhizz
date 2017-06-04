@@ -69,6 +69,7 @@ public class Player {
      *
      * @param answers odpowiedzi gracza
      * @throws IllegalTimeOfAnswerSubmissionException jesli gracz sprobuje wyslac odpowiedzi po uplynięciu okreslonego czasu
+     * @see Game#evaluateAnswers(Player, List)
      */
     public void submitAnswers(List<Answer> answers) throws IllegalTimeOfAnswerSubmissionException {
         if (answers == null) {
