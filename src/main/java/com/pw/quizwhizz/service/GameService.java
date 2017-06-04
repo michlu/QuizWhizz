@@ -13,21 +13,18 @@ import java.util.List;
  * @author Karolina Prusaczyk
  */
 public interface GameService {
+    List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException;
+    Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
     Game createGame(List<Question> questions) throws IllegalNumberOfQuestionsException;
     void addOwnerToGame(Game game, User user);
     void addPlayerToGame(Game game, User user);
-
+    boolean isPlayerGameOwner(Long id, Long gameId);
+    List<String> getNamesOfPlayersInGame(Long gameId);
     boolean isGameStarted(Long gameId);
-
     void startGame(Game game, User user) throws IllegalNumberOfQuestionsException;
     void submitAnswers(Game game, User user, List<Long> answerIds) throws IllegalTimeOfAnswerSubmissionException, IllegalNumberOfQuestionsException;
-    Game findGameById(Long id) throws IllegalNumberOfQuestionsException;
-
     void saveScore(Score score);
-    List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
-    List<Game> getAllOpenGames() throws IllegalNumberOfQuestionsException;
-    List<String> getNamesOfPlayersInGame(Long gameId);
-
-    boolean isPlayerGameOwner(Long id, Long gameId);
     boolean isGameClosed(Long gameId);
+    List<Score> checkScores(long gameId) throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException;
+
 }
