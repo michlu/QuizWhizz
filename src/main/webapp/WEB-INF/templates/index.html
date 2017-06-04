@@ -93,7 +93,7 @@
                 <div class="category" th:text="${game.category.getName()}"><!-- nazwa kategori rozgrywanej gry th:text="${}" -->
                 </div>
                 <div class="avatar">
-                    <img src="#" th:src="@{/resources/images/profile_1.png}" /> <!-- obrazek zalozyciela gry -->
+                    <img src="#" th:src="@{'/resources/images/profile_'+${game.players.get(0).id}+'.png'}" /> <!-- obrazek zalozyciela gry -->
                 </div>
             </div>
             <div class="info">

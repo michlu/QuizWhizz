@@ -14,8 +14,8 @@ import java.util.List;
  */
 public interface UserService {
     User findById(Long Id);
-    void addWithDefaultRole(User user);
-    void addWithAdminRole(User user);
+    void addWithDefaultRole(User user, String saveDirectory) throws IOException;
+    void addWithAdminRole(User user, String saveDirectory) throws IOException;
     User findByEmail(String email);
     List<User> findAll();
     void deleteById(Long Id);

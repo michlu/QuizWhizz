@@ -1,5 +1,8 @@
 /**
- * Created by michlu on 12.04.2017.
+ * Skrypt sprawdzajacy poprawnosc danych w dwoch polach formularza. Koloruje pola na zielono badz czerwno w zaleznosci czy
+ * dane sa takie same. Przy porpwanych danych odblokowuje przycisk umozliwiajacy rejestracje.
+ * Skrypt wykorzystywany do pierwszej walidacji hasla.
+ * @author Michał Nowiński
  */
 function checkPass()
 {

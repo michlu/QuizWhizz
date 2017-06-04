@@ -66,11 +66,12 @@ public class UserController {
 	 * @throws ServletException wymagane przez HttpServletRequest
 	 */
 	@PostMapping("/register")
-	public String addUser(@ModelAttribute @Valid User user, BindingResult bindResult, HttpServletRequest request) throws ServletException {
+	public String addUser(@ModelAttribute @Valid User user, BindingResult bindResult, HttpServletRequest request) throws ServletException, IOException {
+		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
 		if(bindResult.hasErrors())
 			return "register_form";
 		else {
-			userService.addWithDefaultRole(user);
+			userService.addWithDefaultRole(user, saveDirectory);
 			request.login(user.getEmail(),user.getPassword()); // auto logowanie
 			return "register_success";
 		}
