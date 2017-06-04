@@ -28,12 +28,13 @@ public class IntegrationTest {
         Category testCategory = new Category("Test");
         QuestionService service =  mock(QuestionServiceImpl.class);
         GameStateMachine gsm = mock(GameStateMachine.class);
+        ScoreBuilder scoreBuilder = mock(ScoreBuilder.class);
 
         List<Question> questions = mock(List.class);
         when(questions.size()).thenReturn(10);
         when(service.getRandomQuestionsByCategory(testCategory, 10)).thenReturn(questions);
 
-        Game game = new Game(testCategory, questions, gsm);
+        Game game = new Game(testCategory, questions, gsm, scoreBuilder);
         Player playerOne = new Player("Player 1", game);
 
         Player playerTwo = new Player("Player 2", game);

@@ -5,13 +5,14 @@ import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.exception.ScoreCannotBeRetrievedBeforeGameIsClosedException;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * Centralna klasa logiki biznesowej okreslajaca zasady gry
+ * Centralna klasa logiki biznesowej okreslająca zasady gry.
  *
  * @author Karolina Prusaczyk
  */
@@ -27,30 +28,57 @@ public class Game {
     private List<Player> players = new ArrayList<>();
     @Setter
     private List<Score> scores = new ArrayList<>();
-    private ScoreBuilder scoreBuilder = new ScoreBuilder();
+    private ScoreBuilder scoreBuilder;
 
-    // Production code constructor
+    /**
+     * Konstruktor wykorzystywany w kodzie produkcyjnym
+     *
+     * @param category  kategoria gry
+     * @param questions pytania w grze
+     */
     public Game(Category category, List<Question> questions) throws IllegalNumberOfQuestionsException {
         validateNumberOfQuestions(questions);
 
         this.category = category;
         this.questions = questions;
         this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
+        this.scoreBuilder = new ScoreBuilder();
     }
 
-    // Constructor for pulling purposes
+    /**
+     * Konstruktor tworzący lekką instancję gry z maszyną stanu wykorzystywaną w celu ustalenia obecnego stanu gry.
+     */
     public Game() {
         this.gameStateMachine = new GameStateMachine(appropriateNumberOfQuestions, Clock.systemUTC());
     }
-    // Constructor for testing purposes (a solution to time-related issues)
-    protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine) throws IllegalNumberOfQuestionsException {
+
+    /**
+     * Konstruktor wykorzystywany w celach testowych. Umozliwia zastosowanie obiektow mockujących w testach.
+     *
+     * @param category         kategoria gry
+     * @param questions        pytania w grze
+     * @param gameStateMachine maszyna stanu gry
+     * @param scoreBuilder     implementacja wzorca Builder dla klasy Score
+     */
+    protected Game(Category category, List<Question> questions, GameStateMachine gameStateMachine, ScoreBuilder scoreBuilder) throws IllegalNumberOfQuestionsException {
         validateNumberOfQuestions(questions);
 
         this.category = category;
         this.questions = questions;
         this.gameStateMachine = gameStateMachine;
+        this.scoreBuilder = scoreBuilder;
     }
 
+    /**
+     * Metoda, ktora nalezy wywolac, aby uzyskac ostateczne wyniki gry.
+     * Po przejsciu gry w stan zamkniety i tym samym upewnieniu się, ze wszyscy uczestnicy wyslali odpowiedzi,
+     * następuje wylonienie zwycięzcy lub zwycięzcow.
+     * Jesli w grze wzięlo udzial co najmniej dwoch uczestnikow, zwycięzca zostaje nagrodzony dodatkowymi punktami doswiadczenia.
+     *
+     * @return lista wynikow danej rozgrywki
+     * @throws ScoreCannotBeRetrievedBeforeGameIsClosedException jesli metoda zostanie wywolana zbyt wczesnie
+     * @see Score#markAsHighest()
+     */
     public List<Score> checkScores() throws ScoreCannotBeRetrievedBeforeGameIsClosedException {
         gameStateMachine.determineCurrentState();
 
@@ -65,6 +93,11 @@ public class Game {
         return scores;
     }
 
+    /**
+     * Metoda dodająca gracza do listy graczy w danej grze, jesli nie zostal juz do niej dodany.
+     *
+     * @param player gracz dolączający do gry.
+     */
     protected void addPlayer(Player player) {
         if (players.contains(player)) {
             return;
@@ -72,10 +105,25 @@ public class Game {
         players.add(player);
     }
 
+    /**
+     * Metoda rozpoczynająca grę
+     *
+     * @see GameStateMachine#start()
+     */
     protected void start() {
         gameStateMachine.start();
     }
 
+    /**
+     * Metoda przyjmuje gracza wraz z listą jego odpowiedzi. Po sprawdzeniu, czy gra jest w odpowiednim stanie,
+     * przesyla je do instancji klasy Score, w ktorej następuje przeliczenie wyniku.
+     *
+     * @param player           gracz
+     * @param submittedAnswers odpowiedzi gracza
+     * @throws IllegalTimeOfAnswerSubmissionException jesli gracz spozni się z wyslaniem odpowiedzi
+     * @see Player#submitAnswers(List)
+     * @see Score#evaluateAnswers(List)
+     */
     protected void evaluateAnswers(Player player, List<Answer> submittedAnswers) throws IllegalTimeOfAnswerSubmissionException {
         gameStateMachine.determineCurrentState();
 
@@ -103,7 +151,7 @@ public class Game {
     }
 
     private List<Score> findHighestScoreOrScores() {
-        Score highestScore =  scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
+        Score highestScore = scores.stream().sorted(Comparator.comparingInt(Score::getPoints).reversed()).findFirst().get();
         List<Score> highestScores = new ArrayList<>();
         scores.forEach(score -> {
             if (score.getPoints() == highestScore.getPoints()) {

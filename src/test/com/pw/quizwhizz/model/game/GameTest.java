@@ -26,6 +26,7 @@ public class GameTest {
     private Category category;
     private List<Question> questions;
     private GameStateMachine gameStateMachine;
+    private ScoreBuilder scoreBuilder;
     @Mock
     private Player player1;
     @Mock
@@ -36,7 +37,7 @@ public class GameTest {
 
     @Test
     public void publicConstructorTest() throws IllegalNumberOfQuestionsException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
 
         Game game = new Game(category, questions);
@@ -56,7 +57,7 @@ public class GameTest {
 
     @Test
     public void givenListContainingPlayer1_WhenAddingPlayer1ToGameAgain_ThenTheyShouldNotBeAdded() throws IllegalNumberOfQuestionsException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
 
@@ -68,7 +69,7 @@ public class GameTest {
 
     @Test
     public void givenCategoryQuestionsAndNotClosedGameStatus_WhenCheckScoresIsCalled_ThenScoresAreNotNull() throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenGameStateIsClosed();
@@ -83,7 +84,7 @@ public class GameTest {
 
     @Test
     public void givenGameStateIsClosed_WhenGetScoresIsCalled_ThenExceptionIsThrown() throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenGameStateIsNotClosed();
@@ -93,7 +94,7 @@ public class GameTest {
 
     @Test
     public void givenGameIsNotInProgress_WhenEvaluateAnswersIsCalled_ThenExceptionShouldBeThrown() throws IllegalNumberOfQuestionsException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenTwoPlayersAreAddedToTheGame(game);
@@ -105,7 +106,7 @@ public class GameTest {
 
     @Test
     public void givenPlayer1sAnswersWereEvaluated_WhenEvaluatingTheSameAnswers_ThenScoreShouldNotBeAddedToScoresAgain() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         Player player1 = mock(Player.class);
@@ -125,7 +126,7 @@ public class GameTest {
     @Test
     public void given2PlayersAndTheirEvaluatedAnswers_WhenGetScoresIsCalled_ThenProperScoreOfProperPlayerShouldBeMarkedAsHighest() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
 
-        givenMockedCategoryQuestionsAndGameStateMachine();
+        givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndStateMachine();
         givenTwoPlayersAreAddedToTheGame(game);
@@ -154,10 +155,11 @@ public class GameTest {
     }
 
 
-    private void givenMockedCategoryQuestionsAndGameStateMachine() {
+    private void givenMockedCategoryQuestionsGameStateMachineAndScoreBuilder() {
         category = mock(Category.class);
         questions = mock(List.class);
         gameStateMachine = mock(GameStateMachine.class);
+        scoreBuilder = mock(ScoreBuilder.class);
     }
 
     private void given10Questions() {
@@ -165,7 +167,7 @@ public class GameTest {
     }
 
     private Game givenGameWithCategoryQuestionsAndStateMachine() throws IllegalNumberOfQuestionsException {
-        return new Game(category, questions, gameStateMachine);
+        return new Game(category, questions, gameStateMachine, scoreBuilder);
     }
 
     private void givenStartIsCalled(Game game) {
