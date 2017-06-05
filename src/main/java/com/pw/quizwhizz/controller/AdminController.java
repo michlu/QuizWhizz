@@ -17,6 +17,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -77,7 +78,8 @@ public class AdminController {
             BindingResult bindResult,
             HttpServletRequest request,
             Model model) {
-        String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+//        String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\"; // windows
+        String saveDirectory = request.getSession().getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator;
 
         if (bindResult.hasErrors())
             return "admin_add";
@@ -169,7 +171,7 @@ public class AdminController {
             @RequestParam MultipartFile file,
             BindingResult bindResult,
             HttpServletRequest request) {
-        String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+        String saveDirectory = request.getSession().getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator;
 
         if (bindResult.hasErrors())
             return "redirect:/admin/listcategory";

@@ -18,7 +18,8 @@ import java.util.Random;
 public class RandomProfileImageServiceImpl implements RandomProfileImageService {
 
     /** Sciezka do folderu z plikami obrazow */
-    final private String PATH_IMG_PROFILE_DEFAULT = "resources\\gfx\\img_profile_default\\";
+//    final private String PATH_IMG_PROFILE_DEFAULT = "\\resources\\gfx\\img_profile_default\\"; //windows
+    final private String PATH_IMG_PROFILE_DEFAULT = File.separator + "resources" + File.separator + "gfx" + File.separator + "img_profile_default" + File.separator;
 
     final private ServletContext context;
     final private String directory;
@@ -27,7 +28,7 @@ public class RandomProfileImageServiceImpl implements RandomProfileImageService 
     @Autowired
     public RandomProfileImageServiceImpl(ServletContext context) {
         this.context = context;
-        directory = context.getRealPath("/")+PATH_IMG_PROFILE_DEFAULT; // pobiera aktualna sciezke z kontekstu aplikacji
+        directory = context.getRealPath("")+PATH_IMG_PROFILE_DEFAULT; // pobiera aktualna sciezke z kontekstu aplikacji
     }
 
     /**

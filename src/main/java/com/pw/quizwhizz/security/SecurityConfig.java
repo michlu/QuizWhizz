@@ -91,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/register").permitAll()
                     .antMatchers("/resources/**").permitAll().anyRequest().permitAll()
                     .antMatchers("/user/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')") //dostep dla wyszstkch uzytkownikow
+                    .antMatchers("/game/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')") //dostep dla wyszstkch uzytkownikow
                     .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") //dostep tylko dla adminow
                 .anyRequest().authenticated()
                 .and()
