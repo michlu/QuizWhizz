@@ -69,15 +69,13 @@
     text-align: center;
 }
 
-#rugby-picture {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    height: 200px;
-    width: auto;
-}
-
 .btn-block-answer {
     margin-bottom: 8px;
+    height: 45px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .img-profile-picture {
