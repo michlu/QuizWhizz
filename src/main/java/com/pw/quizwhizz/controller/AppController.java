@@ -61,6 +61,7 @@ public class AppController {
         model.addAttribute("categoryRankings", categoryRankings);
         model.addAttribute("statistics", statService.findStatistic());
         model.addAttribute("numberUsers", statService.findNumberOfUsers());
+        model.addAttribute("numberQuestions", statService.findNumberOfQuestions());
         return "index";
     }
 

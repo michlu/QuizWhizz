@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface StatService {
     int findNumberOfUsers();
+    int findNumberOfQuestions();
     Statistics findStatistic();
     List<Ranking> findGeneralRank(int limitSearch);
     List<Ranking> findFiveByCategory(int limitSearch , Long categoryId);
