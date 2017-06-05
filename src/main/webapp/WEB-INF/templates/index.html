@@ -89,7 +89,7 @@
 
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
-                <img src="#" th:src="${game.category.getUrlImage()}" class="img-responsive"/> <!-- obrazek kategori gry -->
+                <img src="#" th:src="@{${game.category.getUrlImage()}}" class="img-responsive"/> <!-- obrazek kategori gry -->
                 <div class="category" th:text="${game.category.getName()}"><!-- nazwa kategori rozgrywanej gry th:text="${}" -->
                 </div>
                 <div class="avatar">
@@ -153,7 +153,7 @@
                         <h1 th:text="${iterationStatus.count}"></h1>
                     </td>
                     <td>
-                        <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture">
+                        <img th:src="@{${ranking.playerImageUrl}}" src="" class="img-circle img-profile-picture">
                     </td>
                     <td>
                         <h1 th:text="${ranking.playerName}"></h1>
@@ -196,7 +196,7 @@
                             <h4 th:text="${iterationStatus.count}"></h4>
                         </td>
                         <td>
-                            <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture-small">
+                            <img th:src="@{${ranking.playerImageUrl}}" src="" class="img-circle img-profile-picture-small">
                         </td>
                         <td>
                             <h4 th:text="${ranking.playerName}"></h4>
