@@ -15,7 +15,7 @@
     <link rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
     <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{/resources/scripts/open_game.js}"></script>
+    <script th:inline="javascript" type="text/javascript" th:src="@{/resources/scripts/open_game.js}"></script>
 
     <title>Quiz Whizz</title>
 </head>
@@ -35,12 +35,11 @@
 <div class="container" style="margin-bottom: 200px">
 
     <div class="game-open-image">
-        <!--<img id="rugby-picture" src="#" th:src="@{/resources/gfx/waiting_room.jpg}">-->
     </div>
 
 
     <div th:hidden="${!isOwner}" style="padding-top: 10px">
-        <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-warning btn-lg btn-block" style="hig">START</a>
+        <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-warning btn-lg btn-block">START</a>
     </div>
     <h3><span class="glyphicon glyphicon-user"></span> OBECNI GRACZE:</h3>
     <ul class="list-inline"id="players-container">
