@@ -26,7 +26,6 @@ public class GameTest {
     private Category category;
     private List<Question> questions;
     private GameStateMachine gameStateMachine;
-    private ScoreBuilder scoreBuilder;
     @Mock
     private Player player1;
     @Mock
@@ -35,6 +34,11 @@ public class GameTest {
     private List<Answer> answersOfP1;
     private List<Answer> answersOfP2;
 
+    /**
+     * Test konstruktora wykorzystywanego w kodzie produkcyjnym.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void publicConstructorTest() throws IllegalNumberOfQuestionsException {
         givenMockedCategoryQuestionsAndGameStateMachine();
@@ -46,6 +50,11 @@ public class GameTest {
         Java6Assertions.assertThat(game.getQuestions()).isEqualTo(questions);
     }
 
+    /**
+     * Test weryfikujacy rzucenie wyjatku IllegalNumberOfQuestionsException w przypadku proby stworzenia gry o nieodpowiedniej liczbie pytan.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void givenWrongNumberOfQuestions_WhenCreatingGame_ThenExceptionShouldBeThrown() throws IllegalNumberOfQuestionsException {
         Category category = mock(Category.class);
@@ -55,6 +64,11 @@ public class GameTest {
         assertThatThrownBy(() -> new Game(category, questions)).isInstanceOf(IllegalNumberOfQuestionsException.class);
     }
 
+    /**
+     * Test sprawdzajacy, ze gracz będacy juz na liscie graczy nie zostanie do niej dodany ponownie.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void givenListContainingPlayer1_WhenAddingPlayer1ToGameAgain_ThenTheyShouldNotBeAdded() throws IllegalNumberOfQuestionsException {
         givenMockedCategoryQuestionsAndGameStateMachine();
@@ -67,8 +81,13 @@ public class GameTest {
         assertThat(game.getPlayers().size()).isEqualTo(1);
     }
 
+    /**
+     * Test weryfikujacy, ze proba sprawdzenia wynikow gry po jej zamknięciu zaskutkuje zwroceniem wynikow
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
-    public void givenCategoryQuestionsAndNotClosedGameStatus_WhenCheckScoresIsCalled_ThenScoresAreNotNull() throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
+    public void givenCategoryQuestionsAndClosedGameStatus_WhenCheckScoresIsCalled_ThenScoresAreNotNull() throws IllegalNumberOfQuestionsException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
         givenMockedCategoryQuestionsAndGameStateMachine();
         given10Questions();
         Game game = givenGameWithCategoryQuestionsAndGameStateMachine();
@@ -82,6 +101,12 @@ public class GameTest {
         Java6Assertions.assertThat(scores).isNotNull();
     }
 
+    /**
+     * Test weryfikujacy, ze proba sprawdzenia wynikow gry przed jej zakonczeniem spowoduje rzucenie
+     * wyjatkiem ScoreCannotBeRetrievedBeforeGameIsClosedException.
+     *
+     * @throws ScoreCannotBeRetrievedBeforeGameIsClosedException
+     */
     @Test
     public void givenGameStateIsClosed_WhenGetScoresIsCalled_ThenExceptionIsThrown() throws ScoreCannotBeRetrievedBeforeGameIsClosedException, IllegalNumberOfQuestionsException {
         givenMockedCategoryQuestionsAndGameStateMachine();
@@ -92,6 +117,13 @@ public class GameTest {
         assertThatThrownBy(() -> game.checkScores()).isInstanceOf(ScoreCannotBeRetrievedBeforeGameIsClosedException.class);
     }
 
+    /**
+     * Test sprawdzajacy, ze proba wyslania odpowiedzi do oceny po przewidzianym na to czasie zaskutkuje rzucenie
+     * wyjatkiem IllegalTimeOfAnswerSubmissionException.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     * @throws IllegalTimeOfAnswerSubmissionException
+     */
     @Test
     public void givenGameIsNotInProgress_WhenEvaluateAnswersIsCalled_ThenExceptionShouldBeThrown() throws IllegalNumberOfQuestionsException {
         givenMockedCategoryQuestionsAndGameStateMachine();
@@ -101,9 +133,13 @@ public class GameTest {
         givenGameIsNotInProgress(true);
 
         assertThatThrownBy(() -> game.evaluateAnswers(player1, answersOfP1)).isInstanceOf(IllegalTimeOfAnswerSubmissionException.class);
-
     }
 
+    /**
+     * Test potwierdzajacy, ze wynik dodany do listy wynikow gry nie zostanie do niej dodany ponownie.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void givenPlayer1sAnswersWereEvaluated_WhenEvaluatingTheSameAnswers_ThenScoreShouldNotBeAddedToScoresAgain() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException {
         givenMockedCategoryQuestionsAndGameStateMachine();
@@ -122,6 +158,14 @@ public class GameTest {
         assertThat(game.checkScores().size()).isEqualTo(1);
 
     }
+
+    /**
+     * Test potwierdzajacy, ze najwyzszy wynik wsrod graczy zostaje poprawnie oznaczony jako najwyzszy.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     * @throws IllegalTimeOfAnswerSubmissionException
+     * @throws ScoreCannotBeRetrievedBeforeGameIsClosedException
+     */
 
     @Test
     public void given2PlayersAndTheirEvaluatedAnswers_WhenGetScoresIsCalled_ThenProperScoreOfProperPlayerShouldBeMarkedAsHighest() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException, ScoreCannotBeRetrievedBeforeGameIsClosedException {

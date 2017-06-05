@@ -14,7 +14,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Klasa testująca fabrykę gier
+ * Klasa testująca poprawnosc dzialania fabryki gier.
+ *
  * @author Karolina Prusaczyk
  * @see GameFactory
  */

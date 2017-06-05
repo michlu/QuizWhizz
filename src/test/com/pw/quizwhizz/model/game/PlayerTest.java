@@ -4,7 +4,9 @@ import com.pw.quizwhizz.model.exception.IllegalNumberOfQuestionsException;
 import com.pw.quizwhizz.model.exception.IllegalTimeOfAnswerSubmissionException;
 import com.pw.quizwhizz.model.game.*;
 import org.junit.Test;
+
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -16,6 +18,10 @@ import static org.mockito.Mockito.*;
  */
 public class PlayerTest {
 
+    /**
+     * Test sprawdzajacy następstwa stworzenia instancji gracza: wywolanie metody getPlayers() w grze celem sprawdzenia,
+     * czy gracz jest jej zalozycielem-wlascicielem oraz dodanie gracza do listy graczy w grze.
+     */
     @Test
     public void givenNewPlayer_WhenCreated_ThenGetPlayersAndAddPlayerMethodsInGameShouldBeCalled() {
         Game game = mock(Game.class);
@@ -28,6 +34,11 @@ public class PlayerTest {
         verify(game, times(1)).addPlayer(player2);
     }
 
+    /**
+     * Test werycikujace unikalnosc wlasciciela gry, ktorym jest jej zalozyciel.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void givenSeveralPlayersInGame_WhenCheckedForBeingGameOwner_ThenTrueShouldBeReturnedOnlyForFirstPlayer() throws IllegalNumberOfQuestionsException {
         Game gameSpy = givenGameInProgress();
@@ -42,6 +53,10 @@ public class PlayerTest {
         assertThat(player3.isOwner()).isFalse();
     }
 
+    /**
+     * Test potwierdzajacy, ze jedynie wlasciciel gry moze ja rozpoczac.
+     * @throws IllegalNumberOfQuestionsException
+     */
     @Test
     public void givenSeveralPlayers_WhenStartGameCalled_ThenItShouldOnlyStartForGameOwner() throws IllegalNumberOfQuestionsException {
         Game gameSpy = givenGameInProgress();
@@ -57,17 +72,9 @@ public class PlayerTest {
         verify(gameSpy, times(1)).start();
     }
 
-    @Test
-    public void givenAnswersAreNull_WhenSubmitAnswersCalled_ThenEvaluateAnswersInGameShouldNotBeCalled() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException {
-        Game gameSpy = givenGameInProgress();
-        Player player1 = new Player("Piotr", gameSpy);
-
-        List<Answer> answers = null;
-        player1.submitAnswers(answers);
-
-        verify(gameSpy, never()).evaluateAnswers(player1, answers);
-    }
-
+    /**
+     * Test metody equals().
+     */
     @Test
     public void testEquals() {
         Player player1 = new Player("Janek Jankowski");
@@ -84,6 +91,9 @@ public class PlayerTest {
         assertThat(!player3.equals(player1));
     }
 
+    /**
+     * Test metody hashCode().
+     */
     @Test
     public void testHashCode() throws Exception {
         Player player1 = new Player("Joanna Janicka");
@@ -100,6 +110,10 @@ public class PlayerTest {
         assertThat(player3.hashCode()).isNotEqualTo(player1.hashCode());
     }
 
+    /**
+     * Test potwierdzajacy, ze kilkukrotne wywolanie metod addXp() oraz incrementGamesPlayed() podnosi
+     * odpwiednie wartosci i ich nie nadpisuje.
+     */
     @Test
     public void testGettersAddXpAndIncrementGamesPlayedMethods() {
         Player player1 = new Player("Jerzy Jarzyna");
@@ -115,6 +129,29 @@ public class PlayerTest {
         assertThat(player1.getXp()).isEqualTo(220);
     }
 
+    /**
+     * Test sprawdzajacy, ze wyslane przez gracza odpowiedzi sa nullem, gra nie podejmie proby ich oceny.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     * @throws IllegalTimeOfAnswerSubmissionException
+     */
+    @Test
+    public void givenAnswersAreNull_WhenSubmitAnswersCalled_ThenEvaluateAnswersInGameShouldNotBeCalled() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException {
+        Game gameSpy = givenGameInProgress();
+        Player player1 = new Player("Piotr", gameSpy);
+
+        List<Answer> answers = null;
+        player1.submitAnswers(answers);
+
+        verify(gameSpy, never()).evaluateAnswers(player1, answers);
+    }
+
+    /**
+     * Test sprawdzajacy, ze wyslane przez gracza odpowiedzi zostana ocenione w grze.
+     *
+     * @throws IllegalNumberOfQuestionsException
+     * @throws IllegalTimeOfAnswerSubmissionException
+     */
     @Test
     public void givenAnswersAreNotNull_WhenSubmitAnswersCalled_ThenEvaluateAnswersInGameShouldBeCalled() throws IllegalNumberOfQuestionsException, IllegalTimeOfAnswerSubmissionException {
         Game gameSpy = givenGameInProgress();
