@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -67,7 +68,7 @@ public class UserController {
 	 */
 	@PostMapping("/register")
 	public String addUser(@ModelAttribute @Valid User user, BindingResult bindResult, HttpServletRequest request) throws ServletException, IOException {
-		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+		String saveDirectory = request.getSession().getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator;
 		if(bindResult.hasErrors())
 			return "register_form";
 		else {
@@ -133,7 +134,7 @@ public class UserController {
 			BindingResult bindResult,
 			@RequestParam MultipartFile file,
 			HttpServletRequest request) {
-		String saveDirectory = request.getSession().getServletContext().getRealPath("/")+"resources\\images\\";
+		String saveDirectory = request.getSession().getServletContext().getRealPath("") + File.separator + "resources" + File.separator + "images" + File.separator;
 
 		if (bindResult.hasErrors()){
 			return "redirect:/user/my";
