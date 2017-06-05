@@ -34,15 +34,15 @@
 
 <div class="container" style="margin-bottom: 200px">
 
-    <div>
-        <img id="rugby-picture" src="#" th:src="@{/resources/images/rugby.jpg}">
+    <div class="game-open-image">
+        <!--<img id="rugby-picture" src="#" th:src="@{/resources/gfx/waiting_room.jpg}">-->
     </div>
 
 
-    <div th:hidden="${!isOwner}">
-        <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-primary btn-lg btn-block">Start</a>
+    <div th:hidden="${!isOwner}" style="padding-top: 10px">
+        <a href="#" th:href="@{'/game/'+${game.getId()}+'/start/'}" class="btn btn-warning btn-lg btn-block" style="hig">START</a>
     </div>
-    <h3>Obecni gracze:</h3>
+    <h3><span class="glyphicon glyphicon-user"></span> OBECNI GRACZE:</h3>
     <ul class="list-inline"id="players-container">
     </ul>
 </div>

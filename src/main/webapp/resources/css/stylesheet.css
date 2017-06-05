@@ -132,3 +132,13 @@
     padding: 10px;
     margin: 5px;
 }
+.game-open-image {
+    display: block;
+    width: 100%;
+    height: 550px;
+    background: url('../gfx/waiting_room.jpg') no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
