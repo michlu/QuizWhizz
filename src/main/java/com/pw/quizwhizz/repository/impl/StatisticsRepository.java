@@ -38,6 +38,7 @@ public class StatisticsRepository {
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
      * @see RowMapper
+     * @see Statistics
      */
     class StatisticRowMapper implements RowMapper<Statistics> {
         @Override

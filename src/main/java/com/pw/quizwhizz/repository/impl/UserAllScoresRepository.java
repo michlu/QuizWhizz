@@ -41,6 +41,7 @@ public class UserAllScoresRepository {
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
      * @see RowMapper
+     * @see UserAllStats
      */
      class UserAllScoresRowMapper implements RowMapper<UserAllStats> {
         @Override
