@@ -17,6 +17,9 @@ public class QuestionServiceHardcodedTest {
     private QuestionServiceHardcoded questionService = new QuestionServiceHardcoded();
     private Category category = new Category();
 
+    /**
+     * Test sprawdzajacy, ze dwa losowania pytan zwroca dwa rozne ich zestawy.
+     */
     @Test
     public void Given2ListsOfQuestions_WhenCheckedForEquality_ThenFalseShouldBeReturned() {
 
@@ -26,6 +29,9 @@ public class QuestionServiceHardcodedTest {
         Assertions.assertThat(q1).isNotEqualTo(q2);
     }
 
+    /**
+     * Test sprawdzajacy, ze kazde losowanie zwraca zestaw o pozadanej liczbie pytan.
+     */
     @Test
     public void Given3ListOfQuestions_WhenCheckedForSize_ThenAllShouldContain10Questions() {
         List<Question> q1 = questionService.getRandomQuestionsByCategory(category, 10);
@@ -39,6 +45,9 @@ public class QuestionServiceHardcodedTest {
         assertThat(size1 == size2  && size2 == size3 && size3 == 10);
     }
 
+    /**
+     * Test potwierdzajacy, ze pytania w losowanych zestawach nie duplikuja się.
+     */
     @Test
     public void GivenList_WhenCheckedForUniquenessOfQuestions_ThenTrueShouldBeReturned() {
         List<Question> q1 = questionService.getRandomQuestionsByCategory(category, 10);

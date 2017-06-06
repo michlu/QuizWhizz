@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Klasa wspierająca testy potwierdzające poprawnosc losowania pytań do gry z puli danej kategorii
+ * Klasa do celow testowych, wspierajaca testy poprawnosci losowania pytań do gry z puli danej kategorii.
+ * Umozliwia wykonanie testow bez koniecznosci odwolywania się do rzeczywistych danych z repozytorium.
  *
  * @author Karolina Prusaczyk
  */
@@ -30,6 +31,12 @@ public class QuestionServiceHardcoded implements QuestionService {
         return null;
     }
 
+    /**
+     * Algorytm losujacy pytania do gry, zapewniajacy ich niepowtarzalnosc w zestawie.
+     * @param categoryId kategoria losowanych pytan
+     * @param number liczba pytan do wylosowania
+     * @return lista wylosowanych pytan
+     */
     @Override
     public List<Question> getRandomQuestionsByCategoryId(long categoryId, int number) {
         List<Question> questions = new ArrayList<>();
@@ -65,12 +72,10 @@ public class QuestionServiceHardcoded implements QuestionService {
 
     @Override
     public void deleteById(Long Id) {
-
     }
 
     @Override
     public void addQuestion(String categoryId, String inputQuestion, String inputAnswer1, String inputAnswer2, String inputAnswer3, String inputAnswer4, String answerCorrect) {
-
     }
 
     @Override

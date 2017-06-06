@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Testy klasy Score odpowiedzialnej za ocenianie odpowiedzi graczy, oznaczanie najwyzszych wynikow,
- * przyznawanie punktow za grę oraz dodatkowych punktow za zwycięstwo w grze wieloosobowej
+ * przyznawanie punktow za grę oraz dodatkowych punktow za zwycięstwo w grze wieloosobowej.
  *
  * @author Karolina Prusaczyk
  * @see Score
@@ -18,6 +18,9 @@ public class ScoreTest {
     Player player;
     Score score;
 
+    /**
+     * Test weryfikujacy dzialanie konstruktora i poczatkowe wartosci przypisane instancji klasy Score.
+     */
     @Test
     public void constructorTest() {
         givenPlayer();
@@ -28,6 +31,10 @@ public class ScoreTest {
         assertThat(score.isHighest()).isFalse();
     }
 
+    /**
+     * Test weryfikujacy dzialanie metody markAsHighest(), ktorej pozadanym wynikiem jest oznaczenie wyniku jako najwyzszy
+     * oraz nagrodzenie gracza z najwyzszym wynikiem 30 dodatkowymi punktami doswiadczenia.
+     */
     @Test
     public void givenScore_WhenMarkAsHighestIsCalled_ThenScoreShouldBeHighestAndPlayerShouldGet30Xp() {
         givenPlayer();
@@ -39,6 +46,10 @@ public class ScoreTest {
         verify(player, times(1)).addXp(30);
     }
 
+    /**
+     * Test potwierdzajacy, ze gracz, ktory udzielil jedynie niepoprawnych odpowiedzi nie uzyska punktow doswiadczenia,
+     * jednak liczba zagranych przez niego gier wzrosnie.
+     */
     @Test
     public void givenListWithNoCorrectAnswers_WhenEvaluateAnswersIsCalled_ThenPlayerShouldReceiveNoPoints() {
         givenPlayer();
@@ -51,6 +62,9 @@ public class ScoreTest {
         verify(player, times(1)).incrementGamesPlayed();
     }
 
+    /**
+     * Test potwierdzajacy, ze za jedna poprawna odpowiedz gracz otrzymuje 10 punktow.
+     */
     @Test
     public void givenListWith1CorrectAnswer_WhenEvaluateAnswersIsCalled_ThenPlayerShouldReceive10Points() {
         givenPlayer();
@@ -63,8 +77,11 @@ public class ScoreTest {
         verify(player, times(1)).incrementGamesPlayed();
     }
 
+    /**
+     * Test weryfikujacy liczbę przyznanych punktow przy kilku poprawnych odpowiedziach.
+     */
     @Test
-    public void givenListSeveralNoCorrectAnswers_WhenEvaluateAnswersIsCalled_ThenPlayerShouldReceiveAppropriateNumberOfPoints() {
+    public void givenListOfSeveralCorrectAnswers_WhenEvaluateAnswersIsCalled_ThenPlayerShouldReceiveAppropriateNumberOfPoints() {
         givenPlayer();
         givenScore();
         List<Answer> answers = givenListOf3CorrectAnswers();
