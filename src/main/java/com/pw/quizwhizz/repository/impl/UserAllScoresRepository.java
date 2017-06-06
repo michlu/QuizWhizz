@@ -28,7 +28,7 @@ public class UserAllScoresRepository {
             "SELECT game.id, game.start_time, category.category_name, " +
             " (SELECT COUNT(*) FROM score WHERE score.game_id = game.id), " +
             " score.points, " +
-            " (SELECT u.first_name FROM user u, score s WHERE s.isHighest = 1 AND s.user_id = u.id AND s.game_id = game.id) " +
+            " (SELECT u.first_name FROM user u, score s WHERE s.isHighest = 1 AND s.user_id = u.id AND s.game_id = game.id LIMIT 1) " + //TODO moga byc dwa wyniki w przypadku remisu.
             "FROM game  " +
             "INNER JOIN category ON game.category_id = category.id " +
             "INNER JOIN score ON game.id = score.game_id " +
@@ -41,6 +41,7 @@ public class UserAllScoresRepository {
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
      * @see RowMapper
+     * @see UserAllStats
      */
      class UserAllScoresRowMapper implements RowMapper<UserAllStats> {
         @Override

@@ -76,21 +76,22 @@
 
     <div class="container">
 
-        <div class="page-header">
-            <h1 class="text-center dark-background-text">...lub dołącz do gry</h1>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1 class="text-center dark-background-text">...lub dołącz do gry</h1>
+            </div>
+
+            <p class="lead text-center dark-background-text">Znajdź otwartą grę i dołącz do rozgrywki. Zmierz się z innymi graczami w wybranych kategoriach. Wygrane w rozgrywkach wieloosobowych są dodatkowo nagradzane.</p>
+
+            <div class="wrapper">
+                <input type="button" class="btn-transparent" value="Aktualizuj aktywne gry" onClick="window.location.reload()">
+                <!-- th:if="${games.isEmpty()}" tylko gdy nie ma aktywnych gier -->
+            </div>
         </div>
-
-        <p class="lead text-center dark-background-text">Znajdź otwartą grę i dołącz do rozgrywki. Zmierz się z innymi graczami w wybranych kategoriach. Wygrane w rozgrywkach wieloosobowych są dodatkowo nagradzane.</p>
-
-        <div class="wrapper">
-            <input type="button" class="btn-transparent" value="Aktualizuj aktywne gry" onClick="window.location.reload()">
-            <!-- th:if="${games.isEmpty()}" tylko gdy nie ma aktywnych gier -->
-        </div>
-
         <div class="col-xs-4 col-sm-3 col-md-2 card hovercard" th:each="game, iterationStatus : ${games}"> <!--petla po aktulanie rozgywanych grach  th:each="game : ${games}" -->
             <div class="clearfix background">
                 <img src="#" th:src="@{${game.category.getUrlImage()}}" class="img-responsive"/> <!-- obrazek kategori gry -->
-                <div class="category" th:text="${game.category.getName()}"><!-- nazwa kategori rozgrywanej gry th:text="${}" -->
+                <div class="category" th:text="${game.category.getName()}"><!-- nazwa kategori rozgrywanej gry  -->
                 </div>
                 <div class="avatar">
                     <img src="#" th:src="@{'/resources/images/profile_'+${game.players.get(0).id}+'.png'}" /> <!-- obrazek zalozyciela gry -->
@@ -104,11 +105,11 @@
                         <tbody>
                         <tr>
                             <td><p class="text-uppercase"><small>Owner</small></p></td>
-                            <td><span th:text="${game.players.get(0).getName()}"></span></td> <!-- kto jest zalozycielem gry th:text="${}" -->
+                            <td><span th:text="${game.players.get(0).getName()}"></span></td> <!-- kto jest zalozycielem gry  -->
                         </tr>
                         <tr>
                             <td><p class="text-uppercase"><small>Graczy</small></p></td>
-                            <td><span th:text="${game.players.size()}"></span></td><!-- pobiera ilosc graczy z danej gry th:text="${}" -->
+                            <td><span th:text="${game.players.size()}"></span></td><!-- pobiera ilosc graczy z danej gry  -->
                         </tr>
                         <tr>
                             <td><p class="text-uppercase"><small>Numer gry</small></p></td>
@@ -119,7 +120,7 @@
                 </div>
             </div>
             <div class="bottom">
-                <a th:href="@{'/game/' + ${game.getId()} + '/joinOpened'}"class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry th:href="@{'/game/...'+${game.id}}" -->
+                <a th:href="@{'/game/' + ${game.getId()} + '/joinOpened'}"class="btn btn-default">Dołącz »</a> <!-- dolacza do wybranej gry -->
             </div>
         </div>
 
@@ -128,15 +129,14 @@
 </div>
 
 <!-- RANKING -->
-<div class="container">
-
+<div>
     <div class="container">
-        <div class="page-header">
-            <h1 class="text-center">Ranking</h1>
-        </div>
-        <p class="lead text-center">Zestawienie TOP 5 najleszych graczy ze wszystkich kategorii.</p>
 
-        <div class="container">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1 class="text-center">Ranking</h1>
+            </div>
+            <p class="lead text-center">Zestawienie TOP 5 najleszych graczy ze wszystkich kategorii.</p>
 
             <table class="table table-striped" align="center" valign="middle">
                 <tr class="score-headers">
@@ -173,12 +173,14 @@
 
         </div>
 
-        <div class="container padding-top">
+        <div class="col-md-12 padding-top">
 
-            <div class="page-header">
-                <h1 class="text-center">Najlepsi według kategorii</h1>
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">Najlepsi według kategorii</h1>
+                </div>
+                <p class="lead text-center">Zestawienie najleszych graczy w danych kategoriach, uwzględniana jest ilość poprawnych odpowiedzi.</p>
             </div>
-            <p class="lead text-center">Zestawienie najleszych graczy w danych kategoriach, uwzględniana jest ilość poprawnych odpowiedzi.</p>
 
             <div class="col-sm-12 col-md-6 padding-top" th:each="element : ${categoryRankings}">
                 <p class="lead text-center"><u th:text="${element.key}"></u></p>
@@ -222,8 +224,10 @@
 
     <div class="container">
 
-        <div class="page-header">
-            <h1 class="text-center">Statystyki portalu</h1>
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1 class="text-center">Statystyki portalu</h1>
+            </div>
         </div>
 
         <div class="col-xs-6 col-sm-4 col-md-4">

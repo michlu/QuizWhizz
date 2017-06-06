@@ -26,7 +26,7 @@ public class StatisticsRepository {
     private static final String statisticSQL =
                     "SELECT count(DISTINCT g.id), " +
                     "(SELECT count(*) FROM (SELECT s.game_id FROM score s GROUP BY s.game_id HAVING count(s.user_id) >=2) d1), " +
-                    "(SELECT category.category_name FROM category INNER JOIN game ON game.category_id = category.id GROUP BY category_name LIMIT 1), " +
+                    "(SELECT category.category_name FROM category INNER JOIN game ON game.category_id = category.id GROUP BY category_name ORDER BY count(*) DESC LIMIT 1), " +
                     "(SELECT points FROM score GROUP BY points ORDER BY COUNT( * ) DESC LIMIT 1) " +
                     "FROM game g " +
                     "INNER JOIN score ON g.id = score.game_id;";
@@ -38,6 +38,7 @@ public class StatisticsRepository {
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
      * @see RowMapper
+     * @see Statistics
      */
     class StatisticRowMapper implements RowMapper<Statistics> {
         @Override

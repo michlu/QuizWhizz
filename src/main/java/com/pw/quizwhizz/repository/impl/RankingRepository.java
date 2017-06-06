@@ -62,6 +62,7 @@ public class RankingRepository {
     /**
      * Pomocnicza klasa implementujaca interface RowMapper. Mapuje wiersze tabeli sql na obiekt javy.
      * @see RowMapper
+     * @see Ranking
      */
     class RankingRowMapper implements RowMapper<Ranking> {
         @Override
