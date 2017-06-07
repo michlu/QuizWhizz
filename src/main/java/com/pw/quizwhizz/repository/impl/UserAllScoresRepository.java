@@ -33,7 +33,8 @@ public class UserAllScoresRepository {
             "INNER JOIN category ON game.category_id = category.id " +
             "INNER JOIN score ON game.id = score.game_id " +
             "INNER JOIN user ON score.user_id = user.id " +
-            "WHERE user.id = ?;";
+            "WHERE user.id = ?" +
+            "ORDER BY game.start_time;";
 
     public List<UserAllStats> findAllScoreForUser(Long userId){
         return jdbcTemplate.query(userScores, new UserAllScoresRowMapper(), userId);
