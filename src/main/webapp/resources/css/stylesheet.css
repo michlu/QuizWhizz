@@ -79,7 +79,7 @@
 }
 
 .img-profile-picture {
-    width: 70px;
+    max-width: 70px;
 }
 
 .img-profile-picture-small {
@@ -139,4 +139,62 @@
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
+}
+
+.stat-div {
+    height: 200px;
+    padding: 5px 5px 5px 5px;
+}
+.stat-img {
+    margin:0 auto;
+    -webkit-border-top-left-radius:10px;
+    -moz-border-top-left-radius:10px;
+    border-top-left-radius:10px;
+    -webkit-border-top-right-radius:10px;
+    -moz-border-top-right-radius:10px;
+    border-top-right-radius:10px;
+    -webkit-border-bottom-left-radius:10px;
+    -moz-border-bottom-left-radius:10px;
+    border-bottom-left-radius:10px;
+    -webkit-border-bottom-right-radius:10px;
+    -moz-border-bottom-right-radius:10px;
+    border-bottom-right-radius:10px;
+}
+
+.stat-txt{
+    color: #000000;
+    top: 50%; left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+.stat-txt h1 {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.stat-txt p {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.stat-txt h2 {
+    background: #fff;
+    background: rgba(255, 255, 255, 0.8);
+}
+.overlay {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 20px;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #efefef;
+}
+
+.stat-div:hover .overlay {
+    opacity: 1;
 }

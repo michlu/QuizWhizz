@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/responsive-font.css}">
     <script type="text/javascript" th:src="@{/resources/js/jquery.js}"></script>
     <script type="text/javascript" th:src="@{/resources/scripts/started_game.js}"></script>
 
@@ -38,7 +39,7 @@
     </div>
     <p class="lead text-center">Zestawienia najlepszych graczy.</p>
 
-    <div>
+    <div class="res-font">
         <table class="table table-striped" align="center" valign="middle">
             <tr class="score-headers">
                 <th>Ranking</th>
@@ -51,19 +52,19 @@
 
             <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
                 <td>
-                    <h1 th:text="${iterationStatus.count}"></h1>
+                    <h2 th:text="${iterationStatus.count}"></h2>
                 </td>
                 <td>
                     <img th:src="${ranking.playerImageUrl}" src="" class="img-circle img-profile-picture">
                 </td>
                 <td>
-                    <h1 th:text="${ranking.playerName}"></h1>
+                    <h2 th:text="${ranking.playerName}"></h2>
                 </td>
                 <td>
-                    <h1 th:text="${ranking.gamePlayed}"></h1>
+                    <h2 th:text="${ranking.gamePlayed}"></h2>
                 </td>
                 <td>
-                    <h1 th:text="${ranking.allPoints}"></h1>
+                    <h2 th:text="${ranking.allPoints}"></h2>
                 </td>
             </tr>
         </table>
