@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link href="css/one-page-wonder.css" rel="stylesheet" th:href="@{/resources/css/one-page-wonder.css}">
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/stylesheet.css}">
+    <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/responsive-font.css}">
 
     <link href="css/stylesheet.css" rel="stylesheet" th:href="@{/resources/css/game-list.css}">
 </head>
@@ -37,7 +38,7 @@
     <div class="headline">
         <div class="container">
             <h1>Quiz Whizz</h1>
-            <h2>Sprawdź swoja wiedzę</h2>
+            <h2>Sprawdź swoją wiedzę</h2>
         </div>
     </div>
 </header>
@@ -137,35 +138,37 @@
                 <h1 class="text-center">Ranking</h1>
             </div>
             <p class="lead text-center">Zestawienie TOP 5 najleszych graczy ze wszystkich kategorii.</p>
+            <div class="res-font">
+                <table class="table table-striped" align="center" valign="middle">
+                    <tr class="score-headers">
+                        <th>Ranking</th>
+                        <th></th>
+                        <th>Gracz</th>
+                        <th>Rozegrane gry</th>
+                        <!--<th>Wygrane MP</th>-->
+                        <th>Zdobyte punkty</th>
+                    </tr>
 
-            <table class="table table-striped" align="center" valign="middle">
-                <tr class="score-headers">
-                    <th>Ranking</th>
-                    <th></th>
-                    <th>Gracz</th>
-                    <th>Rozegrane gry</th>
-                    <!--<th>Wygrane MP</th>-->
-                    <th>Zdobyte punkty</th>
-                </tr>
 
-                <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
-                    <td>
-                        <h1 th:text="${iterationStatus.count}"></h1>
-                    </td>
-                    <td>
-                        <img th:src="@{${ranking.playerImageUrl}}" src="" class="img-circle img-profile-picture">
-                    </td>
-                    <td>
-                        <h1 th:text="${ranking.playerName}"></h1>
-                    </td>
-                    <td>
-                        <h1 th:text="${ranking.gamePlayed}"></h1>
-                    </td>
-                    <td>
-                        <h1 th:text="${ranking.allPoints}"></h1>
-                    </td>
-                </tr>
-            </table>
+                    <tr class="score-row tr-color" th:each="ranking, iterationStatus : ${generalRank}" th:onclick="'javascript:rowClicked(\'' + ${ranking.userID} + '\');'" style="cursor: pointer">
+                        <td>
+                            <h2 th:text="${iterationStatus.count}"></h2>
+                        </td>
+                        <td>
+                            <img th:src="@{${ranking.playerImageUrl}}" src="" class="img-circle img-profile-picture">
+                        </td>
+                        <td>
+                            <h2 th:text="${ranking.playerName}"></h2>
+                        </td>
+                        <td>
+                            <h2 th:text="${ranking.gamePlayed}"></h2>
+                        </td>
+                        <td>
+                            <h2 th:text="${ranking.allPoints}"></h2>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
             <div class="wrapper" style="padding-top: 20px">
                 <a th:href="@{/app/ranking}" class="btn btn-default">Sprawdź wyniki w Top 50</a>
@@ -230,29 +233,71 @@
             </div>
         </div>
 
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${numberUsers}" class="h1-big text-center"></h1>
-            <p class="lead text-center ">Zarejestrowanych użytkowników</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_users.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h1 th:text="${numberUsers}" class="text-center"></h1>
+                <p class="lead text-center ">Zarejestrowanych użytkowników</p>
+            </div>
+            <div class="overlay">
+                <h1 th:text="${numberUsers}" class="text-center"></h1>
+                <p class="lead text-center ">Zarejestrowanych użytkowników</p>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${statistics.numberGames}" class="h1-big text-center"></h1>
-            <p class="lead text-center">Rozegrane gry</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_numberofgames.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h1 th:text="${statistics.numberGames}" class="text-center"></h1>
+                <p class="lead text-center">Rozegrane gry</p>
+            </div>
+            <div class="overlay">
+                <h1 th:text="${statistics.numberGames}" class="text-center"></h1>
+                <p class="lead text-center">Rozegrane gry</p>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${statistics.numberMPGames}" class="h1-big text-center"></h1>
-            <p class="lead text-center ">Gry wieloosobowe</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_gamemp.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h1 th:text="${statistics.numberMPGames}" class="text-center"></h1>
+                <p class="lead text-center ">Gry wieloosobowe</p>
+            </div>
+            <div class="overlay">
+                <h1 th:text="${statistics.numberMPGames}" class="text-center"></h1>
+                <p class="lead text-center ">Gry wieloosobowe</p>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${statistics.mostPopularCategory}" class="h1-big text-center"></h1>
-            <p class="lead text-center ">Najchętniej wybierana kategoria</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_mostpopularcategory.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h2 th:text="${statistics.mostPopularCategory}" class="text-center"></h2>
+                <p class="lead text-center ">Najchętniej wybierana kategoria</p>
+            </div>
+            <div class="overlay">
+                <h2 th:text="${statistics.mostPopularCategory}" class="text-center"></h2>
+                <p class="lead text-center ">Najchętniej wybierana kategoria</p>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${statistics.mostPopularScore}" class="h1-big text-center"></h1>
-            <p class="lead text-center ">Najczęściej osiągany wynik</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_mostpopularscore.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h1 th:text="${statistics.mostPopularScore}" class="text-center"></h1>
+                <p class="lead text-center ">Najczęściej osiągany wynik</p>
+            </div>
+            <div class="overlay">
+                <h1 th:text="${statistics.mostPopularScore}" class="text-center"></h1>
+                <p class="lead text-center ">Najczęściej osiągany wynik</p>
+            </div>
         </div>
-        <div class="col-xs-6 col-sm-4 col-md-4">
-            <h1 th:text="${numberQuestions}" class="h1-big text-center"></h1>
-            <p class="lead text-center ">Liczba pytań w bazie</p>
+        <div class="col-xs-12 col-sm-6 col-md-4 res-font stat-div">
+            <img th:src="@{'/resources/gfx/stat_numberofquestion.jpg'}" src="" class="img-responsive stat-img">
+            <div class="stat-txt">
+                <h1 th:text="${numberQuestions}" class="res-font text-center"></h1>
+                <p class="lead text-center ">Liczba pytań w bazie</p>
+            </div>
+            <div class="overlay">
+                <h1 th:text="${numberQuestions}" class="res-font text-center"></h1>
+                <p class="lead text-center ">Liczba pytań w bazie</p>
+            </div>
         </div>
     </div>
 

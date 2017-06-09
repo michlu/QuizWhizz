@@ -35,6 +35,10 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+	/** Zabezpieczenie minimalnej dlugosci hasla przy edycji danych uzytkownika */
+	final private static int ACCEPTABLE_MINIMUM_PASSWORD_LENGTH = 4;
+
 	final private UserRepository userRepository;
 	final private RoleRepository roleRepository;
 	final private PasswordEncoder passwordEncoder;
@@ -132,7 +136,7 @@ public class UserServiceImpl implements UserService {
 			updateUser.setEmail(user.getEmail());
 		if(user.getUrlImage()!=null)
 			updateUser.setUrlImage(user.getUrlImage());
-		if(user.getPassword()!=null)
+		if(user.getPassword()!=null && user.getPassword().length()>= ACCEPTABLE_MINIMUM_PASSWORD_LENGTH)
 			updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		userRepository.save(updateUser);
@@ -159,7 +163,7 @@ public class UserServiceImpl implements UserService {
 			updateUser.setFirstName(user.getFirstName());
 		if(user.getEmail()!=null)
 			updateUser.setEmail(user.getEmail());
-		if(user.getPassword()!=null)
+		if(user.getPassword()!=null && user.getPassword().length()>= ACCEPTABLE_MINIMUM_PASSWORD_LENGTH)
 			updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		userRepository.save(updateUser);
